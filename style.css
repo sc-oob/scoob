@@ -126,7 +126,7 @@
 
 .gallery {
     width: 100%; 
-    background-color: #ca6565;               /* Ensure gallery fills its container */
+    background-color: #000000;               /* Ensure gallery fills its container */
 }
 
 .cart {
@@ -151,6 +151,7 @@
         flex: none;              /* Reset flex properties */
         width: 95%;
         padding: 20px;           /* Optional, for spacing inside */
+        
     }
 
     .cart {
@@ -163,7 +164,10 @@
 
             .gallery {
                 padding: 2px;
-                background-color: #0f0f0f;
+                background-color: #111111;
+                 
+                
+
                 
                 border-radius: 90px;
                 width: 93%;
@@ -196,7 +200,7 @@
 
             .gallery-item img {
                 width: 100%;
-                border-bottom: 1px solid #ddd;
+                border-bottom: 3px solid #3b2727;
             }
 
             .item-info {
@@ -274,12 +278,32 @@
             }
 
             .image-name-box1 {
-                color: white;
-                background-color: rgb(8, 8, 8);
-                padding: 10%;
+                background-color: #040013;
+                color: #fff;
+                text-align: left;
+                padding: 0px;
+                border-radius: 0px;
                 width: 100%;
+                height: 100%;
+                border-top: 10p;
+                display: flex;
+                justify-content: left;
+                align-items: left;
             }
 
+               
+            .inputs{
+                width: 4px;
+                padding: 3px;
+                background-color: #250000;
+            }    
+
+            .inputsColor{
+                width: 4px;
+                padding: 7px;
+                background-color: #040013;
+
+            }
 
             .synonyms {
                 color:blue;
@@ -416,12 +440,7 @@
             }
             
          
-                
-            .inputs{
-                width: 4px;
-                padding: 3px;
-                background-color: #000000;
-            }    
+             
 
         
 
