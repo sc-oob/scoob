@@ -1,0 +1,910 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>scoob</title>
+  
+   <!-- link:-->
+    <link rel="icon" href="favw.png" type="image/png">
+    <link rel="stylesheet" href="style.css">
+   <!--Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+
+</head>
+<body>
+
+<header>
+    <div class="logo">
+        <img src="favw.png" alt="Logo" width="80">
+        <span>scoob</span>
+    </div>
+    <div class="search">
+        <input type="text" class="search-bar" placeholder="Search...">
+    </div>
+</header>
+
+<div class="categories">
+    <div class="category-link active" data-category="All">All</div>
+    <div class="category-link" data-category="food">food</div>
+    <div class="category-link" data-category="drinks">drinks</div>
+    <div class="category-link" data-category="bites">bites</div>
+    <div class="category-link" data-category="vegan">vegan</div>
+    <div class="category-link" data-category="24/7s">24/7s</div>
+    <div class="category-link" data-category="download">download</div>
+</div>
+
+
+
+<div class="main-content">
+
+    <div class="page-container">
+        <div class="left-space"></div>
+
+        <div class="no-items-found" style="display: none !important;">mhh! try similar name or add in delivery form<!--| auto add crisis to the cart also--> </div>
+
+        <div class="gallery-container">
+            <div class="gallery">
+
+
+<div class="gallery-item" data-category="food">
+                    <img src="masterpiece/chipsroastMasterpiece.jpg" alt="chipsroastmasterpiece">
+                    <div class="item-info">
+                        <img src="masterpiece/MasterPieceLogo.jpeg" alt="Restaurant Logo">
+                        <span>Masterpiece</span>
+                    </div>
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">chips roast
+
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">Info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+                        <pre>
+                         specify order in delivery form
+
+
+                         mon-sun: 0700-2200
+
+                         quantity: a plate
+
+                         where: Makao mapya
+
+                         Price: 6,000Tshs
+                                
+
+                        </pre>
+                    </div>
+                </div>
+
+                
+
+
+                <div class="gallery-item" data-category="food">
+                    <img src="masterpiece/ugalimbogaMasterpiece.jpg" alt="ugalimbogaMasterpiece">
+                    <div class="item-info">
+                        <img src="masterpiece/MasterPieceLogo.jpeg" alt="Restaurant Logo">
+                        <span>Masterpiece</span>
+                    </div>
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">ugali mboga
+
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">Info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+                        <pre>
+                         specify order in delivery form
+
+
+                         mon-sun: 0700-2200
+
+                         quantity: a plate
+
+                         where: Makao mapya
+
+                         Price: 3,000Tshs
+                                
+
+                        </pre>
+                    </div>
+                </div>
+               
+
+                <div class="gallery-item" data-category="food">
+                    <img src="masterpiece/walisamakisatoMasterpiece.jpg" alt="walisamakisato">
+                    <div class="item-info">
+                        <img src="masterpiece/MasterPieceLogo.jpeg" alt="Restaurant Logo">
+                        <span>Masterpiece</span>
+                    </div>
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">wali samaki
+
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">Info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+                        <pre>
+                         specify order in delivery form
+
+
+                         mon-sun: 0700-2200
+
+                         quantity: a plate
+
+                         where: Makao mapya
+
+                         Price: 13,000Tshs
+                                
+
+                        </pre>
+                    </div>
+                </div>
+               
+
+
+                <div class="gallery-item" data-category="bites">
+                    <img src="masterpiece/donutMasterpiece.jpg" alt="donut">
+                    <div class="item-info">
+                        <img src="masterpiece/MasterPieceLogo.jpeg" alt="Restaurant Logo">
+                        <span>Masterpiece</span>
+                    </div>
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box"> donuts
+
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">Info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+                        <pre>
+                         specify order in delivery form
+                         
+
+                         mon-sun: 0700-2200
+
+                         quantity: 6
+
+                         where: Makao mapya
+
+                         Price: 15,000Tshs 
+                                
+
+                        </pre>
+                    </div>
+                </div>
+              
+
+
+
+                <div class="gallery-item" data-category="food">
+                    <img src="masterpiece/birianikukuMasterpiece.jpg" alt="birianikuku">
+                    <div class="item-info">
+                        <img src="masterpiece/MasterPieceLogo.jpeg" alt="Restaurant Logo">
+                        <span>Masterpiece</span>
+                    </div>
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">chicken biriani
+
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">Info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+                        <pre>
+                         specify order in delivery form
+
+
+                         mon-sun: 0700-2200
+
+                         quantity: a plate
+
+                         where: Makao mapya
+
+                         Price: 10,000Tshs
+                                
+
+                        </pre>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="food">
+                    <img src="masterpiece/chapatiroastMasterpiece.jpg" alt="chapatiroastMasterpiece">
+                    <div class="item-info">
+                        <img src="masterpiece/MasterPieceLogo.jpeg" alt="Restaurant Logo">
+                        <span>Masterpiece</span>
+                    </div>
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">chapati roast
+
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">Info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+                        <pre>
+                         specify order in delivery form
+
+
+                         mon-sun: 0700-2200
+
+                         quantity: plate, chapati 2
+
+                         where: Makao mapya
+
+                         Price: 6,000Tshs
+                                
+
+                        </pre>
+                    </div>
+                </div>
+
+
+                
+                        
+                <div class="gallery-item" data-category="food">
+                    <img src="jadeinn/BraisedPork20k.jpg" alt="braised pork pic">
+                    <div class="item-info">
+                        <img src="jadeinn/jadeinnloggo.png" alt="Restaurant Logo">
+                        <span>Jade Inn</span>
+                    </div>
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">braised pork
+
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">Info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+                        <pre>
+                         specify order in delivery form
+
+
+                         mon-sun: 0900-2300
+
+                         quantity: bowl
+
+                         where: Arusha seki
+
+                         Price: 20,000Tshs
+                                
+
+                        </pre>
+                    </div>
+                </div>
+
+
+                <div class="gallery-item" data-category="food">
+                    <img src="jadeinn/ColdPreservedEggs12k.jpg" alt="ColdPreservedEggs pic">
+                    <div class="item-info">
+                        <img src="jadeinn/jadeinnloggo.png" alt="Restaurant Logo">
+                        <span>Jade Inn</span>
+                    </div>
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">cold preserved eggs
+
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">Info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+                        <pre>
+                         specify order in delivery form
+
+
+                         mon-sun: 0900-2300
+
+                         quantity: plate
+
+                         where: Arusha seki
+
+                         Price: 12,000Tshs
+                                
+
+                        </pre>
+                    </div>
+                </div>
+
+
+               
+
+                <div class="gallery-item" data-category="food">
+                    <img src="jadeinn/CrispyFried Chicken25k 1.0.jpg" alt="CrispyFried Chicken pic">
+                    <div class="item-info">
+                        <img src="jadeinn/jadeinnloggo.png" alt="Restaurant Logo">
+                        <span>Jade Inn</span>
+                    </div>
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">crispy fried chicken
+
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">Info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+                        <pre>
+                         specify order in delivery form
+
+
+                         mon-sun: 0900-2300
+
+                         quantity: whole chicken
+
+                         where: Arusha seki
+
+                         Price: 25,000Tshs
+                                
+
+                        </pre>
+                    </div>
+                </div>
+
+                          
+
+
+                <div class="gallery-item" data-category="food">
+                    <img src="jadeinn/GingerCrabs28k.jpg" alt="GingerCrabs pic">
+                    <div class="item-info">
+                        <img src="jadeinn/jadeinnloggo.png" alt="Restaurant Logo">
+                        <span>Jade Inn</span>
+                    </div>
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">ginger crabs
+
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">Info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+                        <pre>
+                         specify order in delivery form
+
+
+                         mon-sun: 0900-2300
+
+                         quantity: plate
+
+                         where: Arusha seki
+
+                         Price: 28,000Tshs
+                                
+
+                        </pre>
+                    </div>
+                </div>
+
+
+
+                <div class="gallery-item" data-category="food">
+                    <img src="jadeinn/grilledFish&Vegetables38k.jpg" alt="grilledFish&Vegetables pic">
+                    <div class="item-info">
+                        <img src="jadeinn/jadeinnloggo.png" alt="Restaurant Logo">
+                        <span>Jade Inn</span>
+                    </div>
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">grilled fish & vegetables
+
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">Info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+                        <pre>
+                         specify order in delivery form
+
+
+                         mon-sun: 0900-2300
+
+                         quantity: 3 people 
+
+                         where: Arusha seki
+
+                         Price: 38,000Tshs
+                                
+
+                        </pre>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="food">
+                    <img src="jadeinn/SpicyRoastedBeef26k.jpg" alt="SpicyRoastedBeef26k.jpg">
+                    <div class="item-info">
+                        <img src="jadeinn/jadeinnloggo.png" alt="Restaurant Logo">
+                        <span>Jade Inn</span>
+                    </div>
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">spicy roasted beef
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">Info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+                        <pre>
+                         specify order in delivery form
+
+
+                         mon-sun: 0900-2300
+
+                         quantity: plate
+
+                         where: Arusha seki
+
+                         Price: 26,000Tshs
+                                
+
+                        </pre>
+                    </div>
+                </div>
+
+ <div class="gallery-item" data-category="food">
+                    <img src="jadeinn/KungPaoChicken23k.jpg" alt="KungPaoChicken pic">
+                    <div class="item-info">
+                        <img src="jadeinn/jadeinnloggo.png" alt="Restaurant Logo">
+                        <span>Jade Inn</span>
+                    </div>
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">kung pao chicken 
+
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">Info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+                        <pre>
+                         specify order in delivery form
+
+
+                         mon-sun: 0900-2300
+
+                         quantity: plate
+
+                         where: Arusha seki
+
+                         Price: 23,000Tshs
+                                
+
+                        </pre>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="food">
+                    <img src="jadeinn/MaoXueWang32k.jpg" alt="MaoXueWang32k pic">
+                    <div class="item-info">
+                        <img src="jadeinn/jadeinnloggo.png" alt="Restaurant Logo">
+                        <span>Jade Inn</span>
+                    </div>
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">mao xue wang 
+
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">Info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+                        <pre>
+                         specify order in delivery form
+
+
+                         mon-sun: 0900-2300
+
+                         quantity: bowl
+
+                         where: Arusha seki
+
+                         Price: 26,000Tshs
+                                
+
+                        </pre>
+                    </div>
+                </div>
+
+     
+                <div class="gallery-item" data-category="food">
+                    <img src="jadeinn/steamedChicken28k.jpg" alt="steamedChicken28k.jpg">
+                    <div class="item-info">
+                        <img src="jadeinn/jadeinnloggo.png" alt="Restaurant Logo">
+                        <span>Jade Inn</span>
+                    </div>
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">steamed chicken
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">Info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+                        <pre>
+                         specify order in delivery form
+
+
+                         mon-sun: 0900-2300
+
+                         quantity: whole chicken
+
+                         where: Arusha seki
+
+                         Price: 28,000Tshs
+                                
+
+                        </pre>
+                    </div>
+                </div>
+
+            
+     
+                <div class="gallery-item" data-category="food">
+                    <img src="jadeinn/noodles & mincedMeat15k.jpg" alt="mincedMeat15k.jpg">
+                    <div class="item-info">
+                        <img src="jadeinn/jadeinnloggo.png" alt="Restaurant Logo">
+                        <span>Jade Inn</span>
+                    </div>
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">noodles & minced meat
+
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">Info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+                        <pre>
+                         specify order in delivery form
+
+
+                         mon-sun: 0900-2300
+
+                         quantity: bowl
+
+                         where: Arusha seki
+
+                         Price: 15,000Tshs
+                                
+
+                        </pre>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="food">
+                    <img src="puregelati/pasta carbonara.puregelati16k.jpg"pasta carbonaro">
+                    <div class="item-info">
+                        <img src="puregelati/pureGelatiLogo.png" alt="Restaurant Logo">
+                        <span>Pure GelatI</span>
+                    </div>
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">pasta carbonaro
+
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">Info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+                        <pre>
+                         specify order in delivery form
+
+
+                         mon-sun: 0800-2200
+
+                         quantity: bowl
+
+                         where: Arusha seki
+
+                         Price: 16,000Tshs
+                                
+
+                        </pre>
+                    </div>
+                </div>
+
+
+                <div class="gallery-item" data-category="food">
+                    <img src="puregelati/peppersteakpuregelati20k.jpg" alt="saraahs special pic">
+                    <div class="item-info">
+                        <img src="puregelati/pureGelatiLogo.png" alt="Restaurant Logo">
+                        <span>Pure Gelati</span>
+                    </div>
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">pepper steak
+                       
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">Info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+                        <pre>
+                         specify order in delivery form
+
+
+                         mon-sun: 0800-2200
+
+                         quantity: plate
+                        
+                         where: TFA
+
+                         Price: 20,000Tshs
+                                
+
+                        </pre>
+                    </div>
+                </div>
+
+
+                <div class="gallery-item" data-category="food">
+                    <img src="Chagga boy fries & bbq/chips mayai.jpeg" alt="chips mayai">
+                    <div class="item-info">
+                        <img src="Chagga boy fries & bbq/chaggaboyfries&bbqLogo.png" alt="Restaurant Logo">
+                        <span>Chagga Boy Fries & BBQ</span>
+                    </div>
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">chips mayai
+                       
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">Info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+                        <pre>
+                         specify order in delivery form
+
+
+                         mon-fri: 0800-2100
+                         sat-sun: 0800-1900
+
+                         quantity: plate
+                        
+                         where: clock tower
+
+                         Price: 3,000Tshs 
+                                
+
+                        </pre>
+                    </div>
+                </div>
+
+                
+                <div class="gallery-item" data-category="food">
+                    <img src="Chagga boy fries & bbq/ndizi.jpg" alt="ndizi">
+                    <div class="item-info">
+                        <img src="Chagga boy fries & bbq/chaggaboyfries&bbqLogo.png" alt="Restaurant Logo">
+                        <span>Chagga Boy Fries & BBQ</span>
+                    </div>
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">ndizi mzuzu
+                       
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">Info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+                        <pre>
+                         specify order in delivery form
+
+
+                         mon-fri: 0800-2100
+                         sat-sun: 0800-1900
+
+                         quantity: 5
+                        
+                         where: clock tower
+
+                         Price: 2,500Tshs 
+                                
+
+                        </pre>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="download">
+                   
+                    <div class="item-info">
+                        <img src="favw.png" alt="Restaurant Logo">
+                        <span>internet</span>
+                    </div>
+                    <div class="item-actions">
+                        
+                        
+                        <div class="image-name-box"><pre>
+                            <h2>add to form</h2>
+                         movie: 1,000Tshs
+                        season: 2,000Tshs
+                              app: 5,000Tshs   
+                            <h2>from the net</h2>some  links.
+                             <a  href="https://thepiratebay.org" target="_blank">All in 1 piratebay</a>
+                             
+                             <a href="https://awafim.tv" target="_blank">Awafimovies</a>
+                            
+                             <a href="https://moviebox.ng/" target="_blank">Moviebox</a>
+                           
+                             <a href="https://www.Google.com" target="_blank">Google search</a>
+                                  
+                                                </pre>
+                
+                            <pre class="synonyms">
+                               <!-- synonyms was to be here -->
+                            </pre>
+                
+                        </div>
+                       
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+                        <pre>
+                            quantity: 1kg
+                            Price: 5,000Tshs
+                            location: soundcloud
+                        </pre>
+                    </div>
+               
+                 </div>
+           
+     
+        <div class="cart-container">
+            <div class="cart">
+                <div class="cart-icon">
+                    <p>Cart</p>
+                </div>
+                <div class="order-info">
+                    <p name="ordered">Ordered: <span></span></p>
+                    <p name="from">From: <span></span></p>
+                    <p name="total">Total: <span>0</span> Tshs</p>
+                </div>
+                <div class="moving-cart">
+                    <img src="cart00.png" width="80px" height="80px" alt="Cart" width="100">
+                </div>
+                <button class="button">ORDER</button>
+            </div>
+            
+        </div>
+       
+    </div>
+    
+</div>
+
+</div> 
+
+<!-- Form Page
+<footer>
+   <div class="foot"> <p>footers more info </p></div>
+</footer>
+didnt stay down after
+ redcng main content size for 
+ large screens
+ -->
+
+
+<!-- Form Page -->
+<div class="form-page" id="formPage">
+    <div class="form-container">
+        <h3>Fill delivery details</h3>
+        <form id="orderForm" action="https://formsubmit.co/hamzalaizer024@gmail.com" method="post">
+<div class="inputs">        
+            <input type="hidden" name="cartItems" name="cartItems" id="cartItemsInput" readonly>
+            <input type="hidden" name="total" id="totalInput" readonly>
+            <input type="hidden" name="from" id="fromInput" readonly>
+            <input type="text" name="name" placeholder="name for delivery purpose" required><br>
+            <input type="tel" name="phone" pattern="\+?[0-9]{10,1}" placeholder="receivers phone # " required><br>
+            <input name="missingItem" rows="3" placeholder="specify or add written order" ><br>
+            <input name="text" rows="3" placeholder="Delivered ASAP or At --:--" required><br>
+</div>
+            <button type="button" id="autoLocate" name="Auto-Locate"><pre>Auto-Locate    or   Use Map Below</pre></button>
+            <div id="map" style="height: 300px !important; margin-bottom: 20px !important;" required name="map container"></div>
+            <input type="text" id="coordinates" placeholder="Selected area on the map appear here" required name="coordinates">
+<div class="inputsColor">
+            <textarea type="text" name="download" placeholder="order: movies | seasons | apps" name=""></textarea>
+            <input type="text" name="transfer" placeholder="via: cd | flash | xender|SHAREit | usb" ><br>
+</div>
+
+             <button type="submit" name="submit button">Submit Order</button>
+        </form>
+    </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>
