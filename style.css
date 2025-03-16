@@ -302,8 +302,15 @@
                 width: 4px;
                 padding: 7px;
                 background-color: #040013;
-
             }
+
+           .inputsmatter{
+
+                width: 4px;
+                padding: 7px;
+                background-color: #1c1c22;
+            }
+
 
             .synonyms {
                 color:blue;
