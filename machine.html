@@ -76,7 +76,7 @@
 
                          mon-sun: 0700-2200
 
-                         quantity: a plate
+                         quantity: plate
 
                          where: Makao mapya
 
@@ -115,7 +115,7 @@
 
                          mon-sun: 0700-2200
 
-                         quantity: a plate
+                         quantity: plate
 
                          where: Makao mapya
 
@@ -152,7 +152,7 @@
 
                          mon-sun: 0700-2200
 
-                         quantity: a plate
+                         quantity: plate
 
                          where: Makao mapya
 
@@ -229,7 +229,7 @@
 
                          mon-sun: 0700-2200
 
-                         quantity: a plate
+                         quantity: plate
 
                          where: Makao mapya
 
@@ -676,7 +676,7 @@
 
                          quantity: bowl
 
-                         where: Arusha seki
+                         where: TFA
 
                          Price: 16,000Tshs
                                 
@@ -882,20 +882,23 @@ didnt stay down after
         <h3>Fill delivery details</h3>
         <form id="orderForm" action="https://formsubmit.co/hamzalaizer024@gmail.com" method="post">
 <div class="inputs">        
-            <input type="hidden" name="cartItems" name="cartItems" id="cartItemsInput" readonly>
+            <input type="hidden" name="cartItems" name="cartItems" id="cartItemsInput" readonly >
             <input type="hidden" name="total" id="totalInput" readonly>
             <input type="hidden" name="from" id="fromInput" readonly>
-            <input type="text" name="name" placeholder="name for delivery purpose" required><br>
-            <input type="tel" name="phone" pattern="\+?[0-9]{10,1}" placeholder="receivers phone # " required><br>
-            <input name="missingItem" rows="3" placeholder="specify or add written order" ><br>
-            <input name="text" rows="3" placeholder="Delivered ASAP or At --:--" required><br>
+            <input type="text" name="name" placeholder="name for delivery purpose" required style="width: 340px"><br>
+            <input type="tel" name="phone" pattern="\+?[0-9]{10,1}" placeholder="receivers phone # " required style="width: 340px"><br>
+            <input name="missingItem" rows="3" placeholder="specify or add written order" style="width: 340px"><br>
+            <input name="text" rows="3" placeholder="Delivered ASAP or At --:--" required style="width: 340px"><br>
 </div>
             <button type="button" id="autoLocate" name="Auto-Locate"><pre>Auto-Locate    or   Use Map Below</pre></button>
             <div id="map" style="height: 300px !important; margin-bottom: 20px !important;" required name="map container"></div>
-            <input type="text" id="coordinates" placeholder="Selected area on the map appear here" required name="coordinates">
+            <input type="text" id="coordinates" name="coordinates" placeholder="Selected area on the map appear here" required  style="width: 345px">
 <div class="inputsColor">
-            <textarea type="text" name="download" placeholder="order: movies | seasons | apps" name=""></textarea>
-            <input type="text" name="transfer" placeholder="via: cd | flash | xender|SHAREit | usb" ><br>
+            <textarea type="text" name="download" placeholder="order: movies | seasons | apps" style="width: 340px"></textarea>
+            <input type="text" name="transfer" placeholder="via: cd | flash | xender|SHAREit | usb" style="max-width: 340px;" !important><br>
+</div>
+<div class="inputsmatter">
+    <textarea type="text" name="matter" placeholder="order here any matter that occupies space" style="width: 340px"></textarea>
 </div>
 
              <button type="submit" name="submit button">Submit Order</button>
