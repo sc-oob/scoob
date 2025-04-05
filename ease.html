@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>scoob</title>
+  
+   <!-- link:-->
+    <link rel="icon" href="favw.png" type="image/png">
+    <link rel="stylesheet" href="style.css">
+   <!--Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+
+</head>
+<body>
+
+<header>
+    <div class="logo">
+        <img src="favw.png" alt="Logo" width="80">
+        <span>scoob</span>
+    </div>
+</header>
+
+
+
+<!-- Form Page -->
+<div  id="formPage"  style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+    <div class="form-container">
+        <h3 style="text-align: center; color: white;">Fill delivery details</h3>
+        <form id="orderForm" action="https://formsubmit.co/tz.scoob@gmail.com" method="post">
+<div class="inputs" >        
+            <input type="hidden" name="cartItems" name="cartItems" id="cartItemsInput" >
+            <input type="hidden" name="total" id="totalInput" >
+            <input type="hidden" name="from" id="fromInput" >
+            <textarea  style="display: none;" id="userInputField" name="userInput"></textarea>
+            <input type="text" name="name" placeholder="name for delivery purpose" required style="width: 340px"><br>
+            <input type="tel" name="phone" pattern="\+?[0-9]{10,1}" placeholder="receivers phone # " required style="width: 340px"><br>
+            <textarea name="missingItem" rows="3" placeholder="add written order" style="width: 340px"></textarea><br>
+            <input name="text" rows="3" placeholder="Delivered ASAP or At --:--" required style="width: 340px"><br>
+</div>
+            <button type="button" id="autoLocate" name="Auto-Locate"><pre>Auto-Locate    or   Use Map Below</pre></button>
+            <div id="map" style="height: 300px !important; margin-bottom: 20px !important;" required name="map container"></div>
+            <input type="text" id="coordinates" name="coordinates" placeholder="Selected area on the map appear here" required  style="width: 345px; color: black; ">
+<div class="inputsColor">
+            <hr>
+            <textarea name="download" placeholder="order: movies | series | games/apps" style="width: 150px; height: 30px; background-color: black;" ></textarea>
+            <input class="custom-placeholder" type="text" name="transfer" placeholder="via: cd | flash | xender|SHAREit | usb" style="max-width: 250px;"  !important><br>
+</div>
+<br>
+             <button type="submit" name="submit button">Submit Order</button>
+        </form>
+    </div>
+</div>
+
+<script>
+
+// When the child page (ease.html) loads, retrieve the cart data
+window.addEventListener('load', function() {
+    const cartItems = sessionStorage.getItem('cartItems');
+    const totalAmount = sessionStorage.getItem('totalAmount');
+    const from = sessionStorage.getItem('from');
+    const userInputs = sessionStorage.getItem('userInputs')
+
+    // Populate the form with the cart data
+    document.getElementById('cartItemsInput').value = cartItems;
+    document.getElementById('totalInput').value = totalAmount;
+    document.getElementById('fromInput').value = from;
+    document.getElementById('userInputField').value = userInputs;
+    
+    // Optionally, initialize the map on the child page if needed
+    recalculateMapSize();  // Ensures the map resizes properly when the page loads
+});
+
+
+</script>
+
+
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<script src="script.js"></script>
+
+<script>
+
+//mapping
+
+// Initialize the map
+const map = L.map('map').setView([-3.3750, 36.6899], 13); // Coordinates for Arusha, Tanzania
+
+// Add OpenStreetMap tiles
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
+
+
+
+// Function to ensure the map resizes correctly
+function recalculateMapSize() {
+    map.invalidateSize();
+}
+
+// When the user clicks on the map, add a marker at the clicked location
+let marker;
+map.on('click', function(e) {
+    // Remove the previous marker
+    if (marker) {
+        map.removeLayer(marker);
+    }
+
+    // Add a new marker at the clicked location
+    marker = L.marker(e.latlng).addTo(map);
+
+    
+    // Set the coordinates in the input field
+    document.getElementById('coordinates').value = `Latitude: ${e.latlng.lat}, Longitude: ${e.latlng.lng}`;
+});
+
+// Auto-locate the user and center the map on their location
+document.getElementById('autoLocate').addEventListener('click', function() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+
+            // Center the map to the user's location
+            map.setView([lat, lon], 13);
+
+            // Optionally, place a marker at the user's location
+            if (marker) {
+                map.removeLayer(marker);
+            }
+            marker = L.marker([lat, lon]).addTo(map);
+
+            // Set the coordinates in the input field
+            document.getElementById('coordinates').value = `Latitude: ${lat}, Longitude: ${lon}`;
+        }, function() {
+            alert('Geolocation failed or permission denied.');
+        });
+    } else {
+        alert('Geolocation is not supported by your browser.');
+    }
+});
+
+// Handle form display and recalculate map size
+document.querySelector('.button').addEventListener('click', function() {
+});
+
+
+// Initially recalculate map size when the page loads
+window.addEventListener('load', function() {
+    recalculateMapSize(); // Ensure map resizes properly when the page first loads
+});
+
+
+
+
+</script>
+</body>
+</html>
