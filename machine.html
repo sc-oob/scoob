@@ -1,0 +1,1799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>scoob</title>
+  
+   <!-- link:-->
+    <link rel="icon" href="favw.png" type="image/png">
+    <link rel="stylesheet" href="style.css">
+   <!--Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+
+</head>
+<body>
+
+<header>
+    <div class="logo">
+        <img src="favw.png" alt="Logo" width="80">
+        <span>scoob</span>
+    </div>
+    <div class="search">
+        <input type="text" class="search-bar" placeholder="Search...">
+    </div>
+</header>
+
+<div class="categories">
+    <div class="category-link active" data-category="All">All</div>
+    <div class="category-link" data-category="food">food</div>
+    <div class="category-link" data-category="drinks">drinks</div>
+    <div class="category-link" data-category="bites">bites</div>
+    <div class="category-link" data-category="vegan">vegan</div>
+    <div class="category-link" data-category="24/7s">24/7s</div>
+    <div class="category-link" data-category="download">download</div>
+</div>
+
+
+
+<div class="main-content">
+
+    <div class="page-container">
+        <div class="left-space"></div>
+
+        <div class="no-items-found" style="display: none !important;">mhh! try similar name or add in delivery form<!--| auto add crisis to the cart also--> </div>
+
+        <div class="gallery-container">
+            <div class="gallery">
+
+
+
+
+
+                <div class="gallery-item" data-category="food">
+                    <div class="item-info">
+                        <img src="masterpiece/MasterPieceLogo.jpeg" alt="Restaurant Logo">
+                        <span>Masterpiece</span>
+                    </div>
+                    <br><br> 
+                    <img src="masterpiece/ugalimbogaMasterpiece.jpg" alt="ugalimbogaMasterpiece">
+                   
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">ugali mboga
+
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+<pre> <div class="inputsColor">                         <textarea type="text" name="tellchef" placeholder="tell chef | specify item|s" class="tellchef"></textarea> </div>
+
+
+                         mon-sun: 0700-2200
+
+                         quantity: plate
+
+                         where: Makao mapya
+
+                         Price: 3,000Tshs
+                                
+
+                        </pre>
+                    </div>
+                </div>
+               
+
+                <div class="gallery-item" data-category="food">
+                    <div class="item-info">
+                        <img src="masterpiece/MasterPieceLogo.jpeg" alt="Restaurant Logo">
+                        <span>Masterpiece</span>
+                    </div>
+                        <br><br>
+                        <img src="masterpiece/walisamakisatoMasterpiece.jpg" alt="walisamakisato">
+
+                    
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">wali samaki
+
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+<pre> <div class="inputsColor">                         <textarea type="text" name="tellchef" placeholder="tell chef | specify item|s" class="tellchef"></textarea> </div>
+
+
+                         mon-sun: 0700-2200
+
+                         quantity: plate
+
+                         where: Makao mapya
+
+                         Price: 13,000Tshs
+                                
+
+                        </pre>
+                    </div>
+                </div>
+               
+
+
+                <div class="gallery-item" data-category="bites">
+                    <div class="item-info">
+                        <img src="masterpiece/MasterPieceLogo.jpeg" alt="Restaurant Logo">
+                        <span>Masterpiece</span>
+                    </div>
+                    <br><br>
+                    <img src="masterpiece/donutMasterpiece.jpg" alt="donut">
+                  
+                    
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box"> donuts
+
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+<pre> <div class="inputsColor">                         <textarea type="text" name="tellchef" placeholder="tell chef | specify item|s" class="tellchef"></textarea> </div>
+
+
+                         mon-sun: 0700-2200
+
+                         quantity: 6
+
+                         where: Makao mapya
+
+                         Price: 15,000Tshs 
+                                
+
+                        </pre>
+                    </div>
+                </div>
+              
+
+
+
+                <div class="gallery-item" data-category="food">
+                    <div class="item-info">
+                        <img src="masterpiece/MasterPieceLogo.jpeg" alt="Restaurant Logo">
+                        <span>Masterpiece</span>
+                    </div>
+             <br><br>
+                    <img src="masterpiece/birianikukuMasterpiece.jpg" alt="birianikuku">
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">chicken biriani
+
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+                      
+<pre> <div class="inputsColor">                         <textarea type="text" name="tellchef" placeholder="tell chef | specify item|s" class="tellchef"></textarea> </div>
+
+
+                         mon-sun: 0700-2200
+
+                         quantity: plate
+
+                         where: Makao mapya
+
+                         Price: 10,000Tshs
+                                
+
+                        </pre>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="food">
+                    <div class="item-info">
+                        <img src="masterpiece/MasterPieceLogo.jpeg" alt="Restaurant Logo">
+                        <span>Masterpiece</span>
+                    </div>
+                    <br><br>
+                    <img src="masterpiece/chapatiroastMasterpiece.jpg" alt="chapatiroastMasterpiece">
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">chapati roast
+
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+    
+<pre> <div class="inputsColor">                         <textarea type="text" name="tellchef" placeholder="tell chef | specify item|s" class="tellchef"></textarea> </div>
+
+
+                         mon-sun: 0700-2200
+
+                         quantity: plate, chapati 2
+
+                         where: Makao mapya
+
+                         Price: 6,000Tshs
+                                
+
+                        </pre>
+                    </div>
+                </div>
+
+
+                <div class="gallery-item" data-category="food">
+                    <div class="item-info">
+                        <img src="masterpiece/MasterPieceLogo.jpeg" alt="Restaurant Logo">
+                        <span>Masterpiece</span>
+                    </div>
+                    <br><br>
+                    <img src="masterpiece/Mishkaki2k.png" alt="Mishkaki2k.png">
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">Mishkaki
+
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+    
+<pre> <div class="inputsColor">                         <textarea type="text" name="tellchef" placeholder="tell chef | specify item|s" class="tellchef"></textarea> </div>
+
+
+                         mon-sun: 0700-2200
+
+                         quantity: stick
+
+                         where: Makao mapya
+
+                         Price: 2,000Tshs
+                                
+
+                        </pre>
+                    </div>
+                </div>
+
+                
+                        
+                <div class="gallery-item" data-category="food">
+                    <div class="item-info">
+                        <img src="jadeinn/jadeinnloggo.png" alt="Restaurant Logo">
+                        <span>Jade Inn</span>
+                    </div>
+                    <br><br>
+                    <img src="jadeinn/BraisedPork20k.jpg" alt="braised pork pic">
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">braised pork
+
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+                        
+<pre> <div class="inputsColor">                         <textarea type="text" name="tellchef" placeholder="tell chef | specify item|s" class="tellchef"></textarea> </div>
+
+
+                         mon-sun: 0900-2300
+
+                         quantity: bowl
+
+                         where: Arusha seki
+
+                         Price: 20,000Tshs
+                                
+
+                        </pre>
+                    </div>
+                </div>
+
+
+                <div class="gallery-item" data-category="food">
+                    <div class="item-info">
+                        <img src="jadeinn/jadeinnloggo.png" alt="Restaurant Logo">
+                        <span>Jade Inn</span>
+                    </div>
+                    <br><br>
+                    <img src="jadeinn/ColdPreservedEggs12k.jpg" alt="ColdPreservedEggs pic">
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">cold preserved eggs
+
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+                        
+<pre> <div class="inputsColor">                         <textarea type="text" name="tellchef" placeholder="tell chef | specify item|s" class="tellchef"></textarea> </div>
+
+
+                         mon-sun: 0900-2300
+
+                         quantity: plate
+
+                         where: Arusha seki
+
+                         Price: 12,000Tshs
+                                
+
+                        </pre>
+                    </div>
+                </div>
+
+
+               
+
+                <div class="gallery-item" data-category="food">
+                    <div class="item-info">
+                        <img src="jadeinn/jadeinnloggo.png" alt="Restaurant Logo">
+                        <span>Jade Inn</span>
+                    </div>
+                    <br><br>
+                    <img src="jadeinn/CrispyFried Chicken25k 1.0.jpg" alt="CrispyFried Chicken pic">
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">crispy fried chicken
+
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+                        
+<pre> <div class="inputsColor">                         <textarea type="text" name="tellchef" placeholder="tell chef | specify item|s" class="tellchef"></textarea> </div>
+
+
+                         mon-sun: 0900-2300
+
+                         quantity: whole chicken
+
+                         where: Arusha seki
+
+                         Price: 25,000Tshs
+                                
+
+                        </pre>
+                    </div>
+                </div>
+
+                          
+
+
+                <div class="gallery-item" data-category="food">
+                    <div class="item-info">
+                        <img src="jadeinn/jadeinnloggo.png" alt="Restaurant Logo">
+                        <span>Jade Inn</span>
+                    </div>
+                    <br><br>
+                    <img src="jadeinn/GingerCrabs28k.jpg" alt="GingerCrabs pic">
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">ginger crabs
+
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+                        
+<pre> <div class="inputsColor">                         <textarea type="text" name="tellchef" placeholder="tell chef | specify item|s" class="tellchef"></textarea> </div>
+
+
+                         mon-sun: 0900-2300
+
+                         quantity: plate
+
+                         where: Arusha seki
+
+                         Price: 28,000Tshs
+                                
+
+                        </pre>
+                    </div>
+                </div>
+
+
+
+                <div class="gallery-item" data-category="food">
+                    <div class="item-info">
+                        <img src="jadeinn/jadeinnloggo.png" alt="Restaurant Logo">
+                        <span>Jade Inn</span>
+                    </div>
+                    <br><br>
+                    <img src="jadeinn/grilledFish&Vegetables38k.jpg" alt="grilledFish&Vegetables pic">
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">grilled fish veg
+
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+                        
+<pre> <div class="inputsColor">                         <textarea type="text" name="tellchef" placeholder="tell chef | specify item|s" class="tellchef"></textarea> </div>
+
+
+                         mon-sun: 0900-2300
+
+                         quantity: 3 people 
+
+                         where: Arusha seki
+
+                         Price: 38,000Tshs
+                                
+
+                        </pre>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="food">
+                    <div class="item-info">
+                        <img src="jadeinn/jadeinnloggo.png" alt="Restaurant Logo">
+                        <span>Jade Inn</span>
+                    </div>
+                    <br><br>
+                    <img src="jadeinn/SpicyRoastedBeef26k.jpg" alt="SpicyRoastedBeef26k.jpg">
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">spicy roasted beef
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+                        
+<pre> <div class="inputsColor">                         <textarea type="text" name="tellchef" placeholder="tell chef | specify item|s" class="tellchef"></textarea> </div>
+
+
+                         mon-sun: 0900-2300
+
+                         quantity: plate
+
+                         where: Arusha seki
+
+                         Price: 26,000Tshs
+                                
+
+                        </pre>
+                    </div>
+                </div>
+
+ <div class="gallery-item" data-category="food">
+                    <div class="item-info">
+                        <img src="jadeinn/jadeinnloggo.png" alt="Restaurant Logo">
+                        <span>Jade Inn</span>
+                    </div>
+                    <br><br>
+                    <img src="jadeinn/KungPaoChicken23k.jpg" alt="KungPaoChicken pic">
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">kung pao chicken 
+
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+                        
+<pre> <div class="inputsColor">                         <textarea type="text" name="tellchef" placeholder="tell chef | specify item|s" class="tellchef"></textarea> </div>
+
+
+                         mon-sun: 0900-2300
+
+                         quantity: plate
+
+                         where: Arusha seki
+
+                         Price: 23,000Tshs
+                                
+
+                        </pre>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="food">
+                    <div class="item-info">
+                        <img src="jadeinn/jadeinnloggo.png" alt="Restaurant Logo">
+                        <span>Jade Inn</span>
+                    </div>
+                    <br><br>
+                    <img src="jadeinn/MaoXueWang32k.jpg" alt="MaoXueWang32k pic">
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">mao xue wang 
+
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+                        
+<pre> <div class="inputsColor">                         <textarea type="text" name="tellchef" placeholder="tell chef | specify item|s" class="tellchef"></textarea> </div>
+
+
+                         mon-sun: 0900-2300
+
+                         quantity: bowl
+
+                         where: Arusha seki
+
+                         Price: 26,000Tshs
+                                
+
+                        </pre>
+                    </div>
+                </div>
+
+     
+                <div class="gallery-item" data-category="food">
+                    <div class="item-info">
+                        <img src="jadeinn/jadeinnloggo.png" alt="Restaurant Logo">
+                        <span>Jade Inn</span>
+                    </div>
+                    <br><br>
+                    <img src="jadeinn/steamedChicken28k.jpg" alt="steamedChicken28k.jpg">
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">steamed chicken
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+                        
+<pre> <div class="inputsColor">                         <textarea type="text" name="tellchef" placeholder="tell chef | specify item|s" class="tellchef"></textarea> </div>
+
+
+                         mon-sun: 0900-2300
+
+                         quantity: whole chicken
+
+                         where: Arusha seki
+
+                         Price: 28,000Tshs
+                                
+
+                        </pre>
+                    </div>
+                </div>
+
+            
+     
+                <div class="gallery-item" data-category="food">
+                    <div class="item-info">
+                        <img src="jadeinn/jadeinnloggo.png" alt="Restaurant Logo">
+                        <span>Jade Inn</span>
+                    </div>
+                    <br><br>
+                    <img src="jadeinn/noodles & mincedMeat15k.jpg" alt="mincedMeat15k.jpg">
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">noodles minced meat
+
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+                        
+<pre> <div class="inputsColor">                         <textarea type="text" name="tellchef" placeholder="tell chef | specify item|s" class="tellchef"></textarea> </div>
+
+
+                         mon-sun: 0900-2300
+
+                         quantity: bowl
+
+                         where: Arusha seki
+
+                         Price: 15,000Tshs
+                                
+
+                        </pre>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="food">
+                    <div class="item-info">
+                        <img src="puregelati/pureGelatiLogo.png" alt="Restaurant Logo">
+                        <span>Pure GelatI</span>
+                    </div>
+                    <br><br>
+                    <img src="puregelati/pasta carbonara.puregelati16k.jpg" alt="pasta carbonara.puregelati16k.jpg">
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">pasta carbonaro
+
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+                        
+<pre> <div class="inputsColor">                         <textarea type="text" name="tellchef" placeholder="tell chef | specify item|s" class="tellchef"></textarea> </div>
+
+
+                         mon-sun: 0800-2200
+
+                         quantity: bowl
+
+                         where: TFA
+
+                         Price: 16,000Tshs
+                                
+
+                        </pre>
+                    </div>
+                </div>
+
+
+                <div class="gallery-item" data-category="food">
+                    <div class="item-info">
+                        <img src="puregelati/pureGelatiLogo.png" alt="Restaurant Logo">
+                        <span>Pure Gelati</span>
+                </div>
+                <br><br>
+                <img src="puregelati/peppersteakpuregelati20k.jpg" alt="puregelati/peppersteakpuregelati20k.jpg">
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">pepper steak
+                       
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+                        
+<pre> <div class="inputsColor">                         <textarea type="text" name="tellchef" placeholder="tell chef | specify item|s" class="tellchef"></textarea> </div>
+
+
+                         mon-sun: 0800-2200
+
+                         quantity: plate
+                        
+                         where: TFA
+
+                         Price: 20,000Tshs
+                                
+
+                        </pre>
+                    </div>
+                </div>
+
+
+                <div class="gallery-item" data-category="food">
+                    <div class="item-info">
+                        <img src="Chagga boy fries & bbq/chaggaboyfries&bbqLogo.png" alt="Restaurant Logo">
+                        <span>Chagga Boy Fries & BBQ</span>
+                    </div>
+                    <br><br>
+                    <img src="Chagga boy fries & bbq/chips mayai.jpeg" alt="chips mayai">
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">chips mayai
+                       
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+                        
+<pre> <div class="inputsColor">                         <textarea type="text" name="tellchef" placeholder="tell chef | specify item|s" class="tellchef"></textarea> </div>
+
+
+                         mon-fri: 0800-2100
+                         sat-sun: 0800-1900
+
+                         quantity: plate
+                        
+                         where: clock tower
+
+                         Price: 3,000Tshs 
+                                
+
+                        </pre>
+                    </div>
+                </div>
+
+                
+                <div class="gallery-item" data-category="food">
+                    <div class="item-info">
+                        <img src="Chagga boy fries & bbq/chaggaboyfries&bbqLogo.png" alt="Restaurant Logo">
+                        <span>Chagga Boy Fries & BBQ</span>
+                    </div>
+                    <br><br>
+                    <img src="Chagga boy fries & bbq/ndizi.jpg" alt="ndizi">
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">ndizi mzuzu
+                       
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+                        
+<pre> <div class="inputsColor">                         <textarea type="text" name="tellchef" placeholder="tell chef | specify item|s" class="tellchef"></textarea> </div>
+
+
+                         mon-fri: 0800-2100
+                         sat-sun: 0800-1900
+
+                         quantity: 5
+                        
+                         where: clock tower
+
+                         Price: 2,500Tshs 
+                                
+
+                        </pre>
+                    </div>
+                </div>
+
+
+
+
+
+
+
+
+                <div class="gallery-item" data-category="food">
+                    <div class="item-info">
+                        <img src="safari bistro/safariBistroLogo.jpg" alt="Restaurant Logo">
+                        <span>SAFARI Bistro</span>
+                    </div>
+                    <br><br>
+                    <img src="safari bistro/triple decker19k.png" alt="triple decker19k.png">
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">triple decker
+                       
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+                        
+<pre> <div class="inputsColor">                         <textarea type="text" name="tellchef" placeholder="tell chef | specify item|s" class="tellchef"></textarea> </div>
+
+
+                         mon-sun: 0800-2200
+
+                         quantity: plate
+                        
+                         where: TFA
+
+                         Price: 19,000Tshs 
+                                
+
+                        </pre>
+                    </div>
+                </div>
+
+
+
+                <div class="gallery-item" data-category="food">
+                    <div class="item-info">
+                        <img src="safari bistro/safariBistroLogo.jpg" alt="Restaurant Logo">
+                        <span>SAFARI Bistro</span>
+                    </div>
+                    <br><br>
+                    <img src="safari bistro/T-bone & fries25k.png" alt="T-bone & fries25k.png">
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">T-bone fries
+                       
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+<pre> <div class="inputsColor">                         <textarea type="text" name="tellchef" placeholder="tell chef | specify item|s" class="tellchef"></textarea> </div>
+
+
+                         mon-sun: 0800-2200
+
+                         quantity: plate
+                        
+                         where: TFA
+
+                         Price: 25,000Tshs 
+                                
+
+                        </pre>
+                    </div>
+                </div>
+
+
+                <div class="gallery-item" data-category="food">
+                    <div class="item-info">
+                        <img src="safari bistro/safariBistroLogo.jpg" alt="Restaurant Logo">
+                        <span>SAFARI Bistro</span>
+                    </div>
+                    <br><br>
+                    <img src="safari bistro/stir fried chicken & fries25k.png" alt="stir fried chicken & fries25k.png">
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">stir fried chicken fries
+                       
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+                        
+<pre> <div class="inputsColor">                         <textarea type="text" name="tellchef" placeholder="tell chef | specify item|s" class="tellchef"></textarea> </div>
+
+
+                         mon-sun: 0800-2200
+
+                         quantity: plate
+                        
+                         where: TFA
+
+                         Price: 25,000Tshs 
+                                
+
+                        </pre>
+                    </div>
+                </div>
+
+
+
+                <div class="gallery-item" data-category="food">
+                    <div class="item-info">
+                        <img src="safari bistro/safariBistroLogo.jpg" alt="Restaurant Logo">
+                        <span>SAFARI Bistro</span>
+                    </div>
+                    <br><br>
+                    <img src="safari bistro/special samaki25k.png" alt="special samaki25k.png">
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">special samaki
+                       
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+                        
+<pre> <div class="inputsColor">                         <textarea type="text" name="tellchef" placeholder="tell chef | specify item|s" class="tellchef"></textarea> </div>
+
+
+                         mon-sun: 0800-2200
+
+                         quantity: plate
+                        
+                         where: TFA
+
+                         Price: 25,000Tshs 
+                                
+
+                        </pre>
+                    </div>
+                </div>
+
+
+
+                <div class="gallery-item" data-category="food">
+                    <div class="item-info">
+                        <img src="safari bistro/safariBistroLogo.jpg" alt="Restaurant Logo">
+                        <span>SAFARI Bistro</span>
+                    </div>
+                    <br><br>
+                    <img src="safari bistro/special samaki coconut sauce25k.png" alt="special samaki coconut sauce25k.png">
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">special samaki coconut sauce
+                       
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+<pre> <div class="inputsColor">                         <textarea type="text" name="tellchef" placeholder="tell chef | specify item|s" class="tellchef"></textarea> </div>
+
+
+                         mon-sun: 0800-2200
+
+                         quantity: plate
+                        
+                         where: TFA
+
+                         Price: 25,000Tshs 
+                                
+
+                        </pre>
+                    </div>
+                </div>
+
+
+
+                <div class="gallery-item" data-category="food">
+                    <div class="item-info">
+                        <img src="safari bistro/safariBistroLogo.jpg" alt="Restaurant Logo">
+                        <span>SAFARI Bistro</span>
+                    </div>
+                    <br><br>
+                    <img src="safari bistro/sato, veg rice & steamed veg20k.png" alt="sato, veg rice & steamed veg20k.png">
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">veg rice fish steamed veg
+                       
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+                        <pre>
+<pre> <div class="inputsColor">                         <textarea type="text" name="tellchef" placeholder="tell chef | specify item|s" class="tellchef"></textarea> </div>
+
+
+                         mon-sun: 0800-2200
+
+                         quantity: plate
+                        
+                         where: TFA
+
+                         Price: 20,000Tshs 
+                                
+
+                        </pre>
+                    </div>
+                </div>
+
+                
+
+                <div class="gallery-item" data-category="food">
+                    <div class="item-info">
+                        <img src="safari bistro/safariBistroLogo.jpg" alt="Restaurant Logo">
+                        <span>SAFARI Bistro</span>
+                    </div>
+                    <br><br>
+                    <img src="safari bistro/safari breakfast17k.png" alt="safari breakfast17k.png">
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">safari breakfast
+                       
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+<pre> <div class="inputsColor">                         <textarea type="text" name="tellchef" placeholder="tell chef | specify item|s" class="tellchef"></textarea> </div>
+
+
+                         mon-sun: 0800-2200
+
+                         quantity: plate
+                        
+                         where: TFA
+
+                         Price: 17,000Tshs 
+                                
+
+                        </pre>
+                    </div>
+                </div>
+
+
+
+
+
+                <div class="gallery-item" data-category="food">
+                    <div class="item-info">
+                        <img src="safari bistro/safariBistroLogo.jpg" alt="Restaurant Logo">
+                        <span>SAFARI Bistro</span>
+                    </div>
+                    <br><br>
+                    <img src="safari bistro/safari bistro pizza21k.png" alt="safari bistro pizza21k.png">
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">safari bistro pizza
+                       
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+<pre> <div class="inputsColor">                         <textarea type="text" name="tellchef" placeholder="tell chef | specify item|s" class="tellchef"></textarea> </div>
+
+
+                         mon-sun: 0800-2200
+
+                         quantity: plate
+                        
+                         where: TFA
+
+                         Price: 21,000Tshs 
+                                
+
+                        </pre>
+                    </div>
+                </div>
+
+
+
+
+                <div class="gallery-item" data-category="food">
+                    <div class="item-info">
+                        <img src="safari bistro/safariBistroLogo.jpg" alt="Restaurant Logo">
+                        <span>SAFARI Bistro</span>
+                    </div>
+                    <br><br>
+                    <img src="safari bistro/piller burger19k.png" alt="piller burger19k.png">
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">piller burger
+                       
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+<pre> <div class="inputsColor">                         <textarea type="text" name="tellchef" placeholder="tell chef | specify item|s" class="tellchef"></textarea> </div>
+
+
+                         mon-sun: 0800-2200
+
+                         quantity: plate
+                        
+                         where: TFA
+
+                         Price: 19,000Tshs 
+                                
+
+                        </pre>
+                    </div>
+                </div>
+
+
+
+
+
+
+                <div class="gallery-item" data-category="food">
+                    <div class="item-info">
+                        <img src="safari bistro/safariBistroLogo.jpg" alt="Restaurant Logo">
+                        <span>SAFARI Bistro</span>
+                    </div>
+                    <br><br>
+                    <img src="safari bistro/grilled prawns & salad10k.png" alt="grilled prawns & salad10k.png">
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">grilled prawns salad
+                       
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+<pre> <div class="inputsColor">                         <textarea type="text" name="tellchef" placeholder="tell chef | specify item|s" class="tellchef"></textarea> </div>
+
+
+                         mon-sun: 0800-2200
+
+                         quantity: plate
+                        
+                         where: TFA
+
+                         Price: 10,000Tshs 
+                                
+
+                        </pre>
+                    </div>
+                </div>
+
+
+
+
+
+                <div class="gallery-item" data-category="food">
+                    <div class="item-info">
+                        <img src="safari bistro/safariBistroLogo.jpg" alt="Restaurant Logo">
+                        <span>SAFARI Bistro</span>
+                    </div>
+                    <br><br>
+                    <img src="safari bistro/grilled fish fillet fries25k.png" alt="grilled fish fillet fries25k.png">
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">grilled fish fillet fries
+                       
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+<pre> <div class="inputsColor">                         <textarea type="text" name="tellchef" placeholder="tell chef | specify item|s" class="tellchef"></textarea> </div>
+
+
+                         mon-sun: 0800-2200
+
+                         quantity: plate
+                        
+                         where: TFA
+
+                         Price: 25,000Tshs 
+                                
+
+                        </pre>
+                    </div>
+                </div>
+
+
+
+
+                <div class="gallery-item" data-category="food">
+                    <div class="item-info">
+                        <img src="safari bistro/safariBistroLogo.jpg" alt="Restaurant Logo">
+                        <span>SAFARI Bistro</span>
+                    </div>
+                    <br><br>
+                    <img src="safari bistro/grilled fish fillet & rice & steamed veg25k.png" alt="grilled fish fillet & rice & steamed veg25k.png">
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">grilled fish fillet rice steamed veg
+                       
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+<pre> <div class="inputsColor">                         <textarea type="text" name="tellchef" placeholder="tell chef | specify item|s" class="tellchef"></textarea> </div>
+
+
+                         mon-sun: 0800-2200
+
+                         quantity: plate
+                        
+                         where: TFA
+
+                         Price: 25,000Tshs 
+                                
+
+                        </pre>
+                    </div>
+                </div>
+
+
+                <div class="gallery-item" data-category="food">
+                    <div class="item-info">
+                        <img src="safari bistro/safariBistroLogo.jpg" alt="Restaurant Logo">
+                        <span>SAFARI Bistro</span>
+                    </div>
+                    <br><br>
+                    <img src="safari bistro/fish fillet & fries25k.png" alt="fish fillet & fries25k.png">
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">fish fillet fries
+                       
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+<pre> <div class="inputsColor">                         <textarea type="text" name="tellchef" placeholder="tell chef | specify item|s" class="tellchef"></textarea> </div>
+
+
+                         mon-sun: 0800-2200
+
+                         quantity: plate
+                        
+                         where: TFA
+
+                         Price: 25,000Tshs 
+                                
+
+                        </pre>
+                    </div>
+                </div>
+
+
+                <div class="gallery-item" data-category="food">
+                    <div class="item-info">
+                        <img src="safari bistro/safariBistroLogo.jpg" alt="Restaurant Logo">
+                        <span>SAFARI Bistro</span>
+                    </div>
+                    <br><br>
+                    <img src="safari bistro/chicken curry & rice21k.png" alt="chicken curry & rice21k.png">
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">chicken curry rice
+                       
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+<pre> <div class="inputsColor">                         <textarea type="text" name="tellchef" placeholder="tell chef | specify item|s" class="tellchef"></textarea> </div>
+
+
+                         mon-sun: 0800-2200
+
+                         quantity: plate
+                        
+                         where: TFA
+
+                         Price: 21,000Tshs 
+                                
+
+                        </pre>
+                    </div>
+                </div>
+
+
+
+                <div class="gallery-item" data-category="food">
+                    <div class="item-info">
+                        <img src="safari bistro/safariBistroLogo.jpg" alt="Restaurant Logo">
+                        <span>SAFARI Bistro</span>
+                    </div>
+                    <br><br>
+                    <img src="safari bistro/boritto & home fries15k.png" alt="boritto & home fries15k.png">
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">boritto home fries
+                       
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+<pre> <div class="inputsColor">                         <textarea type="text" name="tellchef" placeholder="tell chef | specify item|s" class="tellchef"></textarea> </div>
+
+
+                         mon-sun: 0800-2200
+
+                         quantity: plate
+                        
+                         where: TFA
+
+                         Price: 15,000Tshs 
+                                
+
+                        </pre>
+                    </div>
+                </div>
+
+
+                <div class="gallery-item" data-category="food">
+                    <div class="item-info">
+                        <img src="safari bistro/safariBistroLogo.jpg" alt="Restaurant Logo">
+                        <span>SAFARI Bistro</span>
+                    </div>
+                    <br><br>
+                    <img src="safari bistro/beef makange & fries18k.png" alt="beef makange & fries18k.png">
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">beef makange fries
+                       
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+<pre> <div class="inputsColor">                         <textarea type="text" name="tellchef" placeholder="tell chef | specify item|s" class="tellchef"></textarea> </div>
+
+
+                         mon-sun: 0800-2200
+
+                         quantity: plate
+                        
+                         where: TFA
+
+                         Price: 18,000Tshs 
+                                
+
+                        </pre>
+                    </div>
+                </div>
+
+
+
+      
+                <div class="gallery-item" data-category="food">
+                    <div class="item-info">
+                        <img src="kizumba cafe and restaurant/kizumbaLogo.jpg" alt="Restaurant Logo">
+                        <span>kizumba cafe and restaurant</span>
+                    </div>
+                    <br><br>
+                    <img src="kizumba cafe and restaurant/wali samaki 15k.jpg" alt="wali samaki 15k.jpg">
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">wali samaki
+                       
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+<pre> <div class="inputsColor">                         <textarea type="text" name="tellchef" placeholder="tell chef | specify item|s" class="tellchef"></textarea> </div>
+
+
+                         mon-sun: 0800-2100
+
+                         quantity: plate
+                        
+                         where: kanisani road
+
+                         Price: 15,000Tshs 
+                                
+
+                        </pre>
+                    </div>
+                </div>
+
+
+      
+                <div class="gallery-item" data-category="food">
+                    <div class="item-info">
+                        <img src="kizumba cafe and restaurant/kizumbaLogo.jpg" alt="Restaurant Logo">
+                        <span>kizumba cafe and restaurant</span>
+                    </div>
+                    <br><br>
+                    <img src="kizumba cafe and restaurant/rice & veggie chicken15k.jpg" alt="rice & veggie chicken15k.jpg">
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">rice chicken veg
+                       
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+<pre> <div class="inputsColor">                         <textarea type="text" name="tellchef" placeholder="tell chef | specify item|s" class="tellchef"></textarea> </div>
+
+
+                         mon-sun: 0800-2100
+
+                         quantity: plate
+                        
+                         where: kanisani road
+
+                         Price: 15,000Tshs 
+                                
+
+                        </pre>
+                    </div>
+                </div>
+
+
+      
+                <div class="gallery-item" data-category="food">
+                    <div class="item-info">
+                        <img src="kizumba cafe and restaurant/kizumbaLogo.jpg" alt="Restaurant Logo">
+                        <span>kizumba cafe and restaurant</span>
+                    </div>
+                    <br><br>
+                    <img src="kizumba cafe and restaurant/chips vuruga20k.jpg" alt="chips vuruga20k.jpg">
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">chips vuruga
+                       
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+<pre> <div class="inputsColor">                         <textarea type="text" name="tellchef" placeholder="tell chef | specify item|s" class="tellchef"></textarea> </div>
+
+
+                         mon-sun: 0800-2100
+
+                         quantity: plate
+                        
+                         where: kanisani road
+
+                         Price: 20,000Tshs 
+                                
+
+                        </pre>
+                    </div>
+                </div>
+
+
+      
+                <div class="gallery-item" data-category="food">
+                    <div class="item-info">
+                        <img src="kizumba cafe and restaurant/kizumbaLogo.jpg" alt="Restaurant Logo">
+                        <span>kizumba cafe and restaurant</span>
+                    </div>
+                    <br><br>
+                    <img src="kizumba cafe and restaurant/chicken veggie20k.jpg" alt="chicken veggie20k.jpg">
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">chicken veg
+                       
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+                        <pre>
+<pre> <div class="inputsColor">                         <textarea type="text" name="tellchef" placeholder="tell chef | specify item|s" class="tellchef"></textarea> </div>
+
+
+                         mon-sun: 0800-2100
+
+                         quantity: plate
+                        
+                         where: kanisani road
+
+                         Price: 20,000Tshs 
+                                
+
+                        </pre>
+                    </div>
+                </div>
+
+
+
+                <div class="gallery-item" data-category="drinks 24/7s ">
+                    <div class="item-info">
+                        <img src="favw.png" alt="Restaurant Logo">
+                        <span>scoobmarket</span>
+                    </div>
+                    <br><br>
+                    <img src="drinks/milk.jpg" alt="milk.jpg">
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box">milk
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+<pre> <div class="inputsColor">                         <textarea type="text" name="tellchef" placeholder="tell scoob | specify item|s" class="tellchef"></textarea> </div>
+
+
+                         mon-sun: 24/7
+
+                         quantity: tell scoob
+                        
+                         where: kaloleni
+
+                         Price: 0
+                                - after ordering 
+                                
+
+                        </pre>
+                    </div>
+                </div>
+
+
+
+                <div class="gallery-item" data-category="drinks 24/7s">
+                    <div class="item-info">
+                        <img src="favw.png" alt="Restaurant Logo">
+                        <span>scoobmarket</span>
+                    </div>
+                    <br><br>
+                    <img src="drinks/alcohol.jpg" alt="alcohol.jpg">
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-name-box"> spirit | beer
+                       
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+<pre> <div class="inputsColor">                         <textarea type="text" name="tellchef" placeholder="tell scoob | specify item|s" class="tellchef"></textarea> </div>
+
+
+                         mon-sun: 24/7
+
+                         quantity: tell scoob
+                        
+                         where: kaloleni
+
+                         Price: 0
+                                - after ordering 
+                                
+
+                        </pre>
+                    </div>
+                </div>
+
+
+                <div class="gallery-item" data-category="drinks 24/7s">
+                    <div class="item-info">
+                        <img src="favw.png" alt="Restaurant Logo">
+                        <span>scoobmarket</span>
+                    </div>
+                    <br><br>
+                    <img src="drinks/soda.png" alt="soda.png">
+                    <div class="item-actions">
+                    <button class="add-to-cart">Add to Cart</button>     
+                    <div class="image-name-box">soda | water
+                       
+                            <pre class="synonyms">
+                            <!-- synonyms was to be here -->
+                            </pre>
+
+                        </div>
+                        <button class="more-info">info</button>
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+<pre> <div class="inputsColor">                         <textarea type="text" name="tellchef" placeholder="tell scoob | specify item|s" class="tellchef"></textarea> </div>
+
+
+                         mon-sun: 24/7
+
+                         quantity: tell scoob
+                        
+                         where: kaloleni
+
+                         Price: 0
+                                 - after ordering 
+                                
+
+                        </pre>
+                    </div>
+                </div>
+
+               <div class="gallery-item" data-category="download">
+                   
+                    <div class="item-info">
+                        <img src="favw.png" alt="Restaurant Logo">
+                        <span>internet</span>
+                    </div>
+                    <div class="item-actions">
+                        
+                        
+                        <div class="image-name-box"><pre>
+                            <h2>add to form</h2>
+                         movie: 1,000Tshs
+                        series: 2,000Tshs
+                        games/app: 5,000Tshs   
+                            <h2>from the net</h2>some  links.
+                             <a  href="https://thepiratebay.org" target="_blank">All in 1 piratebay</a>
+                             
+                             <a href="https://awafim.tv" target="_blank">Awafimovies</a>
+                            
+                             <a href="https://moviebox.ng/" target="_blank">Moviebox</a>
+                           
+                             <a href="https://www.Google.com" target="_blank">Google search</a>
+                                  
+                                                </pre>
+                
+                            <pre class="synonyms">
+                               <!-- synonyms was to be here -->
+                            </pre>
+                
+                        </div>
+                       
+                    </div>
+                    <!-- Info Container -->
+                    <div class="info-container">
+                        <pre>
+                            quantity: 1kg
+                            Price: 5,000Tshs
+                            location: soundcloud
+                        </pre>
+                    </div>
+               
+                 </div>
+           
+
+     
+        <div class="cart-container">
+            <div class="cart">
+                <div class="cart-icon">
+                    <p>Cart</p>
+                </div>
+                <div class="order-info">
+                    <p name="ordered">Ordered: <span></span></p>
+                    <p name="from">From: <span></span></p>
+                    <p name="total">Total: <span>0</span> Tshs</p>
+                </div>
+                <div class="moving-cart">
+                    <img src="cart00.png" width="80px" height="80px" alt="Cart" width="100">
+                </div>
+                <button class="button">ORDER</button>
+            </div>
+            
+        </div>
+       
+    </div>
+    
+</div>
+
+</div> 
+
+<!-- Form Page
+<footer>
+   <div class="foot"> <p>footers more info </p></div>
+</footer>
+didnt stay down after
+ redcng main content size for 
+ large screens
+ -->
+
+
+
+
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>
