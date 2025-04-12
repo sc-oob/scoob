@@ -1,4 +1,23 @@
 
+
+
+    // Shuffle the gallery items each time the page reloads
+    function shuffleGallery() {
+        const gallery = document.querySelector('.gallery');
+        const items = Array.from(gallery.querySelectorAll('.gallery-item'));
+        for (let i = items.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [items[i], items[j]] = [items[j], items[i]];
+        }
+        items.forEach(item => gallery.appendChild(item)); // Re-append the shuffled items
+    }
+
+    window.onload = () => {
+        shuffleGallery(); // Shuffle content on page load
+    };
+
+    
+
   
 // Handle category selection and filter gallery items based on selected category
 const categoryLinks = document.querySelectorAll('.category-link');
