@@ -200,7 +200,7 @@ document.querySelector('.button').addEventListener('click', function() {
     sessionStorage.setItem('userInputs', userInputs);
 
     // Redirect to the child page (ease.html)
-    window.location.href = 'ease.html';
+    window.location.href = 'form.html';
 });
 
     // Call the updateFormFields function to make sure the form is populated correctly before submission
