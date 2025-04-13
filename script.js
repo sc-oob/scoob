@@ -1,5 +1,9 @@
 
 
+    window.onload = () => {
+        shuffleGallery(); // Shuffle content on page load
+    };
+
 
     // Shuffle the gallery items each time the page reloads
     function shuffleGallery() {
@@ -11,10 +15,6 @@
         }
         items.forEach(item => gallery.appendChild(item)); // Re-append the shuffled items
     }
-
-    window.onload = () => {
-        shuffleGallery(); // Shuffle content on page load
-    };
 
     
 
