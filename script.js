@@ -1,8 +1,9 @@
 
 
-    window.onload = () => {
-        shuffleGallery(); // Shuffle content on page load
-    };
+
+document.addEventListener('DOMContentLoaded', () => {
+    shuffleGallery(); // Shuffle before the content becomes visible
+});   
 
 
     // Shuffle the gallery items each time the page reloads
