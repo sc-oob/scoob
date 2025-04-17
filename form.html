@@ -17,6 +17,7 @@
 
 </head>
 <body>
+
 <header>
     <div class="logo">
         <img src="favw.png" alt="Logo" width="80">
@@ -31,11 +32,35 @@
     <div class="form-container">
         <h3 style="text-align: center; color: white;">Fill delivery details</h3>
         <form id="orderForm" action="https://formsubmit.co/tz.scoob@gmail.com" method="post">
-<div class="inputs" >        
+    
+            <label style="display: none;" for="restaurantList">From (Restaurant List):</label>
+            <textarea style="display: none;" id="restaurantList" rows="4" style="width: 100%; background-color: #444; color: white; margin-bottom: 10px;"></textarea>
+            
+
+<!-- Visible textareas for user to see cart info -->
+<label style="display: none;" for="cartItemsVisible">Items Ordered:</label>
+<textarea style="display: none;" id="cartItemsVisible"  style="width: 100%; background-color: #444; color: white; margin-bottom: 15px;"></textarea>
+
+<label style="display: none;" for="restaurantList">From (Restaurant List with Duplicates):</label>
+<textarea style="display: none;" id="restaurantList"  style="width: 100%; background-color: #444; color: white; margin-bottom: 15px;"></textarea>
+
+<label style="display: none;" for="totalVisible">Total:</label>
+<textarea style="display: none;" id="totalVisible"  style="width: 100%; background-color: #444; color: white;"></textarea>
+
+
+
+
+            <div class="inputs" > 
+    
+    
+   
+
+
+
             <input type="hidden" name="cartItems" name="cartItems" id="cartItemsInput" >
             <input type="hidden" name="total" id="totalInput" >
             <input type="hidden" name="from" id="fromInput" >
-            <textarea  style="display: none;" id="userInputField" name="userInput"></textarea>
+            <textarea style="display: none;"  id="userInputField" name="userInput"></textarea>
             <input type="text" name="name" placeholder="name for delivery purpose" required style="width: 340px"><br>
             <input type="tel" name="phone" pattern="\+?[0-9]{10,1}" placeholder="receivers phone # " required style="width: 340px"><br>
             <textarea name="missingItem" rows="3" placeholder="add written order" style="width: 340px"></textarea><br>
@@ -57,7 +82,7 @@
 
 <script>
 
-// When the child page (ease.html) loads, retrieve the cart data
+// When the child page (form.html) loads, retrieve the cart data
 window.addEventListener('load', function() {
     const cartItems = sessionStorage.getItem('cartItems');
     const totalAmount = sessionStorage.getItem('totalAmount');
@@ -156,5 +181,28 @@ window.addEventListener('load', function() {
 
 
 </script>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Grab stored data
+        const cartItems = sessionStorage.getItem('cartItems') || '';
+        const total = sessionStorage.getItem('totalAmount') || '';
+        const from = sessionStorage.getItem('from') || '';
+    
+        // Update hidden inputs
+        document.getElementById('cartItemsInput').value = cartItems;
+        document.getElementById('totalInput').value = total;
+        document.getElementById('fromInput').value = from;
+    
+        // Update visible fields
+        document.getElementById('cartItemsVisible').value = cartItems;
+        document.getElementById('totalVisible').value = total;
+        document.getElementById('restaurantList').value = from;
+    });
+    </script>
+    
+
+
 </body>
 </html>
