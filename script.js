@@ -1,9 +1,7 @@
-
-
-
 document.addEventListener('DOMContentLoaded', () => {
     shuffleGallery(); // Shuffle before the content becomes visible
-});   
+});
+
 
 
     // Shuffle the gallery items each time the page reloads
@@ -50,6 +48,7 @@ categoryLinks.forEach(link => {
 });
  
 
+  
  // Smooth scroll effect for header and categories
  let lastScrollTop = 0; // To store the last scroll position
 
@@ -105,33 +104,39 @@ window.addEventListener("scroll", function() {
     let searchQuery = this.value.toLowerCase().trim();
     let galleryItems = document.querySelectorAll('.gallery-item');
     let noItemsFoundMessage = document.querySelector('.no-items-found');
-    let visibleItemsCount = 0;  // Counter for visible items
+    let visibleItemsCount = 0;
 
     galleryItems.forEach(item => {
         let itemName = item.querySelector('.image-name-box').textContent.toLowerCase();
-        let restaurantName = item.querySelector('.item-info span').textContent.toLowerCase();  // Getting the restaurant name
-        
-        // Show only items that match the search query in either item name or restaurant name
-        if (itemName.includes(searchQuery) || restaurantName.includes(searchQuery)) {
+        let restaurantName = item.querySelector('.item-info span').textContent.toLowerCase();
+
+        // Check for <pre class="synonyms"> if present
+        let synonymBlock = item.querySelector('.synonyms');
+        let synonymsText = synonymBlock ? synonymBlock.textContent.toLowerCase() : '';
+
+        // Match against name, restaurant, or synonyms
+        if (
+            itemName.includes(searchQuery) ||
+            restaurantName.includes(searchQuery) ||
+            synonymsText.includes(searchQuery)
+        ) {
             item.style.display = 'block';
-            visibleItemsCount++; // Increment count for each matching item
+            visibleItemsCount++;
         } else {
             item.style.display = 'none';
         }
     });
 
-    // If no items are visible, show the "No items found" message
     if (visibleItemsCount === 0) {
-        noItemsFoundMessage.style.display = 'block';  // Show message
+        noItemsFoundMessage.style.display = 'block';
     } else {
-        noItemsFoundMessage.style.display = 'none';  // Hide message if there are results
+        noItemsFoundMessage.style.display = 'none';
     }
 
-    // Highlight "All" category when searching
+    // Reset category highlighting to "All"
     document.querySelectorAll('.category-link').forEach(link => link.classList.remove('active'));
     document.querySelector('.category-link[data-category="All"]').classList.add('active');
 });
-
 
 
 
@@ -149,26 +154,29 @@ let total = 0; // To track total price
 let restaurantNames = []; // To track unique restaurant names
 
 addToCartButtons.forEach(button => {
-    button.addEventListener('click', function() {
+    button.addEventListener('click', function () {
         const galleryItem = this.closest('.gallery-item');
         const itemName = galleryItem.querySelector('.image-name-box').textContent;
         const restaurantName = galleryItem.querySelector('.item-info span').textContent;
         const priceText = galleryItem.querySelector('.info-container pre').textContent;
         const priceAmount = parseInt(priceText.match(/Price:\s*(\d+(?:,\d{3})*)/)[1].replace(',', ''));
 
-        // Get the user input from the textarea (tellchef field)
-        const userInput = galleryItem.querySelector('.tellchef').value.trim();
-
-        // Check if item is already in the cart
-        const existingItemIndex = cartItems.findIndex(item => item.itemName === itemName && item.restaurantName === restaurantName);
+        const existingItemIndex = cartItems.findIndex(item =>
+            item.itemName === itemName && item.restaurantName === restaurantName
+        );
 
         if (existingItemIndex !== -1) {
-            // Item exists, increase quantity
             cartItems[existingItemIndex].quantity++;
         } else {
-            // Add new item to cart
-            cartItems.push({ itemName, restaurantName, priceAmount, quantity: 1, userInput });
+            cartItems.push({ itemName, restaurantName, priceAmount, quantity: 1 });
+
+            // 🔥 Inject "Remove from Cart" button after first addition
+            createRemoveButton(this, itemName, restaurantName, galleryItem);
         }
+
+        updateCartUI();
+    
+
 
         // Update ordered items in the cart display (with quantity if > 1)
         orderedElement.textContent = cartItems.map(item => 
@@ -189,24 +197,128 @@ addToCartButtons.forEach(button => {
 });
 
 
+function createRemoveButton(addBtn, itemName, restaurantName, galleryItem) {
+    const removeBtn = document.createElement('button');
+    removeBtn.textContent = '-';
+    removeBtn.classList.add('remove-from-cart');
+    removeBtn.style.marginLeft = '2px';
+    removeBtn.style.backgroundColor = '#610000';
+    removeBtn.style.color = 'white';
+    removeBtn.style.padding = '0px 4px';
+    removeBtn.style.cursor = 'pointer';
+
+    removeBtn.addEventListener('click', function () {
+        const existingItemIndex = cartItems.findIndex(item =>
+            item.itemName === itemName && item.restaurantName === restaurantName
+        );
+
+        if (existingItemIndex !== -1) {
+            cartItems[existingItemIndex].quantity--;
+
+            if (cartItems[existingItemIndex].quantity <= 0) {
+                cartItems.splice(existingItemIndex, 1);
+                removeBtn.remove();
+            }
+
+            updateCartUI();
+        }
+    });
+
+    addBtn.parentElement.appendChild(removeBtn);
+}
+
+
+
+function updateCartUI() {
+    // Update displayed cart items
+    orderedElement.textContent = cartItems.map(item =>
+        item.quantity > 1 ? `${item.itemName} *${item.quantity}` : item.itemName
+    ).join(', ');
+
+    // Unique restaurant names
+    restaurantNames = [...new Set(cartItems.map(item => item.restaurantName))];
+    fromElement.textContent = restaurantNames.join(', ');
+
+    // Update total
+    total = cartItems.reduce((sum, item) => sum + (item.priceAmount * item.quantity), 0);
+    totalElement.textContent = total.toLocaleString();
+
+    // Update hidden fields for form
+    updateFormFields();
+
+    // Update session storage for redirect
+    const cartItemsText = cartItems.map(item =>
+        item.quantity > 1 ? `${item.itemName} *${item.quantity}` : item.itemName
+    ).join(', ');
+    const userInputs = cartItems.map(item => item.userInput).join(', ');
+
+    sessionStorage.setItem('cartItems', cartItemsText);
+    sessionStorage.setItem('totalAmount', total.toLocaleString());
+    const allRestaurantNames = cartItems.map(item => item.restaurantName);
+    sessionStorage.setItem('from', allRestaurantNames.join(', '));
+        sessionStorage.setItem('userInputs', userInputs);
+}
+
+
+
+
+
+
 document.querySelector('.button').addEventListener('click', function() {
     // Prepare cart data
     const cartItemsText = cartItems.map(item => 
         item.quantity > 1 ? `${item.itemName} *${item.quantity}` : item.itemName
     ).join(', ');
 
-    // Store the cart data and user input in sessionStorage
+    // Store the cart data and total
     sessionStorage.setItem('cartItems', cartItemsText);
     sessionStorage.setItem('totalAmount', total.toLocaleString());
-    sessionStorage.setItem('from', restaurantNames.join(', '));
+    sessionStorage.setItem('from', cartItems.map(item => item.restaurantName).join('\n'));
 
-    // Store user input for each item in the cart
-    const userInputs = cartItems.map(item => item.userInput).join(', ');
-    sessionStorage.setItem('userInputs', userInputs);
+    // Now gather textarea input for items in cart
+    const userInputs = cartItems.map(cartItem => {
+        // Find the gallery-item that matches this item name and restaurant
+        const match = Array.from(document.querySelectorAll('.gallery-item')).find(item => {
+            const name = item.querySelector('.image-name-box').textContent;
+            const restaurant = item.querySelector('.item-info span').textContent;
+            return cartItem.itemName === name && cartItem.restaurantName === restaurant;
+        });
 
-    // Redirect to the child page (ease.html)
+        // If found, get the tellchef input
+        if (match) {
+            return match.querySelector('.tellchef').value.trim();
+        }
+        return '';
+    });
+
+    sessionStorage.setItem('userInputs', userInputs.join(', '));
+
+
+// Update form hidden fields
+function updateFormFields() {
+    const formattedCartItems = cartItems.map(item => {
+        const totalForItem = item.priceAmount * item.quantity;
+        return `${item.itemName}\n- Price: $${item.priceAmount.toLocaleString()}\n- Quantity: x${item.quantity}\n- Total: $${totalForItem.toLocaleString()}\n- From: ${item.restaurantName}\n`;
+    }).join('\n');
+
+    document.getElementById('cartItemsInput').value = formattedCartItems;
+    document.getElementById('totalInput').value = total.toLocaleString();
+
+    // Include full restaurant list with duplicates
+    const allRestaurants = cartItems.map(item => item.restaurantName).join('\n');
+    document.getElementById('fromInput').value = allRestaurants;
+
+    // Save to sessionStorage for the form page
+    sessionStorage.setItem('cartItems', formattedCartItems);
+    sessionStorage.setItem('totalAmount', total.toLocaleString());
+    sessionStorage.setItem('from', allRestaurants);
+}
+
+
+    // Redirect to form page
     window.location.href = 'form.html';
 });
+
 
     // Call the updateFormFields function to make sure the form is populated correctly before submission
     updateFormFields();
@@ -214,28 +326,6 @@ document.querySelector('.button').addEventListener('click', function() {
         // Final movement of cart image
         document.querySelector('.moving-cart').style.left = 'calc(10% + 100px)';
 
-// Update form hidden fields
-function updateFormFields() {
-    // Format each item with its name, quantity, and total price
-    const formattedCartItems = cartItems.map(item => {
-        return `${item.itemName} (x${item.quantity}) - Restaurant: ${item.restaurantName} - Price: $${(item.priceAmount * item.quantity).toFixed(2)}`;
-    }).join('\n');
-
-    // Prepare the cart items text to be used in the hidden input
-    const cartItemsText = cartItems.map(item => 
-        // If the quantity is greater than 1, append quantity to the item name
-        item.quantity > 1 ? `${item.itemName} *${item.quantity}` : item.itemName
-    ).join(', ');
-
-    // Set the formatted cart items as the value of the hidden input
-    document.getElementById('cartItemsInput').value = formattedCartItems;
-
-    // Update the total amount in the hidden input
-    document.getElementById('totalInput').value = total.toLocaleString();
-
-    // Set the restaurant names (without duplicates) in the hidden input
-    document.getElementById('fromInput').value = restaurantNames.join(', ');
-}
 
     
 // Handle restaurant filtering when clicking restaurant name or image
