@@ -253,7 +253,7 @@ display: flex;
                 background-color: #000000;
                 color: #ffffff;
                 cursor: pointer;
-                padding: 0px 10px;
+                padding: 0px 5px;
             }
 
             .add-to-cart:hover {
@@ -261,11 +261,12 @@ display: flex;
                 text-decoration: underline;
             }
 
+
             .more-info {
                 background-color: #000000;
                 color: #ffffff;
                 cursor: pointer;
-                padding: 0px 20px;
+                padding: 0px 10px;
             }
 
             .more-info:hover {
@@ -279,8 +280,8 @@ display: flex;
                 text-align: center;
                 padding: 1px;
                 border-radius: 0px;
-                width: 50%;
-                max-width: 150px;
+                width: 65%;
+                max-width: 100%;
                 display: flex;
                 justify-content: center;
                 align-items: center;
