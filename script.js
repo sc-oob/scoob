@@ -100,26 +100,28 @@ window.addEventListener("scroll", function() {
 
 
  // Search Functionality
- document.querySelector('.search-bar').addEventListener('input', function () {
-    let searchQuery = this.value.toLowerCase().trim();
-    let galleryItems = document.querySelectorAll('.gallery-item');
-    let noItemsFoundMessage = document.querySelector('.no-items-found');
+ // Enhanced Search Functionality with flexible word matching
+document.querySelector('.search-bar').addEventListener('input', function () {
+    const searchQuery = this.value.toLowerCase().trim();
+    const searchWords = searchQuery.split(/\s+/); // Split query into words
+
+    const galleryItems = document.querySelectorAll('.gallery-item');
+    const noItemsFoundMessage = document.querySelector('.no-items-found');
+
     let visibleItemsCount = 0;
 
     galleryItems.forEach(item => {
-        let itemName = item.querySelector('.image-name-box').textContent.toLowerCase();
-        let restaurantName = item.querySelector('.item-info span').textContent.toLowerCase();
+        const itemName = item.querySelector('.image-name-box')?.textContent.toLowerCase() || '';
+        const restaurantName = item.querySelector('.item-info span')?.textContent.toLowerCase() || '';
+        const synonyms = item.querySelector('.synonyms')?.textContent.toLowerCase() || '';
 
-        // Check for <pre class="synonyms"> if present
-        let synonymBlock = item.querySelector('.synonyms');
-        let synonymsText = synonymBlock ? synonymBlock.textContent.toLowerCase() : '';
+        // Combine all searchable text
+        const combinedText = `${itemName} ${restaurantName} ${synonyms}`;
 
-        // Match against name, restaurant, or synonyms
-        if (
-            itemName.includes(searchQuery) ||
-            restaurantName.includes(searchQuery) ||
-            synonymsText.includes(searchQuery)
-        ) {
+        // Check that every word from the search exists somewhere in the combined text
+        const allWordsMatch = searchWords.every(word => combinedText.includes(word));
+
+        if (allWordsMatch) {
             item.style.display = 'block';
             visibleItemsCount++;
         } else {
@@ -127,15 +129,13 @@ window.addEventListener("scroll", function() {
         }
     });
 
-    if (visibleItemsCount === 0) {
-        noItemsFoundMessage.style.display = 'block';
-    } else {
-        noItemsFoundMessage.style.display = 'none';
-    }
+    // Toggle no items found message
+    noItemsFoundMessage.style.display = visibleItemsCount === 0 ? 'block' : 'none';
 
     // Reset category highlighting to "All"
     document.querySelectorAll('.category-link').forEach(link => link.classList.remove('active'));
-    document.querySelector('.category-link[data-category="All"]').classList.add('active');
+    const allLink = document.querySelector('.category-link[data-category="All"]');
+    if (allLink) allLink.classList.add('active');
 });
 
 
