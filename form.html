@@ -183,6 +183,41 @@ window.addEventListener('load', function() {
 </script>
 
 
+
+<script>
+  // Optional: Auto-detect location on page load (to check support or pre-fill silently)
+  document.addEventListener("DOMContentLoaded", function () {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        function (position) {
+          const latitude = position.coords.latitude;
+          const longitude = position.coords.longitude;
+
+          console.log("Browser geolocation supported. User is at:", latitude, longitude);
+          // This is optional: you could also pre-fill the map like below:
+          // map.setView([latitude, longitude], 13);
+        },
+        function (error) {
+          console.warn("Geolocation permission denied or error:", error.message);
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 0
+        }
+      );
+    } else {
+      console.warn("Geolocation is not supported by this browser.");
+    }
+  });
+</script>
+
+
+
+
+
+    
+
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         // Grab stored data
