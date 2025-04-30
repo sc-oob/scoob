@@ -3179,5 +3179,35 @@ didnt stay down after
         </script>
 <script src="script.js"></script>
 
+
+<!-- In-app Browser Warning with Close Button -->
+<div id="inAppWarning" style="display: none; position: absolute; top: 50%; transform: translateY(-50%); width: 100%; background-color: #720000; color: black; text-align: center; padding: 12px; font-family: sans-serif; z-index: 9999; box-shadow: 0 -2px 5px rgba(0,0,0,0.3);">
+  📍 For full features like Auto-Locate, <strong>open this page in Chrome or Safari.</strong>
+ <span onclick="document.getElementById('inAppWarning').style.display='none'" style="margin-left: 15px; cursor: pointer; font-weight: bold;">✖</span>
+</div>
+
+
+<script>
+function isInAppBrowser() {
+    const ua = navigator.userAgent || navigator.vendor || window.opera;
+
+    // Detect Instagram, Facebook, Messenger, TikTok
+    return /Instagram|FBAN|FBAV|Messenger|TikTok/i.test(ua);
+}
+
+function openInBrowser() {
+    // Try to open the same URL in the system browser
+    window.open(window.location.href, '_blank');
+}
+
+if (isInAppBrowser()) {
+    document.getElementById('inAppWarning').style.display = 'block';
+}
+</script>
+
+
+
+
+    
 </body>
 </html>
