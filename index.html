@@ -3167,7 +3167,6 @@ didnt stay down after
 
 
 
-
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 
 <script>
@@ -3182,34 +3181,31 @@ didnt stay down after
 
 
 <!-- Browser Suggestion Banner -->
-<div id="browserSuggestion" style="display: none; position: absolute; top: 50%; transform: translateY(-50%); width: 100%; background-color: #720000; color: black; text-align: center; padding: 12px; font-family: sans-serif; z-index: 9999; box-shadow: 0 -2px 5px rgba(0,0,0,0.3);">
-   <strong> 📍 For Auto-Locate & full features, please use Chrome or Safari</strong>.
-    <span onclick="document.getElementById('browserSuggestion').style.display='none'" style="margin-left: 15px; cursor: pointer; font-weight: bold;">✖</span>
+<div id="browserSuggestion" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 400px; background-color: #720000; color: white; text-align: center; padding: 14px; font-family: sans-serif; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.3); border-radius: 8px;">
+   <strong>📍 For Auto-Locate & full features, please use Chrome or Safari</strong><br><br>
+   <span onclick="document.getElementById('browserSuggestion').style.display='none'" style="cursor: pointer; font-weight: bold;">[Dismiss ✖]</span>
 </div>
-
 
 
     
 <script>
-function isChromeOrSafari() {
-    const ua = navigator.userAgent;
+function isRealChromeOrSafari() {
+    const ua = navigator.userAgent || '';
+    const vendor = navigator.vendor || '';
 
-    const isChrome = /Chrome/.test(ua) && /Google Inc/.test(navigator.vendor);
-    const isSafari = /^((?!chrome|android).)*safari/i.test(ua) && /Apple Computer/.test(navigator.vendor);
+    const isAndroid = /android/i.test(ua);
+    const isIOS = /iphone|ipad|ipod/i.test(ua);
 
-    return isChrome || isSafari;
+    const isSafari = /safari/i.test(ua) && /apple/i.test(vendor) && !/crios/i.test(ua);
+    const isChrome = /chrome/i.test(ua) && /google inc/i.test(vendor) && !/version/i.test(ua);
+
+    return (isChrome && isAndroid) || (isSafari && isIOS);
 }
 
-function openInBrowser() {
-    window.open(window.location.href, '_blank');
-}
-
-if (!isChromeOrSafari()) {
+if (!isRealChromeOrSafari()) {
     document.getElementById('browserSuggestion').style.display = 'block';
 }
 </script>
-
-
 
     
 </body>
