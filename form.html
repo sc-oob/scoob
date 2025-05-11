@@ -142,31 +142,51 @@ map.on('click', function(e) {
 });
 
 // Auto-locate the user and center the map on their location
-document.getElementById('autoLocate').addEventListener('click', function() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-            const lat = position.coords.latitude;
-            const lon = position.coords.longitude;
+document.getElementById('autoLocate').addEventListener('click', function () {
+    if (window.isSecureContext && navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            function (position) {
+                const lat = position.coords.latitude;
+                const lon = position.coords.longitude;
 
-            // Center the map to the user's location
-            map.setView([lat, lon], 13);
+                map.setView([lat, lon], 13);
 
-            // Optionally, place a marker at the user's location
-            if (marker) {
-                map.removeLayer(marker);
+                if (marker) {
+                    map.removeLayer(marker);
+                }
+                marker = L.marker([lat, lon]).addTo(map);
+                document.getElementById('coordinates').value = `Latitude: ${lat}, Longitude: ${lon}`;
+            },
+            function (error) {
+                let message = '';
+                switch (error.code) {
+                    case error.PERMISSION_DENIED:
+                        message = 'Location access denied. Please allow GPS or use the map manually.';
+                        break;
+                    case error.POSITION_UNAVAILABLE:
+                        message = 'Location unavailable. Turn on GPS or use the map.';
+                        break;
+                    case error.TIMEOUT:
+                        message = 'Location timed out. Try again or use the map.';
+                        break;
+                    default:
+                        message = 'Unable to detect location. Use the map to select area.';
+                        break;
+                }
+                alert(message);
+            },
+            {
+                enableHighAccuracy: false,
+                timeout: 10000, // 10 seconds
+                maximumAge: 30000 // use cached location if recent
             }
-            marker = L.marker([lat, lon]).addTo(map);
-
-            // Set the coordinates in the input field
-            document.getElementById('coordinates').value = `Latitude: ${lat}, Longitude: ${lon}`;
-        }, function() {
-            alert('Turn on Location then autolocate  |  manually use map.');
-        });
+        );
     } else {
-        alert('manually use map - 100% accuracy.');
+        alert('Your browser/device may not support Auto-Locate. Please use the map to select location.');
     }
 });
 
+    
 // Handle form display and recalculate map size
 document.querySelector('.button').addEventListener('click', function() {
 });
