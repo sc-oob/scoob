@@ -1927,8 +1927,9 @@ document.addEventListener('DOMContentLoaded', () => {
 <pre> <div class="inputsColor">                         <textarea type="text" name="tellchef" placeholder="tell chef | specify item|s" class="tellchef"></textarea> </div>
 
 
-                         mon-sun: 0700-2200 | fridays biriani
-
+                         mon-sun: 0700-2200
+                                : fridays biriani
+    
                          where: kaloleni mskitini
 
                          Price: 12,000Tshs
@@ -3179,31 +3180,66 @@ didnt stay down after
 <script src="script.js"></script>
 
 
-
-<!-- Browser Suggestion Banner -->
-<div id="browserSuggestion" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 400px; background-color: #720000; color: white; text-align: center; padding: 14px; font-family: sans-serif; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.3); border-radius: 8px;">
-   <strong>📍 For Auto-Locate & full features, please use Chrome or Safari</strong><br><br>
-   <span onclick="document.getElementById('browserSuggestion').style.display='none'" style="cursor: pointer; font-weight: bold;">[Dismiss ✖]</span>
+<!-- In-app or Location Error Warning -->
+<div id="inAppWarning" style="display: none; position: absolute; top: 50%; transform: translateY(-50%); width: 100%; background-color: #ffcc00; color: black; text-align: center; padding: 12px; font-family: sans-serif; z-index: 9999; box-shadow: 0 -2px 5px rgba(0,0,0,0.3);">
+    📍 For full features like Auto-Locate, <strong>use Chrome or Safari.</strong>
+    <button onclick="openInBrowser()" style="margin-left: 10px; background-color: black; color: white; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer;">Open in Browser</button>
+    <span onclick="closeInAppWarning()" style="margin-left: 15px; cursor: pointer; font-weight: bold;">✖</span>
 </div>
 
-
-    
 <script>
-function isRealChromeOrSafari() {
-    const ua = navigator.userAgent || '';
-    const vendor = navigator.vendor || '';
+// Use only ES5 syntax for old devices
 
-    const isAndroid = /android/i.test(ua);
-    const isIOS = /iphone|ipad|ipod/i.test(ua);
-
-    const isSafari = /safari/i.test(ua) && /apple/i.test(vendor) && !/crios/i.test(ua);
-    const isChrome = /chrome/i.test(ua) && /google inc/i.test(vendor) && !/version/i.test(ua);
-
-    return (isChrome && isAndroid) || (isSafari && isIOS);
+function isInAppBrowser() {
+    var ua = navigator.userAgent || navigator.vendor || (window.opera || '');
+    return ua.match(/Instagram|FBAN|FBAV|Messenger|TikTok/i);
 }
 
-if (!isRealChromeOrSafari()) {
-    document.getElementById('browserSuggestion').style.display = 'block';
+function openInBrowser() {
+    var win = window.open(window.location.href, '_blank');
+    if (win && typeof win.focus === 'function') {
+        win.focus();
+    } else {
+        alert("Please copy and paste this link into Chrome or Safari for full features.");
+    }
+}
+
+function closeInAppWarning() {
+    var warning = document.getElementById('inAppWarning');
+    if (warning) {
+        warning.style.display = 'none';
+    }
+}
+
+function showWarning() {
+    var warningBox = document.getElementById('inAppWarning');
+    if (warningBox) {
+        warningBox.style.display = 'block';
+    }
+}
+
+// Check for in-app browser first
+if (isInAppBrowser()) {
+    showWarning();
+} else {
+    // Try to get location; if it fails, show warning
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            function(position) {
+                // Success, do nothing
+            },
+            function(error) {
+                // Location failed (denied or error), show warning
+                showWarning();
+            },
+            {
+                timeout: 10000
+            }
+        );
+    } else {
+        // Geolocation not supported
+        showWarning();
+    }
 }
 </script>
 
