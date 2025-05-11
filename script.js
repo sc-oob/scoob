@@ -1,358 +1,205 @@
-document.addEventListener('DOMContentLoaded', () => {
-    shuffleGallery(); // Shuffle before the content becomes visible
-});
 
+document.addEventListener('DOMContentLoaded', function () {
 
+    // Polyfill for older browsers (NodeList.forEach)
+    if (window.NodeList && !NodeList.prototype.forEach) {
+        NodeList.prototype.forEach = Array.prototype.forEach;
+    }
 
-    // Shuffle the gallery items each time the page reloads
+    var gallery = document.querySelector('.gallery');
+    var galleryItems = gallery ? Array.prototype.slice.call(gallery.querySelectorAll('.gallery-item')) : [];
+    var categoryLinks = document.querySelectorAll('.category-link');
+    var searchBar = document.querySelector('.search-bar');
+    var noItemsFound = document.querySelector('.no-items-found');
+    var cartImg = document.querySelector('.moving-cart');
+    var orderBtn = document.querySelector('.button');
+
+    var cartItems = [];
+    var total = 0;
+    var restaurantNames = [];
+
     function shuffleGallery() {
-        const gallery = document.querySelector('.gallery');
-        const items = Array.from(gallery.querySelectorAll('.gallery-item'));
-        for (let i = items.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [items[i], items[j]] = [items[j], items[i]];
+        if (!gallery || galleryItems.length === 0) return;
+        for (var i = galleryItems.length - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1));
+            var temp = galleryItems[i];
+            galleryItems[i] = galleryItems[j];
+            galleryItems[j] = temp;
         }
-        items.forEach(item => gallery.appendChild(item)); // Re-append the shuffled items
+        galleryItems.forEach(function (item) {
+            gallery.appendChild(item);
+        });
     }
 
-    
+    shuffleGallery(); // Shuffle early
 
-  
-// Handle category selection and filter gallery items based on selected category
-const categoryLinks = document.querySelectorAll('.category-link');
-const galleryItems = document.querySelectorAll('.gallery-item');
-
-categoryLinks.forEach(link => {
-    link.addEventListener('click', function() {
-        // Remove 'active' class from all category links
-        categoryLinks.forEach(link => link.classList.remove('active'));
-
-        // Add 'active' class to the clicked category link
-        this.classList.add('active');
-
-        // Get the selected category
-        const selectedCategory = this.getAttribute('data-category');
-
-        // Show and hide gallery items based on the selected category
-        galleryItems.forEach(item => {
-            const itemCategory = item.getAttribute('data-category');
-
-            // Show items that match the selected category (checking if category exists in itemCategory)
-            if (selectedCategory === 'All' || itemCategory.split(' ').includes(selectedCategory)) {
-                item.style.display = 'block';  // Show item
-            } else {
-                item.style.display = 'none';  // Hide item
-            }
+    // Category filtering
+    categoryLinks.forEach(function (link) {
+        link.addEventListener('click', function () {
+            categoryLinks.forEach(function (l) { l.classList.remove('active'); });
+            this.classList.add('active');
+            var selectedCategory = this.getAttribute('data-category');
+            galleryItems.forEach(function (item) {
+                var itemCategory = item.getAttribute('data-category') || '';
+                var show = selectedCategory === 'All' || itemCategory.split(' ').indexOf(selectedCategory) !== -1;
+                item.style.display = show ? 'block' : 'none';
+            });
         });
     });
-});
- 
 
-  
- // Smooth scroll effect for header and categories
- let lastScrollTop = 0; // To store the last scroll position
+    // Search bar filtering
+    if (searchBar) {
+        searchBar.addEventListener('input', function () {
+            var query = this.value.toLowerCase().trim();
+            var words = query.split(/\s+/);
+            var visibleCount = 0;
 
-window.addEventListener("scroll", function() {
-    let header = document.querySelector("header");
-    let categories = document.querySelector(".categories");
-    let cart = document.querySelector(".cart");
+            galleryItems.forEach(function (item) {
+                var name = (item.querySelector('.image-name-box') || {}).textContent || '';
+                var rest = (item.querySelector('.item-info span') || {}).textContent || '';
+                var syns = (item.querySelector('.synonyms') || {}).textContent || '';
+                var combined = (name + ' ' + rest + ' ' + syns).toLowerCase();
+                var matches = words.every(function (w) { return combined.indexOf(w) !== -1; });
+                item.style.display = matches ? 'block' : 'none';
+                if (matches) visibleCount++;
+            });
 
-    let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+            noItemsFound.style.display = visibleCount === 0 ? 'block' : 'none';
 
-    // If scrolling down, hide the header and categories
-    if (currentScroll > lastScrollTop) {
-        header.style.top = "-70px"; // Adjust according to your header height
-        categories.style.top = "-50px"; // Adjust according to your category bar height
-        cart.style.height = "100vh"; // Full height of screen
-        cart.style.top = "0";
-        
-    } else {
-        // Scrolling up, show header and categories again
-        header.style.top = "0";
-        categories.style.top = "50px"; // Original position
-        cart.style.height = "calc(100vh - 100px)"; // Adjust according to header + category height
-        cart.style.top = "88px";
-        
+            // Reset category highlight
+            categoryLinks.forEach(function (link) { link.classList.remove('active'); });
+            var allLink = document.querySelector('.category-link[data-category="All"]');
+            if (allLink) allLink.classList.add('active');
+        });
     }
 
-    lastScrollTop = currentScroll <= 0 ? 0 : currentScroll; // Prevent negative scroll value
-});
-
-    // Toggle info on button click
-    const infoButtons = document.querySelectorAll('.more-info');
-    infoButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const infoContainer = this.closest('.gallery-item').querySelector('.info-container');
-            if (infoContainer.style.display === 'none' || infoContainer.style.display === '') {
-                infoContainer.style.display = 'block'; // Show info
-            } else {
-                infoContainer.style.display = 'none'; // Hide info
+    // Info toggle buttons
+    var infoButtons = document.querySelectorAll('.more-info');
+    infoButtons.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            var info = this.closest('.gallery-item').querySelector('.info-container');
+            if (info) {
+                info.style.display = (info.style.display === 'block') ? 'none' : 'block';
             }
         });
     });
 
-    // Animate cart image
-    setTimeout(() => {
-        const movingCart = document.querySelector('.moving-cart');
-        movingCart.style.left = '9px'; // Move cart image to the right
-    }, 500); // 0.5 seconds delay before animation starts
+    // Add to cart
+    var addToCartBtns = document.querySelectorAll('.add-to-cart');
+    var orderedSpan = document.querySelector('.order-info p:nth-child(1) span');
+    var fromSpan = document.querySelector('.order-info p:nth-child(2) span');
+    var totalSpan = document.querySelector('.order-info p:nth-child(3) span');
 
+    function updateCartUI() {
+        var ordered = [];
+        var froms = [];
 
+        cartItems.forEach(function (item) {
+            ordered.push(item.quantity > 1 ? item.itemName + ' *' + item.quantity : item.itemName);
+            froms.push(item.restaurantName);
+        });
 
- // Search Functionality
- // Enhanced Search Functionality with flexible word matching
-document.querySelector('.search-bar').addEventListener('input', function () {
-    const searchQuery = this.value.toLowerCase().trim();
-    const searchWords = searchQuery.split(/\s+/); // Split query into words
+        total = cartItems.reduce(function (sum, item) {
+            return sum + item.priceAmount * item.quantity;
+        }, 0);
 
-    const galleryItems = document.querySelectorAll('.gallery-item');
-    const noItemsFoundMessage = document.querySelector('.no-items-found');
+        if (orderedSpan) orderedSpan.textContent = ordered.join(', ');
+        if (fromSpan) fromSpan.textContent = Array.from(new Set(froms)).join(', ');
+        if (totalSpan) totalSpan.textContent = total.toLocaleString();
 
-    let visibleItemsCount = 0;
+        // Session storage
+        sessionStorage.setItem('cartItems', ordered.join(', '));
+        sessionStorage.setItem('totalAmount', total.toLocaleString());
+        sessionStorage.setItem('from', froms.join(', '));
+    }
 
-    galleryItems.forEach(item => {
-        const itemName = item.querySelector('.image-name-box')?.textContent.toLowerCase() || '';
-        const restaurantName = item.querySelector('.item-info span')?.textContent.toLowerCase() || '';
-        const synonyms = item.querySelector('.synonyms')?.textContent.toLowerCase() || '';
+    function createRemoveBtn(addBtn, itemName, restaurantName, galleryItem) {
+        var removeBtn = document.createElement('button');
+        removeBtn.textContent = '-';
+        removeBtn.className = 'remove-from-cart';
+        removeBtn.style.cssText = 'margin-left:2px;background:#610000;color:white;padding:0 4px;cursor:pointer;';
+        removeBtn.addEventListener('click', function () {
+            for (var i = 0; i < cartItems.length; i++) {
+                var item = cartItems[i];
+                if (item.itemName === itemName && item.restaurantName === restaurantName) {
+                    item.quantity--;
+                    if (item.quantity <= 0) {
+                        cartItems.splice(i, 1);
+                        removeBtn.parentElement.removeChild(removeBtn);
+                    }
+                    break;
+                }
+            }
+            updateCartUI();
+        });
+        addBtn.parentElement.appendChild(removeBtn);
+    }
 
-        // Combine all searchable text
-        const combinedText = `${itemName} ${restaurantName} ${synonyms}`;
+    addToCartBtns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            var item = this.closest('.gallery-item');
+            var itemName = (item.querySelector('.image-name-box') || {}).textContent;
+            var restName = (item.querySelector('.item-info span') || {}).textContent;
+            var priceText = (item.querySelector('.info-container pre') || {}).textContent;
+            var price = parseInt((priceText.match(/Price:\s*(\d+(?:,\d{3})*)/) || [])[1].replace(',', '') || 0, 10);
 
-        // Check that every word from the search exists somewhere in the combined text
-        const allWordsMatch = searchWords.every(word => combinedText.includes(word));
+            var found = false;
+            for (var i = 0; i < cartItems.length; i++) {
+                if (cartItems[i].itemName === itemName && cartItems[i].restaurantName === restName) {
+                    cartItems[i].quantity++;
+                    found = true;
+                    break;
+                }
+            }
 
-        if (allWordsMatch) {
-            item.style.display = 'block';
-            visibleItemsCount++;
-        } else {
-            item.style.display = 'none';
-        }
-    });
-
-    // Toggle no items found message
-    noItemsFoundMessage.style.display = visibleItemsCount === 0 ? 'block' : 'none';
-
-    // Reset category highlighting to "All"
-    document.querySelectorAll('.category-link').forEach(link => link.classList.remove('active'));
-    const allLink = document.querySelector('.category-link[data-category="All"]');
-    if (allLink) allLink.classList.add('active');
-});
-
-
-
-
-
-
-// Add to Cart functionality
-const addToCartButtons = document.querySelectorAll('.add-to-cart');
-const orderedElement = document.querySelector('.order-info p:nth-child(1) span');
-const fromElement = document.querySelector('.order-info p:nth-child(2) span');
-const totalElement = document.querySelector('.order-info p:nth-child(3) span');
-
-let cartItems = []; // To store cart items
-let total = 0; // To track total price
-let restaurantNames = []; // To track unique restaurant names
-
-addToCartButtons.forEach(button => {
-    button.addEventListener('click', function () {
-        const galleryItem = this.closest('.gallery-item');
-        const itemName = galleryItem.querySelector('.image-name-box').textContent;
-        const restaurantName = galleryItem.querySelector('.item-info span').textContent;
-        const priceText = galleryItem.querySelector('.info-container pre').textContent;
-        const priceAmount = parseInt(priceText.match(/Price:\s*(\d+(?:,\d{3})*)/)[1].replace(',', ''));
-
-        const existingItemIndex = cartItems.findIndex(item =>
-            item.itemName === itemName && item.restaurantName === restaurantName
-        );
-
-        if (existingItemIndex !== -1) {
-            cartItems[existingItemIndex].quantity++;
-        } else {
-            cartItems.push({ itemName, restaurantName, priceAmount, quantity: 1 });
-
-            // 🔥 Inject "Remove from Cart" button after first addition
-            createRemoveButton(this, itemName, restaurantName, galleryItem);
-        }
-
-        updateCartUI();
-    
-
-
-        // Update ordered items in the cart display (with quantity if > 1)
-        orderedElement.textContent = cartItems.map(item => 
-            item.quantity > 1 ? `${item.itemName} *${item.quantity}` : item.itemName
-        ).join(', ');
-
-        // Add unique restaurant name to "From"
-        restaurantNames = [...new Set(cartItems.map(item => item.restaurantName))]; // Remove duplicates
-        fromElement.textContent = restaurantNames.join(', ');
-
-        // Update total
-        total = cartItems.reduce((sum, item) => sum + (item.priceAmount * item.quantity), 0);
-        totalElement.textContent = total.toLocaleString(); // Update the total in the parent cart display
-
-        // Populate hidden form fields with updated cart info
-        updateFormFields();
-    });
-});
-
-
-function createRemoveButton(addBtn, itemName, restaurantName, galleryItem) {
-    const removeBtn = document.createElement('button');
-    removeBtn.textContent = '-';
-    removeBtn.classList.add('remove-from-cart');
-    removeBtn.style.marginLeft = '2px';
-    removeBtn.style.backgroundColor = '#610000';
-    removeBtn.style.color = 'white';
-    removeBtn.style.padding = '0px 4px';
-    removeBtn.style.cursor = 'pointer';
-
-    removeBtn.addEventListener('click', function () {
-        const existingItemIndex = cartItems.findIndex(item =>
-            item.itemName === itemName && item.restaurantName === restaurantName
-        );
-
-        if (existingItemIndex !== -1) {
-            cartItems[existingItemIndex].quantity--;
-
-            if (cartItems[existingItemIndex].quantity <= 0) {
-                cartItems.splice(existingItemIndex, 1);
-                removeBtn.remove();
+            if (!found) {
+                cartItems.push({ itemName: itemName, restaurantName: restName, priceAmount: price, quantity: 1 });
+                createRemoveBtn(this, itemName, restName, item);
             }
 
             updateCartUI();
-        }
+        });
     });
 
-    addBtn.parentElement.appendChild(removeBtn);
-}
+    // Moving cart animation
+    if (cartImg) {
+        setTimeout(function () {
+            cartImg.style.left = '9px';
+            setTimeout(function () {
+                cartImg.style.left = 'calc(10% + 100px)';
+            }, 1500);
+        }, 500);
+    }
 
-
-
-function updateCartUI() {
-    // Update displayed cart items
-    orderedElement.textContent = cartItems.map(item =>
-        item.quantity > 1 ? `${item.itemName} *${item.quantity}` : item.itemName
-    ).join(', ');
-
-    // Unique restaurant names
-    restaurantNames = [...new Set(cartItems.map(item => item.restaurantName))];
-    fromElement.textContent = restaurantNames.join(', ');
-
-    // Update total
-    total = cartItems.reduce((sum, item) => sum + (item.priceAmount * item.quantity), 0);
-    totalElement.textContent = total.toLocaleString();
-
-    // Update hidden fields for form
-    updateFormFields();
-
-    // Update session storage for redirect
-    const cartItemsText = cartItems.map(item =>
-        item.quantity > 1 ? `${item.itemName} *${item.quantity}` : item.itemName
-    ).join(', ');
-    const userInputs = cartItems.map(item => item.userInput).join(', ');
-
-    sessionStorage.setItem('cartItems', cartItemsText);
-    sessionStorage.setItem('totalAmount', total.toLocaleString());
-    const allRestaurantNames = cartItems.map(item => item.restaurantName);
-    sessionStorage.setItem('from', allRestaurantNames.join(', '));
-        sessionStorage.setItem('userInputs', userInputs);
-}
-
-
-
-
-
-
-document.querySelector('.button').addEventListener('click', function() {
-    // Prepare cart data
-    const cartItemsText = cartItems.map(item => 
-        item.quantity > 1 ? `${item.itemName} *${item.quantity}` : item.itemName
-    ).join(', ');
-
-    // Store the cart data and total
-    sessionStorage.setItem('cartItems', cartItemsText);
-    sessionStorage.setItem('totalAmount', total.toLocaleString());
-    sessionStorage.setItem('from', cartItems.map(item => item.restaurantName).join('\n'));
-
-    // Now gather textarea input for items in cart
-    const userInputs = cartItems.map(cartItem => {
-        // Find the gallery-item that matches this item name and restaurant
-        const match = Array.from(document.querySelectorAll('.gallery-item')).find(item => {
-            const name = item.querySelector('.image-name-box').textContent;
-            const restaurant = item.querySelector('.item-info span').textContent;
-            return cartItem.itemName === name && cartItem.restaurantName === restaurant;
+    // Final order button click
+    if (orderBtn) {
+        orderBtn.addEventListener('click', function () {
+            // store user textarea input
+            var inputs = cartItems.map(function (cartItem) {
+                var match = Array.prototype.find.call(document.querySelectorAll('.gallery-item'), function (el) {
+                    return (el.querySelector('.image-name-box') || {}).textContent === cartItem.itemName &&
+                           (el.querySelector('.item-info span') || {}).textContent === cartItem.restaurantName;
+                });
+                return match ? (match.querySelector('.tellchef') || {}).value.trim() : '';
+            });
+            sessionStorage.setItem('userInputs', inputs.join(', '));
+            window.location.href = 'form.html';
         });
+    }
 
-        // If found, get the tellchef input
-        if (match) {
-            return match.querySelector('.tellchef').value.trim();
-        }
-        return '';
-    });
+    // Restaurant filter
+    var restLinks = document.querySelectorAll('.restaurant-name, .item-info');
+    restLinks.forEach(function (el) {
+        el.addEventListener('click', function () {
+            var rest = this.closest('.gallery-item').querySelector('.item-info span').textContent;
+            galleryItems.forEach(function (item) {
+                item.style.display = (item.querySelector('.item-info span').textContent === rest) ? 'block' : 'none';
+            });
 
-    sessionStorage.setItem('userInputs', userInputs.join(', '));
-
-
-// Update form hidden fields
-function updateFormFields() {
-    const formattedCartItems = cartItems.map(item => {
-        const totalForItem = item.priceAmount * item.quantity;
-        return `${item.itemName}\n- Price: $${item.priceAmount.toLocaleString()}\n- Quantity: x${item.quantity}\n- Total: $${totalForItem.toLocaleString()}\n- From: ${item.restaurantName}\n`;
-    }).join('\n');
-
-    document.getElementById('cartItemsInput').value = formattedCartItems;
-    document.getElementById('totalInput').value = total.toLocaleString();
-
-    // Include full restaurant list with duplicates
-    const allRestaurants = cartItems.map(item => item.restaurantName).join('\n');
-    document.getElementById('fromInput').value = allRestaurants;
-
-    // Save to sessionStorage for the form page
-    sessionStorage.setItem('cartItems', formattedCartItems);
-    sessionStorage.setItem('totalAmount', total.toLocaleString());
-    sessionStorage.setItem('from', allRestaurants);
-}
-
-
-    // Redirect to form page
-    window.location.href = 'form.html';
-});
-
-
-    // Call the updateFormFields function to make sure the form is populated correctly before submission
-    updateFormFields();
-         
-        // Final movement of cart image
-        document.querySelector('.moving-cart').style.left = 'calc(10% + 100px)';
-
-
-    
-// Handle restaurant filtering when clicking restaurant name or image
-const restaurantLinks = document.querySelectorAll('.restaurant-name, .item-info'); // Select restaurant names and gallery images
-
-
-// Adding event listeners for restaurant name or image click
-restaurantLinks.forEach(link => {
-    link.addEventListener('click', function() {
-        // Get the restaurant name
-        const restaurantName = this.closest('.gallery-item').querySelector('.item-info span').textContent;
-
-        // Filter gallery items based on selected restaurant
-        galleryItems.forEach(item => {
-            const itemRestaurantName = item.querySelector('.item-info span').textContent;
-
-            // Show only items that belong to the selected restaurant
-            if (itemRestaurantName === restaurantName) {
-                item.style.display = 'block';
-            } else {
-                item.style.display = 'none';
-            }
+            categoryLinks.forEach(function (link) { link.classList.remove('active'); });
+            var allLink = document.querySelector('.category-link[data-category="All"]');
+            if (allLink) allLink.classList.add('active');
         });
-
-        // Highlight the active restaurant and clear search results
-        document.querySelectorAll('.category-link').forEach(link => link.classList.remove('active'));
-        document.querySelector('.category-link[data-category="All"]').classList.add('active');
     });
 });
 
