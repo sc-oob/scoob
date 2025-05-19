@@ -143,7 +143,15 @@ map.on('click', function(e) {
 
 // Auto-locate the user and center the map on their location
 document.getElementById('autoLocate').addEventListener('click', function () {
-    if (window.isSecureContext && navigator.geolocation) {
+    // Check if geolocation is available
+    if ("geolocation" in navigator) {
+        // Optionally skip isSecureContext because some browsers allow geolocation over HTTP in some environments (like localhost),
+        // but you can keep it for production safety
+        if (!window.isSecureContext) {
+            alert("Auto-Locate requires a secure connection (HTTPS). Please use HTTPS or select your location on the map manually.");
+            return;
+        }
+
         navigator.geolocation.getCurrentPosition(
             function (position) {
                 const lat = position.coords.latitude;
@@ -161,28 +169,28 @@ document.getElementById('autoLocate').addEventListener('click', function () {
                 let message = '';
                 switch (error.code) {
                     case error.PERMISSION_DENIED:
-                        message = 'Location access denied. Please allow GPS or use the map manually.';
+                        message = 'Location access denied. Please enable location permissions or select your location manually on the map.';
                         break;
                     case error.POSITION_UNAVAILABLE:
-                        message = 'Location unavailable. Turn on GPS or use the map.';
+                        message = 'Location information is unavailable. Please use the map to select your location.';
                         break;
                     case error.TIMEOUT:
-                        message = 'Location timed out. Try again or use the map.';
+                        message = 'Location request timed out. Please try again or use the map.';
                         break;
                     default:
-                        message = 'Unable to detect location. Use the map to select area.';
+                        message = 'An unknown error occurred while trying to get your location. Please use the map.';
                         break;
                 }
                 alert(message);
             },
             {
-                enableHighAccuracy: false,
-                timeout: 10000, // 10 seconds
-                maximumAge: 30000 // use cached location if recent
+                enableHighAccuracy: true,  // enable high accuracy for better GPS precision if available
+                timeout: 15000,            // increase timeout to 15 seconds to allow slower devices/network
+                maximumAge: 0              // no cached positions, get fresh location
             }
         );
     } else {
-        alert('Your browser/device may not support Auto-Locate. Please use the map to select location.');
+        alert('Geolocation is not supported by your browser/device. Please select your location manually on the map.');
     }
 });
 
