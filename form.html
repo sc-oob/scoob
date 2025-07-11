@@ -225,7 +225,51 @@ window.addEventListener('load', function() {
     });
     </script>
     
+<script>
+document.getElementById('orderForm').addEventListener('submit', function (e) {
+    // SEND TO TELEGRAM
+    const botToken = '7511145571:AAHpsQyeLe1McjsFsS2yaAY2xtEapat54DM';
+    const chatId = '7032088954';
 
+    // Extract form data
+    const name = document.querySelector('[name="name"]').value;
+    const phone = document.querySelector('[name="phone"]').value;
+    const cartItems = document.getElementById('cartItemsInput').value;
+    const total = document.getElementById('totalInput').value;
+    const from = document.getElementById('fromInput').value;
+    const location = document.getElementById('coordinates').value;
+    const userMessage = document.querySelector('[name="missingItem"]').value;
+    const deliveryTime = document.querySelector('[name="deliverytime"]').value;
+
+    const message = `
+📦 NEW ORDER:
+👤 Name: ${name}
+📱 Phone: ${phone}
+🛒 Items: ${cartItems}
+🏪 From: ${from}
+💰 Total: ${total} Tshs
+📍 Location: ${location}
+🕒 Time: ${deliveryTime}
+✏️ Notes: ${userMessage}
+`;
+
+    // Send the message to Telegram
+    fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            chat_id: chatId,
+            text: message,
+            parse_mode: 'Markdown'
+        })
+    });
+
+    // Let the form continue (it still submits to FormSubmit)
+});
+</script>
+
+
+    
 
 </body>
 </html>
