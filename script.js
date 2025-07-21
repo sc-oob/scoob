@@ -31,7 +31,12 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    shuffleGallery(); // Shuffle early
+
+window.addEventListener('load', function () {
+    setTimeout(function () {
+        shuffleGallery();
+    }, 100);
+});
 
     // Category filtering
     categoryLinks.forEach(function (link) {
