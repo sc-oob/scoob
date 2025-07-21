@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', function () {
 
     // Polyfill for older browsers (NodeList.forEach)
@@ -31,12 +30,12 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-
-window.addEventListener('load', function () {
-    setTimeout(function () {
-        shuffleGallery();
-    }, 100);
-});
+    // ✅ Delay the shuffle until after all resources (images) are loaded
+    window.addEventListener('load', function () {
+        setTimeout(function () {
+            shuffleGallery();
+        }, 100); // 100ms delay is usually enough
+    });
 
     // Category filtering
     categoryLinks.forEach(function (link) {
@@ -52,7 +51,7 @@ window.addEventListener('load', function () {
         });
     });
 
-    // Search bar filtering
+    // Search filtering
     if (searchBar) {
         searchBar.addEventListener('input', function () {
             var query = this.value.toLowerCase().trim();
@@ -78,7 +77,7 @@ window.addEventListener('load', function () {
         });
     }
 
-    // Info toggle buttons
+    // Toggle "more info"
     var infoButtons = document.querySelectorAll('.more-info');
     infoButtons.forEach(function (btn) {
         btn.addEventListener('click', function () {
@@ -112,13 +111,12 @@ window.addEventListener('load', function () {
         if (fromSpan) fromSpan.textContent = Array.from(new Set(froms)).join(', ');
         if (totalSpan) totalSpan.textContent = total.toLocaleString();
 
-        // Session storage
         sessionStorage.setItem('cartItems', ordered.join(', '));
         sessionStorage.setItem('totalAmount', total.toLocaleString());
         sessionStorage.setItem('from', froms.join(', '));
     }
 
-    function createRemoveBtn(addBtn, itemName, restaurantName, galleryItem) {
+    function createRemoveBtn(addBtn, itemName, restaurantName) {
         var removeBtn = document.createElement('button');
         removeBtn.textContent = '-';
         removeBtn.className = 'remove-from-cart';
@@ -159,14 +157,14 @@ window.addEventListener('load', function () {
 
             if (!found) {
                 cartItems.push({ itemName: itemName, restaurantName: restName, priceAmount: price, quantity: 1 });
-                createRemoveBtn(this, itemName, restName, item);
+                createRemoveBtn(this, itemName, restName);
             }
 
             updateCartUI();
         });
     });
 
-    // Moving cart animation
+    // Moving cart icon animation
     if (cartImg) {
         setTimeout(function () {
             cartImg.style.left = '9px';
@@ -176,10 +174,9 @@ window.addEventListener('load', function () {
         }, 500);
     }
 
-    // Final order button click
+    // Final order button
     if (orderBtn) {
         orderBtn.addEventListener('click', function () {
-            // store user textarea input
             var inputs = cartItems.map(function (cartItem) {
                 var match = Array.prototype.find.call(document.querySelectorAll('.gallery-item'), function (el) {
                     return (el.querySelector('.image-name-box') || {}).textContent === cartItem.itemName &&
@@ -206,5 +203,6 @@ window.addEventListener('load', function () {
             if (allLink) allLink.classList.add('active');
         });
     });
-});
 
+});
+</script>
