@@ -110,86 +110,49 @@ window.addEventListener('load', function() {
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 <script src="script.js"></script>
 
+
+<!-- Include required styles/scripts for Leaflet and Geocoder BEFORE this script -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+
 <script>
+let marker;
 
-//mapping
+// Initialize the map centered on Arusha
+const map = L.map('map').setView([-3.3750, 36.6899], 13);
 
-// Initialize the map
-const map = L.map('map').setView([-3.3750, 36.6899], 13); // Coordinates for Arusha, Tanzania
-
-// Add OpenStreetMap tiles
+// Add OpenStreetMap tile layer
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
 
-// Add search control using Nominatim
-L.Control.geocoder({
-    defaultMarkGeocode: false, // we'll handle placing marker manually
-    placeholder: 'Search for location...',
-    errorMessage: 'Location not found.'
-})
-.on('markgeocode', function(e) {
-    const latlng = e.geocode.center;
-
-    // Set view on selected location
-    map.setView(latlng, 15);
-
-    // Remove old marker
+// Helper: Set marker and update coordinate input
+function setMarker(latlng) {
     if (marker) {
         map.removeLayer(marker);
     }
-
-    // Add new marker at searched location
     marker = L.marker(latlng).addTo(map);
-
-    // Update coordinate input field
-    document.getElementById('coordinates').value =
-        `Latitude: ${latlng.lat.toFixed(5)}, Longitude: ${latlng.lng.toFixed(5)}`;
-})
-.addTo(map);
-
-
-
-    
-//down
-
-    
-// Function to ensure the map resizes correctly
-function recalculateMapSize() {
-    map.invalidateSize();
+    const coordText = `Latitude: ${latlng.lat.toFixed(5)}, Longitude: ${latlng.lng.toFixed(5)}`;
+    document.getElementById('coordinates').value = coordText;
+    console.log('Marker set at:', coordText);
 }
 
-// When the user clicks on the map, add a marker at the clicked location
-let marker;
+// Handle manual map click
 map.on('click', function(e) {
-    // Remove the previous marker
-    if (marker) {
-        map.removeLayer(marker);
-    }
-
-    // Add a new marker at the clicked location
-    marker = L.marker(e.latlng).addTo(map);
-
-    
-    // Set the coordinates in the input field
-    document.getElementById('coordinates').value = `Latitude: ${e.latlng.lat}, Longitude: ${e.latlng.lng}`;
+    setMarker(e.latlng);
 });
 
-// Auto-locate the user and center the map on their location
+// Auto-locate the user's position
 document.getElementById('autoLocate').addEventListener('click', function () {
     if (window.isSecureContext && navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
             function (position) {
-                const lat = position.coords.latitude;
-                const lon = position.coords.longitude;
-
-                map.setView([lat, lon], 13);
-
-                if (marker) {
-                    map.removeLayer(marker);
-                }
-                marker = L.marker([lat, lon]).addTo(map);
-                document.getElementById('coordinates').value = `Latitude: ${lat}, Longitude: ${lon}`;
+                const latlng = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                };
+                map.setView(latlng, 15);
+                setMarker(latlng);
             },
             function (error) {
                 let message = '';
@@ -211,8 +174,8 @@ document.getElementById('autoLocate').addEventListener('click', function () {
             },
             {
                 enableHighAccuracy: false,
-                timeout: 10000, // 10 seconds
-                maximumAge: 30000 // use cached location if recent
+                timeout: 10000,
+                maximumAge: 30000
             }
         );
     } else {
@@ -220,23 +183,24 @@ document.getElementById('autoLocate').addEventListener('click', function () {
     }
 });
 
-    
-// Handle form display and recalculate map size
-document.querySelector('.button').addEventListener('click', function() {
-});
+// Add geocoder search
+L.Control.geocoder({
+    defaultMarkGeocode: false,
+    placeholder: 'Search for location...',
+    errorMessage: 'Location not found.'
+})
+.on('markgeocode', function(e) {
+    const latlng = e.geocode.center;
+    map.setView(latlng, 15);
+    setMarker(latlng);
+})
+.addTo(map);
 
-
-// Initially recalculate map size when the page loads
+// Recalculate map size on load
 window.addEventListener('load', function() {
-    recalculateMapSize(); // Ensure map resizes properly when the page first loads
+    map.invalidateSize();
 });
-
-
-
-
 </script>
-
-
 
     
 
