@@ -10,9 +10,13 @@
     <link rel="stylesheet" href="style.css">
    <!--Leaflet CSS -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+<!-- Leaflet Control Geocoder CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css"/>
 
 <!-- Leaflet JS -->
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<!-- Leaflet Control Geocoder JS -->
+<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
 
 
 </head>
@@ -118,8 +122,38 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
 
+// Add search control using Nominatim
+L.Control.geocoder({
+    defaultMarkGeocode: false, // we'll handle placing marker manually
+    placeholder: 'Search for location...',
+    errorMessage: 'Location not found.'
+})
+.on('markgeocode', function(e) {
+    const latlng = e.geocode.center;
+
+    // Set view on selected location
+    map.setView(latlng, 15);
+
+    // Remove old marker
+    if (marker) {
+        map.removeLayer(marker);
+    }
+
+    // Add new marker at searched location
+    marker = L.marker(latlng).addTo(map);
+
+    // Update coordinate input field
+    document.getElementById('coordinates').value =
+        `Latitude: ${latlng.lat.toFixed(5)}, Longitude: ${latlng.lng.toFixed(5)}`;
+})
+.addTo(map);
 
 
+
+    
+//down
+
+    
 // Function to ensure the map resizes correctly
 function recalculateMapSize() {
     map.invalidateSize();
