@@ -514,3 +514,18 @@ display: flex;
                 color: rgb(0, 0, 0);
              
               }
+
+.leaflet-control-geocoder-form input {
+    background-color: #d6d6d6;
+    border: 1px solid #303030;
+    padding: 6px 10px;
+    border-radius: 1px;
+    font-size: 18px;
+    width: 220px;
+    color: #000000;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.leaflet-control-geocoder {
+    margin-top: 10px;
+}
