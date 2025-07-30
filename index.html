@@ -3160,28 +3160,18 @@ didnt stay down after
 
 <script src="script.js"></script>
 
-
-<!-- In-app or Location Error Warning -->
-<div id="inAppWarning" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 400px; background-color: #222; color: white; text-align: center; padding: 12px; font-family: sans-serif; z-index: 9999; box-shadow: 0 2px 10px rgba(0,0,0,0.3); border-radius: 8px;">
-    📍 For full features like Auto-Locate - <strong>use default browser.</strong>
-    <div onclick="closeInAppWarning()" style="margin-top: 10px; cursor: pointer; font-weight: bold;">✖ Close</div>
-</div>
-
-<script>
+    <script>
 // Use only ES5 syntax for old devices
 
-function isInAppBrowser() {
+function isUnsupportedBrowser() {
     var ua = navigator.userAgent || navigator.vendor || (window.opera || '');
-    return ua.match(/Instagram|FBAN|FBAV|Messenger|TikTok/i);
-}
+    
+    // Return true if NOT Chrome, Safari, or Edge (modern browsers)
+    var isChrome = ua.indexOf("Chrome") > -1 && ua.indexOf("Edg") === -1;
+    var isSafari = ua.indexOf("Safari") > -1 && ua.indexOf("Chrome") === -1;
+    var isEdge = ua.indexOf("Edg") > -1 || ua.indexOf("Edge") > -1;
 
-function openInBrowser() {
-    var win = window.open(window.location.href, '_blank');
-    if (win && typeof win.focus === 'function') {
-        win.focus();
-    } else {
-        alert("Please open link with default browser for full features.");
-    }
+    return !(isChrome || isSafari || isEdge);
 }
 
 function closeInAppWarning() {
@@ -3198,31 +3188,18 @@ function showWarning() {
     }
 }
 
-// Check for in-app browser first
-if (isInAppBrowser()) {
+// Show warning only if not Chrome, Safari, or Edge
+if (isUnsupportedBrowser()) {
     showWarning();
-} else {
-    // Try to get location; if it fails, show warning
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-            function(position) {
-                // Success, do nothing
-            },
-            function(error) {
-                // Location failed (denied or error), show warning
-                showWarning();
-            },
-            {
-                timeout: 10000
-            }
-        );
-    } else {
-        // Geolocation not supported
-        showWarning();
-    }
 }
 </script>
 
+
+<!-- In-app or Location Error Warning -->
+<div id="inAppWarning" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 400px; background-color: #222; color: white; text-align: center; padding: 12px; font-family: sans-serif; z-index: 9999; box-shadow: 0 2px 10px rgba(0,0,0,0.3); border-radius: 8px;">
+    📍 For full features like Auto-Locate - <strong>use default browser.</strong>
+    <div onclick="closeInAppWarning()" style="margin-top: 10px; cursor: pointer; font-weight: bold;">✖ Close</div>
+</div>
     
 </body>
 </html>
