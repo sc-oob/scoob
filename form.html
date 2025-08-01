@@ -72,8 +72,8 @@
 </div>
             <button type="button" id="autoLocate" name="Auto-Locate"><pre>Auto-Locate    or   Use Map Below</pre></button>
             <div id="map" style="height: 300px !important; margin-bottom: 20px !important;" required name="map container"></div>
-            <input type="text" id="coordinates" name="coordinates" placeholder="Selected area on the map appear here" required  style="width: 345px; color: black; ">
-<div class="inputsColor">
+            <input type="text" id="coordinates" name="coordinates" placeholder= "delivery area appear here | autolocate error? use googlemaps" required  style="width: 345px; color: black; ">
+<div class="inputsColor">                                                      
             <hr>
             <textarea name="download" placeholder="order: movies | series | games/apps" style="width: 150px; height: 30px; background-color: black;" ></textarea>
             <input class="custom-placeholder" type="text" name="transfer" placeholder="via: cd | flash | xender|SHAREit | usb" style="max-width: 250px;"  !important><br>
@@ -183,12 +183,15 @@ document.getElementById('autoLocate').addEventListener('click', function () {
     }
 });
 
-// Add geocoder search
+// Add geocoder search / remove
 L.Control.geocoder({
     defaultMarkGeocode: false,
     placeholder: 'Search for location...',
     errorMessage: 'Location not found.'
 })
+
+// till here
+    
 .on('markgeocode', function(e) {
     const latlng = e.geocode.center;
     map.setView(latlng, 15);
