@@ -3160,6 +3160,12 @@ didnt stay down after
 
 <script src="script.js"></script>
 
+<!-- In-app or Location Error Warning -->
+<div id="inAppWarning" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 400px; background-color: #222; color: white; text-align: center; padding: 12px; font-family: sans-serif; z-index: 9999; box-shadow: 0 2px 10px rgba(0,0,0,0.3); border-radius: 8px;">
+    📍 For full features like Auto-Locate - <strong>use your phone's browser (Chrome, Safari, etc).</strong>
+    <div onclick="closeInAppWarning()" style="margin-top: 10px; cursor: pointer; font-weight: bold;">✖ Close</div>
+</div>
+    
  <script>
 // Use only ES5 syntax for old devices
 
@@ -3198,11 +3204,7 @@ if (isInAppBrowser()) {
 }
 </script>
 
-<!-- In-app or Location Error Warning -->
-<div id="inAppWarning" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 400px; background-color: #222; color: white; text-align: center; padding: 12px; font-family: sans-serif; z-index: 9999; box-shadow: 0 2px 10px rgba(0,0,0,0.3); border-radius: 8px;">
-    📍 For full features like Auto-Locate - <strong>use your phone's browser (Chrome, Safari, etc).</strong>
-    <div onclick="closeInAppWarning()" style="margin-top: 10px; cursor: pointer; font-weight: bold;">✖ Close</div>
-</div>
+
 
 </body>
 </html>
