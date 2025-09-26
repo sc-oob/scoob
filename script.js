@@ -162,14 +162,14 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Moving cart animation
+   // Moving cart animation
     if (cartImg) {
         setTimeout(function () {
-            cartImg.style.left = '9px';
+            cartImg.style.left = '100px';
             setTimeout(function () {
-                cartImg.style.left = 'calc(10% + 100px)';
-            }, 1500);
-        }, 500);
+                cartImg.style.left = 'calc(10% + 10px)';
+            }, 3500);
+        }, 1000);
     }
 
     // Final order button click
@@ -203,4 +203,5 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
+
 
