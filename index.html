@@ -3196,53 +3196,10 @@ didnt stay down after
 
 <script src="script.js"></script>
 
-<!-- In-app or Location Error Warning -->
-<div id="inAppWarning" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 400px; background-color: #222; color: white; text-align: center; padding: 12px; font-family: sans-serif; z-index: 9999; box-shadow: 0 2px 10px rgba(0,0,0,0.3); border-radius: 8px;">
-    📍 For full features like Auto-Locate - use <strong> | chrome | safari | edge |</strong>
-    <div onclick="closeInAppWarning()" style="margin-top: 10px; cursor: pointer; font-weight: bold;">✖</div>
-</div>
-    
- <script>
-// Use only ES5 syntax for old devices
-
-function isInAppBrowser() {
-    var ua = navigator.userAgent || navigator.vendor || window.opera || '';
-
-    // Matches popular in-app browsers
-    return (
-        ua.indexOf('FBAN') > -1 || // Facebook app
-        ua.indexOf('FBAV') > -1 || // Facebook in-app
-        ua.indexOf('Instagram') > -1 || // Instagram
-        ua.indexOf('TikTok') > -1 || // TikTok
-        ua.indexOf('Snapchat') > -1 || // Snapchat
-        ua.indexOf('Line') > -1 || // LINE app
-        ua.indexOf('WhatsApp') > -1 // WhatsApp in-app
-    );
-}
-
-function closeInAppWarning() {
-    var warning = document.getElementById('inAppWarning');
-    if (warning) {
-        warning.style.display = 'none';
-    }
-}
-
-function showWarning() {
-    var warningBox = document.getElementById('inAppWarning');
-    if (warningBox) {
-        warningBox.style.display = 'block';
-    }
-}
-
-// Show warning if in-app browser
-if (isInAppBrowser()) {
-    showWarning();
-}
-</script>
-
 
 
 </body>
 </html>
+
 
 
