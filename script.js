@@ -1,7 +1,6 @@
-
 document.addEventListener('DOMContentLoaded', function () {
 
-    // Polyfill for older browsers (NodeList.forEach)
+    // Polyfill NodeList.forEach for older browsers
     if (window.NodeList && !NodeList.prototype.forEach) {
         NodeList.prototype.forEach = Array.prototype.forEach;
     }
@@ -14,9 +13,8 @@ document.addEventListener('DOMContentLoaded', function () {
     var cartImg = document.querySelector('.moving-cart');
     var orderBtn = document.querySelector('.button');
 
-    var cartItems = [];
+    var cartItems = []; // each: { itemName, restaurantName, priceAmount, quantity, notes: [] }
     var total = 0;
-    var restaurantNames = [];
 
     function shuffleGallery() {
         if (!gallery || galleryItems.length === 0) return;
@@ -30,9 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
             gallery.appendChild(item);
         });
     }
-
-
- shuffleGallery(); // Shuffle early
+    shuffleGallery();
 
     // Category filtering
     categoryLinks.forEach(function (link) {
@@ -48,33 +44,87 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Search bar filtering
+    /* === UPDATED SEARCH WITH GALLERY + MENU === */
+    function wordsMatchAll(words, text) {
+        if (!text) return false;
+        text = text.toLowerCase();
+        return words.every(function (w) { return text.indexOf(w) !== -1; });
+    }
+
     if (searchBar) {
         searchBar.addEventListener('input', function () {
             var query = this.value.toLowerCase().trim();
-            var words = query.split(/\s+/);
+            var words = query.split(/\s+/).filter(Boolean);
             var visibleCount = 0;
 
-            galleryItems.forEach(function (item) {
-                var name = (item.querySelector('.image-name-box') || {}).textContent || '';
-                var rest = (item.querySelector('.item-info span') || {}).textContent || '';
-                var syns = (item.querySelector('.synonyms') || {}).textContent || '';
-                var combined = (name + ' ' + rest + ' ' + syns).toLowerCase();
-                var matches = words.every(function (w) { return combined.indexOf(w) !== -1; });
-                item.style.display = matches ? 'block' : 'none';
-                if (matches) visibleCount++;
+            // ✅ Close all open menus before showing new search results
+            document.querySelectorAll('.menu-container').forEach(function (container) {
+                container.style.display = 'none';
+            });
+            document.querySelectorAll('.menu-toggle').forEach(function (btn) {
+                btn.textContent = 'See Menu';
             });
 
+            galleryItems.forEach(function (item) {
+                var textParts = [];
+                var nameBox = item.querySelector('.image-name-box');
+                var restBox = item.querySelector('.item-info span');
+                var synsBox = item.querySelector('.synonyms');
+
+                if (nameBox) textParts.push(nameBox.textContent);
+                if (restBox) textParts.push(restBox.textContent);
+                if (synsBox) textParts.push(synsBox.textContent);
+
+                var itemMatches = false;
+                var anyEntryMatches = false;
+
+                // Reset highlights
+                var menuEntries = item.querySelectorAll('.menu-entry');
+                menuEntries.forEach(function (entry) {
+                    entry.classList.remove('highlight');
+                });
+
+                // Match against gallery text
+                var combined = textParts.join(' ').toLowerCase();
+                if (words.length > 0 && wordsMatchAll(words, combined)) {
+                    itemMatches = true;
+                }
+
+                // Match against menu entries
+                menuEntries.forEach(function (entry) {
+                    var name = (entry.querySelector('.menu-item-name') || {}).textContent || '';
+                    var price = (entry.querySelector('.menu-price') || {}).textContent || '';
+                    var desc = entry.dataset.description || (entry.querySelector('.menu-description')?.textContent || '');
+                    var entrySyn = entry.dataset.synonyms || '';
+                    var descSyn = entry.dataset.descriptionSynonyms || '';
+                    var entryRestaurant = entry.dataset.restaurant || (restBox ? restBox.textContent : '');
+
+                    var entryText = [name, price, desc, entrySyn, descSyn, entryRestaurant].join(' ').toLowerCase();
+
+                    var entryMatches = words.length > 0 && wordsMatchAll(words, entryText);
+                    if (entryMatches) {
+                        entry.classList.add('highlight'); // highlight only menu entries
+                        anyEntryMatches = true;
+                    }
+                });
+
+                // Decide if gallery item should be shown
+                var show = (words.length === 0) || itemMatches || anyEntryMatches;
+                item.style.display = show ? 'block' : 'none';
+                if (show) visibleCount++;
+            });
+
+            // Toggle "no items found"
             noItemsFound.style.display = visibleCount === 0 ? 'block' : 'none';
 
-            // Reset category highlight
+            // Reset category selection
             categoryLinks.forEach(function (link) { link.classList.remove('active'); });
             var allLink = document.querySelector('.category-link[data-category="All"]');
             if (allLink) allLink.classList.add('active');
         });
     }
 
-    // Info toggle buttons
+    // Info toggle
     var infoButtons = document.querySelectorAll('.more-info');
     infoButtons.forEach(function (btn) {
         btn.addEventListener('click', function () {
@@ -85,8 +135,15 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Add to cart
-    var addToCartBtns = document.querySelectorAll('.add-to-cart');
+    // Utility: parse price string like "13,000" or "13000"
+    function parsePrice(priceText) {
+        if (!priceText) return 0;
+        var cleaned = priceText.replace(/[^\d.,]/g, '').replace(/,/g, '');
+        var parsed = parseInt(cleaned, 10);
+        return isNaN(parsed) ? 0 : parsed;
+    }
+
+    // Cart UI
     var orderedSpan = document.querySelector('.order-info p:nth-child(1) span');
     var fromSpan = document.querySelector('.order-info p:nth-child(2) span');
     var totalSpan = document.querySelector('.order-info p:nth-child(3) span');
@@ -94,39 +151,44 @@ document.addEventListener('DOMContentLoaded', function () {
     function updateCartUI() {
         var ordered = [];
         var froms = [];
+        var notesList = [];
+        total = cartItems.reduce(function (sum, item) {
+            return sum + (item.priceAmount * item.quantity);
+        }, 0);
 
         cartItems.forEach(function (item) {
             ordered.push(item.quantity > 1 ? item.itemName + ' *' + item.quantity : item.itemName);
             froms.push(item.restaurantName);
+            var joinedNotes = (item.notes && item.notes.length) ? item.notes.join(' | ') : '';
+            notesList.push(joinedNotes);
         });
-
-        total = cartItems.reduce(function (sum, item) {
-            return sum + item.priceAmount * item.quantity;
-        }, 0);
 
         if (orderedSpan) orderedSpan.textContent = ordered.join(', ');
         if (fromSpan) fromSpan.textContent = Array.from(new Set(froms)).join(', ');
         if (totalSpan) totalSpan.textContent = total.toLocaleString();
 
-        // Session storage
         sessionStorage.setItem('cartItems', ordered.join(', '));
         sessionStorage.setItem('totalAmount', total.toLocaleString());
         sessionStorage.setItem('from', froms.join(', '));
+        sessionStorage.setItem('userInputs', notesList.join('||'));
     }
 
-    function createRemoveBtn(addBtn, itemName, restaurantName, galleryItem) {
+    function createRemoveBtn(addBtn, key) {
+        if (addBtn.parentElement.querySelector('.remove-from-cart')) return;
         var removeBtn = document.createElement('button');
         removeBtn.textContent = '-';
         removeBtn.className = 'remove-from-cart';
-        removeBtn.style.cssText = 'margin-left:2px;background:#610000;color:white;padding:0 4px;cursor:pointer;';
+        removeBtn.style.cssText = 'margin-left:2px;background:#610000;color:white;padding:0 6px;cursor:pointer;';
         removeBtn.addEventListener('click', function () {
             for (var i = 0; i < cartItems.length; i++) {
                 var item = cartItems[i];
-                if (item.itemName === itemName && item.restaurantName === restaurantName) {
+                var compound = item.itemName + '||' + item.restaurantName;
+                if (compound === key) {
                     item.quantity--;
+                    if (item.notes && item.notes.length) item.notes.pop();
                     if (item.quantity <= 0) {
                         cartItems.splice(i, 1);
-                        removeBtn.parentElement.removeChild(removeBtn);
+                        if (removeBtn.parentElement) removeBtn.parentElement.removeChild(removeBtn);
                     }
                     break;
                 }
@@ -136,33 +198,71 @@ document.addEventListener('DOMContentLoaded', function () {
         addBtn.parentElement.appendChild(removeBtn);
     }
 
-    addToCartBtns.forEach(function (btn) {
-        btn.addEventListener('click', function () {
-            var item = this.closest('.gallery-item');
-            var itemName = (item.querySelector('.image-name-box') || {}).textContent;
-            var restName = (item.querySelector('.item-info span') || {}).textContent;
-            var priceText = (item.querySelector('.info-container pre') || {}).textContent;
-            var price = parseInt((priceText.match(/Price:\s*(\d+(?:,\d{3})*)/) || [])[1].replace(',', '') || 0, 10);
+    // Gallery click delegation
+    if (gallery) {
+        gallery.addEventListener('click', function (e) {
+            var target = e.target;
 
-            var found = false;
-            for (var i = 0; i < cartItems.length; i++) {
-                if (cartItems[i].itemName === itemName && cartItems[i].restaurantName === restName) {
-                    cartItems[i].quantity++;
-                    found = true;
-                    break;
+            if (target.classList.contains('menu-tab')) {
+                var tab = target.getAttribute('data-tab');
+                var galleryItem = target.closest('.gallery-item');
+                if (!galleryItem) return;
+                var tabs = galleryItem.querySelectorAll('.menu-tab');
+                tabs.forEach(function (t) { t.classList.remove('active'); });
+                target.classList.add('active');
+                var sections = galleryItem.querySelectorAll('.menu-section');
+                sections.forEach(function (sec) {
+                    sec.style.display = (sec.getAttribute('data-tab') === tab) ? 'block' : 'none';
+                });
+                return;
+            }
+
+            if (target.classList.contains('add-to-cart')) {
+                var addBtn = target;
+                var galleryItem = addBtn.closest('.gallery-item');
+                if (!galleryItem) return;
+                var restName = (galleryItem.querySelector('.item-info span') || {}).textContent || '';
+                var menuEntry = addBtn.closest('.menu-entry');
+                var itemName = '';
+                var price = 0;
+                var note = '';
+
+                if (menuEntry) {
+                    itemName = (menuEntry.querySelector('.menu-item-name') || {}).textContent || '';
+                    price = parsePrice((menuEntry.querySelector('.menu-price') || {}).textContent || '');
+                    note = (menuEntry.querySelector('.tellchef') || {}).value.trim() || '';
+                } else {
+                    itemName = (galleryItem.querySelector('.image-name-box') || {}).textContent || '';
+                    var priceText = (galleryItem.querySelector('.info-container pre') || {}).textContent || '';
+                    var m = priceText.match(/Price:\s*([\d,]+)/);
+                    price = m ? parsePrice(m[1]) : 0;
+                    note = (galleryItem.querySelector('.tellchef') || {}).value.trim() || '';
                 }
-            }
 
-            if (!found) {
-                cartItems.push({ itemName: itemName, restaurantName: restName, priceAmount: price, quantity: 1 });
-                createRemoveBtn(this, itemName, restName, item);
+                if (!itemName) return;
+                var compoundKey = itemName + '||' + restName;
+                var found = false;
+                for (var i = 0; i < cartItems.length; i++) {
+                    if (cartItems[i].itemName === itemName && cartItems[i].restaurantName === restName) {
+                        cartItems[i].quantity++;
+                        if (note) cartItems[i].notes.push(note);
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    var notesArray = [];
+                    if (note) notesArray.push(note);
+                    cartItems.push({ itemName, restaurantName: restName, priceAmount: price, quantity: 1, notes: notesArray });
+                    createRemoveBtn(addBtn, compoundKey);
+                }
+                updateCartUI();
+                return;
             }
-
-            updateCartUI();
         });
-    });
+    }
 
-   // Moving cart animation
+    // moving cart
     if (cartImg) {
         setTimeout(function () {
             cartImg.style.left = '100px';
@@ -172,23 +272,13 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 1000);
     }
 
-    // Final order button click
     if (orderBtn) {
         orderBtn.addEventListener('click', function () {
-            // store user textarea input
-            var inputs = cartItems.map(function (cartItem) {
-                var match = Array.prototype.find.call(document.querySelectorAll('.gallery-item'), function (el) {
-                    return (el.querySelector('.image-name-box') || {}).textContent === cartItem.itemName &&
-                           (el.querySelector('.item-info span') || {}).textContent === cartItem.restaurantName;
-                });
-                return match ? (match.querySelector('.tellchef') || {}).value.trim() : '';
-            });
-            sessionStorage.setItem('userInputs', inputs.join(', '));
+            updateCartUI();
             window.location.href = 'form.html';
         });
     }
 
-    // Restaurant filter
     var restLinks = document.querySelectorAll('.restaurant-name, .item-info');
     restLinks.forEach(function (el) {
         el.addEventListener('click', function () {
@@ -196,12 +286,57 @@ document.addEventListener('DOMContentLoaded', function () {
             galleryItems.forEach(function (item) {
                 item.style.display = (item.querySelector('.item-info span').textContent === rest) ? 'block' : 'none';
             });
-
             categoryLinks.forEach(function (link) { link.classList.remove('active'); });
             var allLink = document.querySelector('.category-link[data-category="All"]');
             if (allLink) allLink.classList.add('active');
         });
     });
+
+    (function restoreFromSession() {
+        var cartItemsStored = sessionStorage.getItem('cartItems') || '';
+        var totalStored = sessionStorage.getItem('totalAmount') || '';
+        var fromStored = sessionStorage.getItem('from') || '';
+        if (orderedSpan) orderedSpan.textContent = cartItemsStored;
+        if (fromSpan) fromSpan.textContent = fromStored;
+        if (totalSpan) totalSpan.textContent = totalStored;
+    })();
+
 });
 
+/* === MENU TOGGLE WITH HIGHLIGHT SCROLL === */
+document.querySelectorAll('.menu-toggle').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+        var galleryItem = btn.closest('.gallery-item');
+        if (!galleryItem) return;
+        var container = galleryItem.querySelector('.menu-container');
+        if (!container) return;
+        var isOpen = container.style.display !== 'none' && container.style.display !== '';
+        if (isOpen) {
+            container.style.display = 'none';
+            btn.textContent = 'See Menu';
+            return;
+        }
+        container.style.display = 'block';
+        btn.textContent = 'Hide Menu';
 
+        var firstHighlighted = galleryItem.querySelector('.menu-entry.highlight');
+        if (firstHighlighted) {
+            var section = firstHighlighted.closest('.menu-section');
+            var tabName = section ? section.getAttribute('data-tab') : null;
+            if (tabName) {
+                var tabs = galleryItem.querySelectorAll('.menu-tab');
+                tabs.forEach(function (t) {
+                    if (t.getAttribute('data-tab') === tabName) t.classList.add('active');
+                    else t.classList.remove('active');
+                });
+                var sections = galleryItem.querySelectorAll('.menu-section');
+                sections.forEach(function (sec) {
+                    sec.style.display = (sec.getAttribute('data-tab') === tabName) ? 'block' : 'none';
+                });
+            }
+            setTimeout(function () {
+                firstHighlighted.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 80);
+        }
+    });
+});
