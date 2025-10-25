@@ -34,6 +34,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
  shuffleGallery(); // Shuffle early
 
+
+
+
+ 
     // Category filtering
     categoryLinks.forEach(function (link) {
         link.addEventListener('click', function () {
@@ -47,6 +51,8 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
     });
+
+
 
     // Search bar filtering
     if (searchBar) {
@@ -205,4 +211,58 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
+// Category scroll buttons
+const prevBtn = document.querySelector('.cat-btn.prev');
+const nextBtn = document.querySelector('.cat-btn.next');
+const categoriesContainer = document.querySelector('.categories');
+const categoryLinksArr = Array.from(document.querySelectorAll('.category-link'));
 
+// Width of one category (including margin)
+let categoryWidth = categoryLinksArr[0].offsetWidth + 10; // 10 = left + right margin
+
+prevBtn.addEventListener('click', () => {
+    categoriesContainer.scrollBy({ left: -categoryWidth, behavior: 'smooth' });
+});
+
+nextBtn.addEventListener('click', () => {
+    categoriesContainer.scrollBy({ left: categoryWidth, behavior: 'smooth' });
+});
+
+// Keep your existing category click logic
+categoryLinksArr.forEach(link => {
+    link.addEventListener('click', function() {
+        categoryLinksArr.forEach(l => l.classList.remove('active'));
+        this.classList.add('active');
+        const selectedCategory = this.getAttribute('data-category');
+
+        galleryItems.forEach(item => {
+            const itemCategory = item.getAttribute('data-category') || '';
+            const show = selectedCategory === 'All' || itemCategory.split(' ').indexOf(selectedCategory) !== -1;
+            item.style.display = show ? 'block' : 'none';
+        });
+    });
+});
+
+
+
+// Swipe support for touchscreens
+let isDragging = false;
+let startX;
+let scrollLeft;
+
+categoriesContainer.addEventListener('touchstart', (e) => {
+    isDragging = true;
+    startX = e.touches[0].pageX - categoriesContainer.offsetLeft;
+    scrollLeft = categoriesContainer.scrollLeft;
+});
+
+categoriesContainer.addEventListener('touchmove', (e) => {
+    if (!isDragging) return;
+    const x = e.touches[0].pageX - categoriesContainer.offsetLeft;
+    const walk = (startX - x); // scroll-fastness
+    categoriesContainer.scrollLeft = scrollLeft + walk;
+});
+
+categoriesContainer.addEventListener('touchend', () => {
+    isDragging = false;
+});
