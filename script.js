@@ -266,3 +266,24 @@ categoriesContainer.addEventListener('touchmove', (e) => {
 categoriesContainer.addEventListener('touchend', () => {
     isDragging = false;
 });
+
+
+document.querySelector("form").addEventListener("submit", function(e) {
+  e.preventDefault();
+  const form = e.target;
+
+  fetch(form.action, {
+    method: "POST",
+    body: new FormData(form)
+  }).then(response => {
+    if (response.ok) {
+      alert("✅ Message sent successfully!");
+      window.location.href = "https://scoobdelivery.com";
+    } else {
+      alert("❌ There was a problem sending your message. Please try again.");
+    }
+  }).catch(() => {
+    alert("⚠️ Network error. Please check your connection.");
+  });
+});
+
