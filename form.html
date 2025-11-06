@@ -31,60 +31,98 @@
 
 
 
+
 <!-- Form Page -->
-<div  id="formPage"  style="display: flex; justify-content: center; align-items: center; height: 100vh;">
-    <div class="form-container">
-        <h3 style="text-align: center; color: white;">Fill delivery details</h3>
-     <form action="https://api.web3forms.com/submit" method="POST">
-  <input type="hidden" name="access_key" value="8e398483-cdb4-4b40-a7fd-bc10b07a0d06">
-            <label style="display: none;" for="restaurantList">From (Restaurant List):</label>
-            <textarea style="display: none;" id="restaurantList" rows="4" style="width: 100%; background-color: #444; color: white; margin-bottom: 10px;"></textarea>
-            
+<div id="formPage" style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+  <div class="form-container">
+    <h3 style="text-align: center; color: white;">Fill delivery details</h3>
 
-<!-- Visible textareas for user to see cart info -->
-<label style="display: none;" for="cartItemsVisible">Items Ordered:</label>
-<textarea style="display: none;" id="cartItemsVisible"  style="width: 100%; background-color: #444; color: white; margin-bottom: 15px;"></textarea>
+    <form id="scoobForm">
+      <input type="hidden" name="access_key" value="8e398483-cdb4-4b40-a7fd-bc10b07a0d06">
 
-<label style="display: none;" for="restaurantList">From (Restaurant List with Duplicates):</label>
-<textarea style="display: none;" id="restaurantList"  style="width: 100%; background-color: #444; color: white; margin-bottom: 15px;"></textarea>
+      <!-- Hidden fields -->
+      <textarea style="display: none;" id="restaurantList" rows="4"></textarea>
+      <textarea style="display: none;" id="cartItemsVisible"></textarea>
+      <textarea style="display: none;" id="totalVisible"></textarea>
 
-<label style="display: none;" for="totalVisible">Total:</label>
-<textarea style="display: none;" id="totalVisible"  style="width: 100%; background-color: #444; color: white;"></textarea>
+      <div class="inputs">
+        <input type="hidden" name="cartItems" id="cartItemsInput">
+        <input type="hidden" name="total" id="totalInput">
+        <input type="hidden" name="from" id="fromInput">
+        <textarea style="display: none;" id="userInputField" name="userInput"></textarea>
 
+        <input type="text" name="name" placeholder="name" required style="width: 340px"><br>
+        <input type="tel" name="phone" pattern="\+?[0-9]{10,}" placeholder="phone #" required style="width: 340px"><br>
+        <textarea name="missingItem" rows="3" placeholder="add written order" style="width: 340px"></textarea><br>
+        <input name="deliverytime" placeholder="Delivered ASAP or At --:--" required style="width: 340px"><br>
+      </div>
 
+      <button type="button" id="autoLocate" name="Auto-Locate">
+        <pre>Auto-Locate    or   Use Map Below</pre>
+      </button>
 
+      <div id="map" style="height: 300px; margin-bottom: 20px;" name="map container"></div>
 
-            <div class="inputs" > 
-    
-    
-   
+      <input type="text" id="coordinates" name="coordinates"
+        placeholder="location appears here. locating error? Use googlemaps👀" required
+        style="width: 345px; color: black;">
 
+      <div class="inputsColor">
+        <hr>
+        <textarea name="download" placeholder="order: movies | series | games/apps"
+          style="width: 150px; height: 30px; background-color: black;"></textarea>
+        <input class="custom-placeholder" type="text" name="transfer"
+          placeholder="via: cd | flash | xender|SHAREit | usb" style="max-width: 250px;"><br>
+      </div>
 
+      <input type="checkbox" name="botcheck" class="hidden" style="display:none;">
 
-            <input type="hidden" name="cartItems" name="cartItems" id="cartItemsInput" >
-            <input type="hidden" name="total" id="totalInput" >
-            <input type="hidden" name="from" id="fromInput" >
-            <textarea style="display: none;"  id="userInputField" name="userInput"></textarea>
-            <input type="text" name="name" placeholder="name" required style="width: 340px"><br>
-            <input type="tel" name="phone" pattern="\+?[0-9]{10,1}" placeholder="phone #" required style="width: 340px"><br>
-            <textarea name="missingItem" rows="3" placeholder="add written order" style="width: 340px"></textarea><br>
-            <input name="deliverytime" rows="3" placeholder="Delivered ASAP or At --:--" required style="width: 340px"><br>
-</div>
-            <button type="button" id="autoLocate" name="Auto-Locate"><pre>Auto-Locate    or   Use Map Below</pre></button>
-            <div id="map" style="height: 300px !important; margin-bottom: 20px !important;" required name="map container"></div>
-            <input type="text" id="coordinates" name="coordinates" placeholder= "location appears here. locating error? Use googlemaps👀" required  style="width: 345px; color: black; ">
-<div class="inputsColor">                                                                                  
-            <hr>
-            <textarea name="download" placeholder="order: movies | series | games/apps" style="width: 150px; height: 30px; background-color: black;" ></textarea>
-            <input class="custom-placeholder" type="text" name="transfer" placeholder="via: cd | flash | xender|SHAREit | usb" style="max-width: 250px;"  !important><br>
-</div>
-<br>
-         <input type="checkbox" name="botcheck" class="hidden" style="display:none;">
+      <button type="submit" id="submitOrder">Submit Order</button>
+    </form>
 
-             <button type="submit" name="submit button">Submit Order</button>
-        </form>
+    <!-- Success message box -->
+    <div id="thankYouMessage"
+      style="display:none; text-align:center; color:white; background:#111; padding:20px; border-radius:10px; margin-top:20px;">
+      <h3>Thank you!</h3>
+      <p>Soon Scoob will contact you.</p>
+      <p>Need help? <strong>0782 887 188</strong></p>
     </div>
+  </div>
 </div>
+
+<script>
+document.getElementById('scoobForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+
+  const form = e.target;
+  const formData = new FormData(form);
+
+  // Disable submit button to prevent double-click
+  const submitBtn = document.getElementById('submitOrder');
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Sending...';
+
+  try {
+    const response = await fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      body: formData
+    });
+
+    if (response.ok) {
+      form.style.display = 'none'; // hide the form
+      document.getElementById('thankYouMessage').style.display = 'block'; // show thank you message
+    } else {
+      alert("Something went wrong. Please try again.");
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Submit Order';
+    }
+  } catch (error) {
+    alert("Connection error. Please check your internet and try again.");
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Submit Order';
+  }
+});
+</script>
 
 <script>
 
@@ -230,5 +268,6 @@ window.addEventListener('load', function() {
 
 </body>
 </html>
+
 
 
