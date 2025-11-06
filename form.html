@@ -90,6 +90,8 @@
   </div>
 </div>
 
+
+
 <script>
 document.getElementById('scoobForm').addEventListener('submit', async function(e) {
   e.preventDefault();
@@ -112,20 +114,17 @@ document.getElementById('scoobForm').addEventListener('submit', async function(e
       form.style.display = 'none'; // hide the form
       document.getElementById('thankYouMessage').style.display = 'block'; // show thank you message
     } else {
-      const text = await response.text();
-      alert("Error from server: " + response.status + " — " + text.slice(0, 120));
+      alert("network error. Please try again in a sec. Or contact Scoob - 0782887188");
       submitBtn.disabled = false;
       submitBtn.textContent = 'Submit Order';
     }
   } catch (error) {
-    alert("Connection error: " + error.message + ". Please check your internet and try again.");
+    alert("Connection error. Please check your internet and try again.");
     submitBtn.disabled = false;
     submitBtn.textContent = 'Submit Order';
   }
 });
 </script>
-
-
 
     
 
@@ -273,6 +272,7 @@ window.addEventListener('load', function() {
 
 </body>
 </html>
+
 
 
 
