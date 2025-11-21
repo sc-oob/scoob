@@ -368,23 +368,7 @@ display: flex;
                 
             }
 
-            .info-container {
-                position: relative;
-                bottom: 0;
-                left: 0;
-                transform: translateX(-75%);
-                max-width: 230px;
-                max-height: auto;
-                background-color: #0f0f0f;
-
-                padding: 10px;
-                color: #ffffff;
-                border-radius: 0px;
-                z-index: 100;
-                margin-bottom: 1%;
-                display: none;
-            }
-
+          
             .cart {
                 width: 25%;
                 background-color: #111111;
@@ -553,4 +537,38 @@ display: flex;
  
     color: #000000 !important;
 
+}
+
+
+
+
+.info-container {
+    position: relative;
+    bottom: 0;
+    left: 0;
+    transform: translateX(0);  /* remove strong left shift */
+    
+    width: 100%;               /* NEW – full width inside gallery-item */
+    max-width: none;           /* NEW – remove forced narrow width */
+
+    max-height: 80vh;
+    overflow-y: auto;
+
+    background-color: #02000c;
+
+    padding: 10px;
+    color: #ffffff;
+    border-radius: 0px;
+    z-index: 100;
+    margin-bottom: 1%;
+    display: none;
+}
+
+/* Make the textarea + button stick to the top during scroll */
+.sticky-top-controls {
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    background-color: #000000; /* same as the info container */
+    padding-bottom: 8px;
 }
