@@ -1,4 +1,5 @@
 
+
 document.addEventListener('DOMContentLoaded', function () {
 
     // Polyfill for older browsers (NodeList.forEach)
@@ -167,7 +168,7 @@ document.addEventListener('DOMContentLoaded', function () {
             updateCartUI();
         });
     });
-
+   
    // Moving cart animation
     if (cartImg) {
         setTimeout(function () {
@@ -280,10 +281,10 @@ document.querySelector("form").addEventListener("submit", function(e) {
       alert("✅ Message sent successfully!");
       window.location.href = "https://scoobdelivery.com";
     } else {
-      alert("❌ There was a problem sending your message. Please try again.");
+      alert("❌ There was an error sending your message. Please try again|report @ 0782887188.");
     }
   }).catch(() => {
-    alert("⚠️ Network error. Please check your connection.");
+    alert("⚠️ Network error. Please check your connection|message @ 0782887188.");
   });
 });
 
