@@ -572,3 +572,85 @@ display: flex;
     background-color: #000000; /* same as the info container */
     padding-bottom: 8px;
 }
+
+
+/* ----- Info tabs (insert at end of style.css) ----- */
+.info-tabs-wrapper {
+    display: flex;
+    position: sticky;
+    top: 0;
+    align-items: center;
+    gap: 6px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 6px;
+    padding: 6px 4px;
+    background: black; /* let .info-container background show through */
+}
+
+/* scroll buttons left/right */
+.info-tab-scroll-btn {
+    min-width: 34px;
+    height: 34px;
+    border: none;
+    background: #242424;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 6px;
+    font-weight: 700;
+    flex: 0 0 auto;
+}
+
+/* the scrollable tab row */
+.info-tabs {
+    display: flex;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    gap: 6px;
+    scroll-behavior: smooth;
+    padding: 4px 6px;
+    flex: 1 1 auto;
+}
+
+/* individual tab */
+.info-tab {
+    flex: 0 0 auto;
+    padding: 6px 10px;
+    border-radius: 8px;
+    background: #0b0b0b;
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.04);
+    cursor: pointer;
+    white-space: nowrap;
+    font-size: 0.95rem;
+}
+
+/* active tab style */
+.info-tab.active {
+    background: #720000;
+    color: #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.6);
+    transform: translateY(-2px);
+}
+
+/* hide native scrollbar while keeping scroll (visual preference) */
+.info-tabs::-webkit-scrollbar { height: 8px; }
+.info-tabs::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.07); border-radius: 6px; }
+.info-tabs::-webkit-scrollbar-track { background: transparent; }
+
+.info-tabs.dragging { cursor: grabbing; cursor: -webkit-grabbing; }
+
+/* smaller screens: reduce tab padding */
+@media (max-width: 480px) {
+    .info-tab { padding: 6px 8px; font-size: 0.9rem; }
+    .info-tab-scroll-btn { min-width: 30px; height: 30px; }
+}
+
+/* keep tabs visually above sticky controls */
+.info-tabs-wrapper { z-index: 998; }
+
+/* ensure info container has enough top padding so tabs don't overlay content */
+.info-container { padding-top: 0px; }
+
+/* ensure the sticky-top-controls (textarea+button) remains sticky below the tabs */
+.sticky-top-controls { position: sticky; top: 44px; z-index: 999; background: #000; padding-top: 6px; }
