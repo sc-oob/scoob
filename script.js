@@ -1,5 +1,4 @@
-
-
+// script.js
 document.addEventListener('DOMContentLoaded', function () {
 
     // Polyfill for older browsers (NodeList.forEach)
@@ -32,14 +31,9 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    shuffleGallery(); // Shuffle early
 
- shuffleGallery(); // Shuffle early
-
-
-
-
- 
-    // Category filtering
+    // ---------- Category filtering ----------
     categoryLinks.forEach(function (link) {
         link.addEventListener('click', function () {
             categoryLinks.forEach(function (l) { l.classList.remove('active'); });
@@ -53,9 +47,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-
-
-    // Search bar filtering
+    // ---------- Search bar ----------
     if (searchBar) {
         searchBar.addEventListener('input', function () {
             var query = this.value.toLowerCase().trim();
@@ -72,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (matches) visibleCount++;
             });
 
-            noItemsFound.style.display = visibleCount === 0 ? 'block' : 'none';
+            if (noItemsFound) noItemsFound.style.display = visibleCount === 0 ? 'block' : 'none';
 
             // Reset category highlight
             categoryLinks.forEach(function (link) { link.classList.remove('active'); });
@@ -81,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Info toggle buttons
+    // ---------- Info toggle ----------
     var infoButtons = document.querySelectorAll('.more-info');
     infoButtons.forEach(function (btn) {
         btn.addEventListener('click', function () {
@@ -92,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Add to cart
+    // ---------- Cart logic ----------
     var addToCartBtns = document.querySelectorAll('.add-to-cart');
     var orderedSpan = document.querySelector('.order-info p:nth-child(1) span');
     var fromSpan = document.querySelector('.order-info p:nth-child(2) span');
@@ -108,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         total = cartItems.reduce(function (sum, item) {
-            return sum + item.priceAmount * item.quantity;
+            return sum + (item.priceAmount || 0) * item.quantity;
         }, 0);
 
         if (orderedSpan) orderedSpan.textContent = ordered.join(', ');
@@ -133,7 +125,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     item.quantity--;
                     if (item.quantity <= 0) {
                         cartItems.splice(i, 1);
-                        removeBtn.parentElement.removeChild(removeBtn);
+                        // remove button safely
+                        if (removeBtn.parentElement) removeBtn.parentElement.removeChild(removeBtn);
                     }
                     break;
                 }
@@ -148,8 +141,12 @@ document.addEventListener('DOMContentLoaded', function () {
             var item = this.closest('.gallery-item');
             var itemName = (item.querySelector('.image-name-box') || {}).textContent;
             var restName = (item.querySelector('.item-info span') || {}).textContent;
-            var priceText = (item.querySelector('.info-container pre') || {}).textContent;
-            var price = parseInt((priceText.match(/Price:\s*(\d+(?:,\d{3})*)/) || [])[1].replace(',', '') || 0, 10);
+            var priceText = (item.querySelector('.info-container pre') || {}).textContent || '';
+            var priceMatch = priceText.match(/Price:\s*([\d,]+)/i);
+            var price = 0;
+            if (priceMatch && priceMatch[1]) {
+                price = parseInt(priceMatch[1].replace(/,/g, ''), 10) || 0;
+            }
 
             var found = false;
             for (var i = 0; i < cartItems.length; i++) {
@@ -168,8 +165,8 @@ document.addEventListener('DOMContentLoaded', function () {
             updateCartUI();
         });
     });
-   
-   // Moving cart animation
+
+    // ---------- Moving cart animation ----------
     if (cartImg) {
         setTimeout(function () {
             cartImg.style.left = '100px';
@@ -179,7 +176,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 1000);
     }
 
-    // Final order button click
+    // ---------- Final order ----------
     if (orderBtn) {
         orderBtn.addEventListener('click', function () {
             // store user textarea input
@@ -195,7 +192,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Restaurant filter
+    // ---------- Restaurant filter ----------
     var restLinks = document.querySelectorAll('.restaurant-name, .item-info');
     restLinks.forEach(function (el) {
         el.addEventListener('click', function () {
@@ -209,66 +206,67 @@ document.addEventListener('DOMContentLoaded', function () {
             if (allLink) allLink.classList.add('active');
         });
     });
-});
 
+    // ---------- Category scroll buttons (top categories bar) ----------
+    (function initCategoryScroller() {
+        const prevBtn = document.querySelector('.cat-btn.prev');
+        const nextBtn = document.querySelector('.cat-btn.next');
+        const categoriesContainer = document.querySelector('.categories');
+        const categoryLinksArr = Array.from(document.querySelectorAll('.category-link'));
+        if (!categoriesContainer) return;
+        if (categoryLinksArr.length === 0) return;
 
-// Category scroll buttons
-const prevBtn = document.querySelector('.cat-btn.prev');
-const nextBtn = document.querySelector('.cat-btn.next');
-const categoriesContainer = document.querySelector('.categories');
-const categoryLinksArr = Array.from(document.querySelectorAll('.category-link'));
+        // Width of one category (approx)
+        let categoryWidth = categoryLinksArr[0].offsetWidth + 10; // margin guess
 
-// Width of one category (including margin)
-let categoryWidth = categoryLinksArr[0].offsetWidth + 10; // 10 = left + right margin
+        if (prevBtn) {
+            prevBtn.addEventListener('click', () => {
+                categoriesContainer.scrollBy({ left: -categoryWidth, behavior: 'smooth' });
+            });
+        }
+        if (nextBtn) {
+            nextBtn.addEventListener('click', () => {
+                categoriesContainer.scrollBy({ left: categoryWidth, behavior: 'smooth' });
+            });
+        }
 
-prevBtn.addEventListener('click', () => {
-    categoriesContainer.scrollBy({ left: -categoryWidth, behavior: 'smooth' });
-});
+        // Keep your existing category click logic
+        categoryLinksArr.forEach(link => {
+            link.addEventListener('click', function() {
+                categoryLinksArr.forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+                const selectedCategory = this.getAttribute('data-category');
 
-nextBtn.addEventListener('click', () => {
-    categoriesContainer.scrollBy({ left: categoryWidth, behavior: 'smooth' });
-});
-
-// Keep your existing category click logic
-categoryLinksArr.forEach(link => {
-    link.addEventListener('click', function() {
-        categoryLinksArr.forEach(l => l.classList.remove('active'));
-        this.classList.add('active');
-        const selectedCategory = this.getAttribute('data-category');
-
-        galleryItems.forEach(item => {
-            const itemCategory = item.getAttribute('data-category') || '';
-            const show = selectedCategory === 'All' || itemCategory.split(' ').indexOf(selectedCategory) !== -1;
-            item.style.display = show ? 'block' : 'none';
+                galleryItems.forEach(item => {
+                    const itemCategory = item.getAttribute('data-category') || '';
+                    const show = selectedCategory === 'All' || itemCategory.split(' ').indexOf(selectedCategory) !== -1;
+                    item.style.display = show ? 'block' : 'none';
+                });
+            });
         });
-    });
-});
 
+        // Swipe support for touchscreens
+        let isDragging = false;
+        let startX;
+        let scrollLeft;
 
+        categoriesContainer.addEventListener('touchstart', (e) => {
+            isDragging = true;
+            startX = e.touches[0].pageX - categoriesContainer.offsetLeft;
+            scrollLeft = categoriesContainer.scrollLeft;
+        });
 
-// Swipe support for touchscreens
-let isDragging = false;
-let startX;
-let scrollLeft;
+        categoriesContainer.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            const x = e.touches[0].pageX - categoriesContainer.offsetLeft;
+            const walk = (startX - x); // scroll-fastness
+            categoriesContainer.scrollLeft = scrollLeft + walk;
+        });
 
-categoriesContainer.addEventListener('touchstart', (e) => {
-    isDragging = true;
-    startX = e.touches[0].pageX - categoriesContainer.offsetLeft;
-    scrollLeft = categoriesContainer.scrollLeft;
-});
-
-categoriesContainer.addEventListener('touchmove', (e) => {
-    if (!isDragging) return;
-    const x = e.touches[0].pageX - categoriesContainer.offsetLeft;
-    const walk = (startX - x); // scroll-fastness
-    categoriesContainer.scrollLeft = scrollLeft + walk;
-});
-
-categoriesContainer.addEventListener('touchend', () => {
-    isDragging = false;
-});
-
-
+        categoriesContainer.addEventListener('touchend', () => {
+            isDragging = false;
+        });
+    })();
     // ---------- NEW (fixed): Auto-generate tabs for each .info-container ----------
     (function initInfoTabs() {
         function el(tag, cls, html) {
@@ -487,10 +485,7 @@ categoriesContainer.addEventListener('touchend', () => {
 
 
 
-
-
-
-
+        
 document.querySelector("form").addEventListener("submit", function(e) {
   e.preventDefault();
   const form = e.target;
@@ -509,5 +504,3 @@ document.querySelector("form").addEventListener("submit", function(e) {
     alert("⚠️ Network error. Please check your connection|message @ 0782887188.");
   });
 });
-
-
