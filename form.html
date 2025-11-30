@@ -1,280 +1,172 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>scoob</title>
-  
-   <!-- link:-->
-    <link rel="icon" href="favw.png" type="image/png">
-  
-   <!--Leaflet CSS -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-<!-- Leaflet Control Geocoder CSS -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scoob Delivery</title>
+  <link rel="icon" href="favw.png" type="image/png" />
 
-<!-- Leaflet JS -->
-<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-<!-- Leaflet Control Geocoder JS -->
-<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
-  <link rel="stylesheet" href="style.css">
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
 
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-
-<header>
+  <header>
     <div class="logo">
-        <img src="favw.png" alt="Logo" width="80">
-        <span>scoob</span>
+      <img src="favw.png" alt="Logo" width="80" />
+      <span>scoob</span>
     </div>
-</header>
+  </header>
 
+  <div id="formPage" style="display:flex;justify-content:center;align-items:center;min-height:100vh;">
+    <div class="form-container">
+      <h3 style="text-align:center;color:white;">delivery details</h3>
 
+      <form id="scoobForm">
+        <input type="hidden" name="access_key" value="8e398483-cdb4-4b40-a7fd-bc10b07a0d06" />
 
+        <!-- Hidden textareas must include name -->
+        <textarea id="restaurantList" name="restaurantList" style="display:none;"></textarea>
+        <textarea id="cartItemsVisible" name="cartItemsVisible" style="display:none;"></textarea>
+        <textarea id="totalVisible" name="totalVisible" style="display:none;"></textarea>
 
-<!-- Form Page -->
-<div id="formPage" style="display: flex; justify-content: center; align-items: center; height: 100vh;">
-  <div class="form-container">
-    <h3 style="text-align: center; color: white;">delivery details</h3>
+        <div class="inputs">
+          <input type="hidden" name="cartItems" id="cartItemsInput" />
+          <input type="hidden" name="total" id="totalInput" />
+          <input type="hidden" name="from" id="fromInput" />
+          <textarea style="display:none;" id="userInputField" name="userInput"></textarea>
 
-    <form id="scoobForm">
-      <input type="hidden" name="access_key" value="8e398483-cdb4-4b40-a7fd-bc10b07a0d06">
+          <input type="text" name="name" placeholder="name" required style="width:340px" /><br />
+          <input type="tel" name="phone" pattern="\+?[0-9]{10,}" placeholder="phone #" required style="width:340px" /><br />
+          <textarea name="missingItem" rows="3" placeholder="add written order" style="width:340px"></textarea><br />
+          <input name="deliverytime" placeholder="Delivered ASAP or At --:--" required style="width:340px" /><br />
+        </div>
 
-      <!-- Hidden fields -->
-      <textarea style="display: none;" id="restaurantList" rows="4"></textarea>
-      <textarea style="display: none;" id="cartItemsVisible"></textarea>
-      <textarea style="display: none;" id="totalVisible"></textarea>
+        <button type="button" id="autoLocate" name="Auto-Locate">
+          <pre>Auto-Locate    or   Use Map Below</pre>
+        </button>
 
-      <div class="inputs">
-        <input type="hidden" name="cartItems" id="cartItemsInput">
-        <input type="hidden" name="total" id="totalInput">
-        <input type="hidden" name="from" id="fromInput">
-        <textarea style="display: none;" id="userInputField" name="userInput"></textarea>
+        <div id="map" style="height:300px;margin-bottom:20px;"></div>
 
-        <input type="text" name="name" placeholder="name" required style="width: 340px"><br>
-        <input type="tel" name="phone" pattern="\+?[0-9]{10,}" placeholder="phone #" required style="width: 340px"><br>
-        <textarea name="missingItem" rows="3" placeholder="add written order" style="width: 340px"></textarea><br>
-        <input name="deliverytime" placeholder="Delivered ASAP or At --:--" required style="width: 340px"><br>
+        <input type="text" id="coordinates" name="coordinates" placeholder="location appears here. locating error? Use googlemaps👀" required style="width:345px;color:black;" />
+
+        <div class="inputsColor">
+          <hr />
+          <textarea name="download" placeholder="order: movies | series | games/apps" style="width:150px;height:30px;background:black;"></textarea>
+          <input class="custom-placeholder" type="text" name="transfer" placeholder="via: cd | flash | xender | usb" style="max-width:250px;" /><br />
+        </div>
+
+        <input type="checkbox" name="botcheck" class="hidden" style="display:none;" />
+
+        <button type="submit" id="submitOrder">Submit Order</button>
+      </form>
+
+      <div id="thankYouMessage" style="display:none;text-align:center;color:white;background:#111;padding:20px;border-radius:10px;margin-top:20px;">
+        <h3>Thank you!</h3>
+        <p>Soon Scoob will contact you.</p>
+        <p>Need help? <strong>0782 887 188</strong></p>
       </div>
-
-      <button type="button" id="autoLocate" name="Auto-Locate">
-        <pre>Auto-Locate    or   Use Map Below</pre>
-      </button>
-
-      <div id="map" style="height: 300px; margin-bottom: 20px;" name="map container"></div>
-
-      <input type="text" id="coordinates" name="coordinates"
-        placeholder="location appears here. locating error? Use googlemaps👀" required
-        style="width: 345px; color: black;">
-
-      <div class="inputsColor">
-        <hr>
-        <textarea name="download" placeholder="order: movies | series | games/apps"
-          style="width: 150px; height: 30px; background-color: black;"></textarea>
-        <input class="custom-placeholder" type="text" name="transfer"
-          placeholder="via: cd | flash | xender|SHAREit | usb" style="max-width: 250px;"><br>
-      </div>
-
-      <input type="checkbox" name="botcheck" class="hidden" style="display:none;">
-
-      <button type="submit" id="submitOrder">Submit Order</button>
-    </form>
-
-    <!-- Success message box -->
-    <div id="thankYouMessage"
-      style="display:none; text-align:center; color:white; background:#111; padding:20px; border-radius:10px; margin-top:20px;">
-      <h3>Thank you!</h3>
-      <p>Soon Scoob will contact you.</p>
-      <p>Need help? <strong>0782 887 188</strong></p>
     </div>
   </div>
-</div>
 
+  <!-- Leaflet Scripts -->
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
 
+  <script>
+    document.getElementById("scoobForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
 
-<script>
-document.getElementById('scoobForm').addEventListener('submit', async function(e) {
-  e.preventDefault();
+      const form = e.target;
+      const formData = new FormData(form);
+      const submitBtn = document.getElementById("submitOrder");
 
-  const form = e.target;
-  const formData = new FormData(form);
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Sending...";
 
-  // Disable submit button to prevent double-click
-  const submitBtn = document.getElementById('submitOrder');
-  submitBtn.disabled = true;
-  submitBtn.textContent = 'Sending...';
+      try {
+        const response = await fetch("https://api.web3forms.com/submit", {
+          method: "POST",
+          body: formData,
+        });
 
-  try {
-    const response = await fetch("https://api.web3forms.com/submit", {
-      method: "POST",
-      body: formData
+        if (response.ok) {
+          form.style.display = "none";
+          document.getElementById("thankYouMessage").style.display = "block";
+        } else {
+          alert("Network error. Please try again or contact Scoob - 0782887188");
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Submit Order";
+        }
+      } catch (error) {
+        alert("Connection error. Check your internet and try again.");
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Submit Order";
+      }
     });
+  </script>
 
-    if (response.ok) {
-      form.style.display = 'none'; // hide the form
-      document.getElementById('thankYouMessage').style.display = 'block'; // show thank you message
-    } else {
-      alert("network error. Please try again in a sec. Or contact Scoob - 0782887188");
-      submitBtn.disabled = false;
-      submitBtn.textContent = 'Submit Order';
+  <script>
+    window.addEventListener("load", function () {
+      const cartItems = sessionStorage.getItem("cartItems") || "";
+      const totalAmount = sessionStorage.getItem("totalAmount") || "";
+      const from = sessionStorage.getItem("from") || "";
+      const userInputs = sessionStorage.getItem("userInputs") || "";
+
+      document.getElementById("cartItemsInput").value = cartItems;
+      document.getElementById("totalInput").value = totalAmount;
+      document.getElementById("fromInput").value = from;
+      document.getElementById("userInputField").value = userInputs;
+
+      document.getElementById("cartItemsVisible").value = cartItems;
+      document.getElementById("totalVisible").value = totalAmount;
+      document.getElementById("restaurantList").value = from;
+    });
+  </script>
+
+  <script>
+    let marker;
+
+    const map = L.map("map").setView([-3.375, 36.6899], 13);
+
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: "&copy; OpenStreetMap contributors",
+    }).addTo(map);
+
+    function setMarker(latlng) {
+      if (marker) map.removeLayer(marker);
+      marker = L.marker(latlng).addTo(map);
+      document.getElementById("coordinates").value = `Latitude: ${latlng.lat.toFixed(5)}, Longitude: ${latlng.lng.toFixed(5)}`;
     }
-  } catch (error) {
-    alert("Connection error. Please check your internet and try again.");
-    submitBtn.disabled = false;
-    submitBtn.textContent = 'Submit Order';
-  }
-});
-</script>
 
-    
+    map.on("click", (e) => setMarker(e.latlng));
 
-<script>
-
-// When the child page (form.html) loads, retrieve the cart data
-window.addEventListener('load', function() {
-    const cartItems = sessionStorage.getItem('cartItems');
-    const totalAmount = sessionStorage.getItem('totalAmount');
-    const from = sessionStorage.getItem('from');
-    const userInputs = sessionStorage.getItem('userInputs')
-
-    // Populate the form with the cart data
-    document.getElementById('cartItemsInput').value = cartItems;
-    document.getElementById('totalInput').value = totalAmount;
-    document.getElementById('fromInput').value = from;
-    document.getElementById('userInputField').value = userInputs;
-    
-    // Optionally, initialize the map on the child page if needed
-    recalculateMapSize();  // Ensures the map resizes properly when the page loads
-});
-
-
-</script>
-
-
-<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-<script src="script.js"></script>
-
-
-<!-- Include required styles/scripts for Leaflet and Geocoder BEFORE this script -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
-<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
-
-<script>
-let marker;
-
-// Initialize the map centered on Arusha
-const map = L.map('map').setView([-3.3750, 36.6899], 13);
-
-// Add OpenStreetMap tile layer
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-}).addTo(map);
-
-// Helper: Set marker and update coordinate input
-function setMarker(latlng) {
-    if (marker) {
-        map.removeLayer(marker);
-    }
-    marker = L.marker(latlng).addTo(map);
-    const coordText = `Latitude: ${latlng.lat.toFixed(5)}, Longitude: ${latlng.lng.toFixed(5)}`;
-    document.getElementById('coordinates').value = coordText;
-    console.log('Marker set at:', coordText);
-}
-
-// Handle manual map click
-map.on('click', function(e) {
-    setMarker(e.latlng);
-});
-
-// Auto-locate the user's position
-document.getElementById('autoLocate').addEventListener('click', function () {
-    if (window.isSecureContext && navigator.geolocation) {
+    document.getElementById("autoLocate").addEventListener("click", () => {
+      if (window.isSecureContext && navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
-            function (position) {
-                const latlng = {
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude
-                };
-                map.setView(latlng, 15);
-                setMarker(latlng);
-            },
-            function (error) {
-                let message = '';
-                switch (error.code) {
-                    case error.PERMISSION_DENIED:
-                        message = 'Location access denied. Please allow GPS or use the map manually.';
-                        break;
-                    case error.POSITION_UNAVAILABLE:
-                        message = 'Location unavailable. Turn on GPS or use the map.';
-                        break;
-                    case error.TIMEOUT:
-                        message = 'Turn on Location - Try again | manually use map.';
-                        break;
-                    default:
-                        message = 'Unable to detect location. Use the map to select area.';
-                        break;
-                }
-                alert(message);
-            },
-            {
-                enableHighAccuracy: false,
-                timeout: 10000,
-                maximumAge: 30000
-            }
+          (pos) => {
+            const latlng = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+            map.setView(latlng, 15);
+            setMarker(latlng);
+          },
+          () => alert("Location error. Please use the map manually."),
+          { timeout: 10000 }
         );
-    } else {
-        alert('Your browser/device may not support Auto-Locate. Please use the map to select location.');
-    }
-});
-
-// Add geocoder search / remove
-L.Control.geocoder({
-    defaultMarkGeocode: false,
-    placeholder: 'Search for location...',
-    errorMessage: 'Location not found.'
-})
-
-// till here
-    
-.on('markgeocode', function(e) {
-    const latlng = e.geocode.center;
-    map.setView(latlng, 15);
-    setMarker(latlng);
-})
-.addTo(map);
-
-// Recalculate map size on load
-window.addEventListener('load', function() {
-    map.invalidateSize();
-});
-</script>
-
-    
-
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // Grab stored data
-        const cartItems = sessionStorage.getItem('cartItems') || '';
-        const total = sessionStorage.getItem('totalAmount') || '';
-        const from = sessionStorage.getItem('from') || '';
-    
-        // Update hidden inputs
-        document.getElementById('cartItemsInput').value = cartItems;
-        document.getElementById('totalInput').value = total;
-        document.getElementById('fromInput').value = from;
-    
-        // Update visible fields
-        document.getElementById('cartItemsVisible').value = cartItems;
-        document.getElementById('totalVisible').value = total;
-        document.getElementById('restaurantList').value = from;
+      } else {
+        alert("Device doesn't support auto-locate. Use map manually.");
+      }
     });
-    </script>
 
+    L.Control.geocoder({ defaultMarkGeocode: false })
+      .on("markgeocode", function (e) {
+        map.setView(e.geocode.center, 15);
+        setMarker(e.geocode.center);
+      })
+      .addTo(map);
+
+    window.addEventListener("load", () => map.invalidateSize());
+  </script>
 </body>
 </html>
-
-
-
-
-
-
