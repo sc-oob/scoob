@@ -269,6 +269,228 @@ categoriesContainer.addEventListener('touchend', () => {
 });
 
 
+    // ---------- NEW (fixed): Auto-generate tabs for each .info-container ----------
+    (function initInfoTabs() {
+        function el(tag, cls, html) {
+            var e = document.createElement(tag);
+            if (cls) e.className = cls;
+            if (html !== undefined) e.innerHTML = html;
+            return e;
+        }
+
+        var infos = document.querySelectorAll('.info-container');
+        infos.forEach(function (info) {
+            var pre = info.querySelector('pre');
+            if (!pre) return;
+
+            // Find spans that represent categories (your markup uses inline style "color:brown")
+            var categorySpans = pre.querySelectorAll('span[style*="color:brown"], span[style*="color: brown"]');
+            if (!categorySpans || categorySpans.length === 0) {
+                // fallback: check all spans and match style attribute text
+                var allSpans = pre.querySelectorAll('span');
+                categorySpans = Array.prototype.filter.call(allSpans, function (s) {
+                    return (s.getAttribute('style') || '').toLowerCase().indexOf('color:brown') !== -1;
+                });
+            }
+            if (!categorySpans || categorySpans.length === 0) return;
+
+            // Create tabs UI
+            var tabsWrapper = el('div', 'info-tabs-wrapper');
+            var leftBtn = el('button', 'info-tab-scroll-btn left', '&lt;');
+            var rightBtn = el('button', 'info-tab-scroll-btn right', '&gt;');
+            var tabsContainer = el('div', 'info-tabs');
+
+            // Insert wrapper before the first child so tabs are top-most inside info
+            var firstChild = info.firstElementChild;
+            if (firstChild) info.insertBefore(tabsWrapper, firstChild);
+            else info.appendChild(tabsWrapper);
+
+            tabsWrapper.appendChild(leftBtn);
+            tabsWrapper.appendChild(tabsContainer);
+            tabsWrapper.appendChild(rightBtn);
+
+            // After inserting, compute tabsWrapper height (needed for offset calculations)
+            // Use getBoundingClientRect later when needed to include dynamic sizes
+
+            // Create tabs
+            Array.prototype.forEach.call(categorySpans, function (span, idx) {
+                var name = span.textContent.trim() || ('Category ' + (idx + 1));
+                var tab = el('button', 'info-tab', name);
+                tab._targetSpan = span;
+                tab._index = idx;
+
+                tab.addEventListener('click', function (ev) {
+                    ev.preventDefault();
+
+                    // ensure info is visible (if it's hidden, make it visible)
+                    if (getComputedStyle(info).display === 'none') {
+                        info.style.display = 'block';
+                    }
+
+                    var target = this._targetSpan;
+                    if (!target) return;
+
+                    // compute offsets using bounding client rects (robust)
+                    var infoRect = info.getBoundingClientRect();
+                    var targetRect = target.getBoundingClientRect();
+                    var tabsRect = tabsWrapper.getBoundingClientRect();
+
+                    // If sticky control exists, include its height (because it will cover top of content)
+                    var sticky = info.querySelector('.sticky-top-controls');
+                    var stickyHeight = sticky ? sticky.getBoundingClientRect().height : 0;
+
+                    // We want to scroll the info element so that target is visible below the tabsWrapper + sticky
+                    // compute desired top relative to info.scrollTop
+                    var delta = targetRect.top - infoRect.top;
+                    var desiredScrollTop = info.scrollTop + delta - tabsRect.height - stickyHeight - 8; // 8px padding
+
+                    // clamp desiredScrollTop
+                    if (desiredScrollTop < 0) desiredScrollTop = 0;
+                    info.scrollTo({ top: desiredScrollTop, behavior: 'smooth' });
+
+                    // mark tab active
+                    var siblings = tabsContainer.querySelectorAll('.info-tab');
+                    siblings.forEach(function (s) { s.classList.remove('active'); });
+                    tab.classList.add('active');
+
+                    // center the tab in the tabs container (smooth)
+                    // compute left offset to center
+                    var tabCenter = tab.offsetLeft + tab.offsetWidth / 2;
+                    var scrollLeft = Math.max(0, tabCenter - tabsContainer.clientWidth / 2);
+                    tabsContainer.scrollTo({ left: scrollLeft, behavior: 'smooth' });
+                });
+
+                tabsContainer.appendChild(tab);
+            });
+
+            // Wire left/right buttons and drag/swipe for tabs container
+            (function wireTabScroller() {
+                var scrollStep = 130;
+                leftBtn.addEventListener('click', function () {
+                    tabsContainer.scrollBy({ left: -scrollStep, behavior: 'smooth' });
+                });
+                rightBtn.addEventListener('click', function () {
+                    tabsContainer.scrollBy({ left: scrollStep, behavior: 'smooth' });
+                });
+
+                // Touch swipe
+                var isDown = false, startX = 0, startScroll = 0;
+                tabsContainer.addEventListener('touchstart', function (e) {
+                    isDown = true;
+                    startX = e.touches[0].pageX;
+                    startScroll = tabsContainer.scrollLeft;
+                }, { passive: true });
+                tabsContainer.addEventListener('touchmove', function (e) {
+                    if (!isDown) return;
+                    var x = e.touches[0].pageX;
+                    var walk = startX - x;
+                    tabsContainer.scrollLeft = startScroll + walk;
+                }, { passive: true });
+                tabsContainer.addEventListener('touchend', function () { isDown = false; });
+
+                // Mouse drag for desktop
+                var dragging = false, mdX = 0, mdScroll = 0;
+                tabsContainer.addEventListener('mousedown', function (e) {
+                    dragging = true;
+                    mdX = e.pageX;
+                    mdScroll = tabsContainer.scrollLeft;
+                    tabsContainer.classList.add('dragging');
+                });
+                window.addEventListener('mouseup', function () { dragging = false; tabsContainer.classList.remove('dragging'); });
+                tabsContainer.addEventListener('mousemove', function (e) {
+                    if (!dragging) return;
+                    var walk = mdX - e.pageX;
+                    tabsContainer.scrollLeft = mdScroll + walk;
+                });
+            })();
+
+            // Scroll observer: highlight currently visible category - optimized to avoid feedback loops
+            (function observeScrollHighlight() {
+                var tabs = tabsContainer.querySelectorAll('.info-tab');
+                if (!tabs || tabs.length === 0) return;
+
+                // Build positions array using offsetTop which is stable for elements in same flow
+                function buildPositions() {
+                    return Array.prototype.map.call(tabs, function (t) {
+                        var s = t._targetSpan;
+                        var top = s ? s.offsetTop : 0; // offsetTop relative to pre
+                        // but we want offset relative to the scrolling container (info)
+                        // calculate cumulative offset from s up to info
+                        var node = s;
+                        var cumulative = 0;
+                        while (node && node !== info) {
+                            cumulative += node.offsetTop || 0;
+                            node = node.offsetParent;
+                        }
+                        return { tab: t, span: s, top: cumulative };
+                    });
+                }
+
+                var positions = buildPositions();
+                // refresh positions when layout changes
+                var resizeObserver = new ResizeObserver(function () {
+                    positions = buildPositions();
+                });
+                resizeObserver.observe(info);
+                // also refresh on images load within info
+                Array.from(info.querySelectorAll('img')).forEach(function(img){
+                    if (!img.complete) img.addEventListener('load', function(){ positions = buildPositions(); });
+                });
+
+                var lastActiveTab = null;
+                var ticking = false;
+                info.addEventListener('scroll', function () {
+                    if (ticking) return;
+                    window.requestAnimationFrame(function () {
+                        var st = info.scrollTop;
+                        // include top offsets from tabsWrapper and sticky controls
+                        var tabsRect = tabsWrapper.getBoundingClientRect();
+                        var sticky = info.querySelector('.sticky-top-controls');
+                        var stickyHeight = sticky ? sticky.getBoundingClientRect().height : 0;
+                        var offset = tabsRect.height + stickyHeight + 12;
+
+                        // find the last position whose top <= st + offset
+                        var active = positions[0] && positions[0].tab;
+                        for (var i = positions.length - 1; i >= 0; i--) {
+                            if (st + offset >= positions[i].top) {
+                                active = positions[i].tab;
+                                break;
+                            }
+                        }
+
+                        if (active && active !== lastActiveTab) {
+                            // update visual state only if changed (prevents repeated layout changes)
+                            tabs.forEach(function (t) { t.classList.remove('active'); });
+                            active.classList.add('active');
+                            // center the new active tab (but only when it actually changed)
+                            var tabCenter = active.offsetLeft + active.offsetWidth / 2;
+                            var scrollLeft = Math.max(0, tabCenter - tabsContainer.clientWidth / 2);
+                            tabsContainer.scrollTo({ left: scrollLeft, behavior: 'smooth' });
+
+                            lastActiveTab = active;
+                        }
+                        ticking = false;
+                    });
+                    ticking = true;
+                });
+
+            })();
+
+            // Make first tab active initially
+            var first = tabsContainer.querySelector('.info-tab');
+            if (first) first.classList.add('active');
+        });
+    })();
+
+
+        }); // end infos.forEach
+
+
+
+
+
+
+
 document.querySelector("form").addEventListener("submit", function(e) {
   e.preventDefault();
   const form = e.target;
@@ -287,4 +509,5 @@ document.querySelector("form").addEventListener("submit", function(e) {
     alert("⚠️ Network error. Please check your connection|message @ 0782887188.");
   });
 });
+
 
