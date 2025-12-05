@@ -221,7 +221,7 @@ display: flex;
 
             .gallery-item {
                 position: relative;
-               
+                max-width: 700px;
                
                 border-radius: 0px;
                 overflow: hidden;
@@ -654,3 +654,4 @@ display: flex;
 
 /* ensure the sticky-top-controls (textarea+button) remains sticky below the tabs */
 .sticky-top-controls { position: sticky; top: 44px; z-index: 999; background: #000; padding-top: 6px; }
+
