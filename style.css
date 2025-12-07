@@ -684,3 +684,30 @@ display: flex;
     }
 }
 
+/* Auto-locate loading state */
+#autoLocate.loading {
+    pointer-events: none;
+    opacity: 0.7;
+    position: relative;
+}
+
+#autoLocate.loading::after {
+    content: "";
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    width: 14px;
+    height: 14px;
+    transform: translateY(-50%);
+    border: 2px solid #fff;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+}
+
+/* Spinner animation */
+@keyframes spin {
+    from { transform: translateY(-50%) rotate(0deg); }
+    to { transform: translateY(-50%) rotate(360deg); }
+}
+
