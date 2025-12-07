@@ -655,3 +655,32 @@ display: flex;
 /* ensure the sticky-top-controls (textarea+button) remains sticky below the tabs */
 .sticky-top-controls { position: sticky; top: 44px; z-index: 999; background: #000; padding-top: 6px; }
 
+/* Fix Leaflet Geocoder search bar on small screens */
+.leaflet-control-geocoder {
+    max-width: 90% !important;
+    width: 90% !important;
+    box-sizing: border-box;
+    background: #a8a8a8 !important;      
+}
+
+.leaflet-control-geocoder-expanded {
+    max-width: 90% !important;
+    width: 90% !important;
+}
+
+/* Ensure the input fits inside mobile width */
+.leaflet-control-geocoder-form input {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box;
+}
+
+/* Adjust position so it's always inside map */
+@media (max-width: 480px) {
+    .leaflet-control-geocoder {
+        top: 10px !important;
+        left: 10px !important;
+        right: auto !important;
+    }
+}
+
