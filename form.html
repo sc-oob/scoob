@@ -171,7 +171,7 @@ document.getElementById("autoLocate").addEventListener("click", () => {
 
         switch (error.code) {
           case error.PERMISSION_DENIED:
-            message = "Please allow Location permission and try again.";
+            message = "Please turn location first or Use map manually.";
             break;
 
           case error.POSITION_UNAVAILABLE:
@@ -221,4 +221,5 @@ document.getElementById("autoLocate").addEventListener("click", () => {
   </script>
 </body>
 </html>
+
 
