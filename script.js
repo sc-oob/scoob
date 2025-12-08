@@ -485,25 +485,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-        
-document.querySelector("form").addEventListener("submit", function(e) {
-  e.preventDefault();
-  const form = e.target;
-
-  fetch(form.action, {
-    method: "POST",
-    body: new FormData(form)
-  }).then(response => {
-    if (response.ok) {
-      alert("✅ Message sent successfully!");
-      window.location.href = "https://scoobdelivery.com";
-    } else {
-      alert("❌ There was an error sending your message. Please try again|report @ 0782887188.");
-    }
-  }).catch(() => {
-    alert("⚠️ Network error. Please check your connection|message @ 0782887188.");
-  });
-});
 
     // ---------- Auto-Locate button loading ----------
     var autoLocateBtn = document.getElementById("autoLocate");
@@ -553,3 +534,24 @@ document.querySelector("form").addEventListener("submit", function(e) {
             );
         });
     }
+
+
+        
+document.querySelector("form").addEventListener("submit", function(e) {
+  e.preventDefault();
+  const form = e.target;
+
+  fetch(form.action, {
+    method: "POST",
+    body: new FormData(form)
+  }).then(response => {
+    if (response.ok) {
+      alert("✅ Message sent successfully!");
+      window.location.href = "https://scoobdelivery.com";
+    } else {
+      alert("❌ There was an error sending your message. Please try again|report @ 0782887188.");
+    }
+  }).catch(() => {
+    alert("⚠️ Network error. Please check your connection|message @ 0782887188.");
+  });
+});
