@@ -486,56 +486,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-    // ---------- Auto-Locate button loading ----------
-    var autoLocateBtn = document.getElementById("autoLocate");
-
-    if (autoLocateBtn) {
-        autoLocateBtn.addEventListener("click", function () {
-
-            // Start loading animation
-            autoLocateBtn.classList.add("loading");
-            autoLocateBtn.textContent = "Locating...";
-
-            if (!navigator.geolocation) {
-                alert("Geolocation is not supported on this device.");
-                autoLocateBtn.classList.remove("loading");
-                autoLocateBtn.textContent = "Auto-Locate";
-                return;
-            }
-
-            navigator.geolocation.getCurrentPosition(
-                function (position) {
-                    var lat = position.coords.latitude;
-                    var lon = position.coords.longitude;
-
-                    var latInput = document.getElementById("latitude");
-                    var lonInput = document.getElementById("longitude");
-
-                    if (latInput) latInput.value = lat;
-                    if (lonInput) lonInput.value = lon;
-
-                    // If your map function exists, call it
-                    if (typeof updateMapLocation === "function") {
-                        updateMapLocation(lat, lon);
-                    }
-
-                    // Stop loading
-                    autoLocateBtn.classList.remove("loading");
-                    autoLocateBtn.textContent = "Auto-Locate";
-                },
-
-                function (error) {
-                    alert("Failed to locate. Please allow GPS.");
-                    
-                    // Stop loading
-                    autoLocateBtn.classList.remove("loading");
-                    autoLocateBtn.textContent = "Auto-Locate";
-                }
-            );
-        });
-    }
-
-
         
 document.querySelector("form").addEventListener("submit", function(e) {
   e.preventDefault();
@@ -555,3 +505,4 @@ document.querySelector("form").addEventListener("submit", function(e) {
     alert("⚠️ Network error. Please check your connection|message @ 0782887188.");
   });
 });
+
