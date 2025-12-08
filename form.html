@@ -142,22 +142,73 @@
     }
 
     map.on("click", (e) => setMarker(e.latlng));
+document.getElementById("autoLocate").addEventListener("click", () => {
+  const btn = document.getElementById("autoLocate");
 
-    document.getElementById("autoLocate").addEventListener("click", () => {
-      if (window.isSecureContext && navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (pos) => {
-            const latlng = { lat: pos.coords.latitude, lng: pos.coords.longitude };
-            map.setView(latlng, 15);
-            setMarker(latlng);
-          },
-          () => alert("Location error. Please use the map manually."),
-          { timeout: 10000 }
-        );
-      } else {
-        alert("Device doesn't support auto-locate. Use map manually.");
+  // Loading state
+  btn.disabled = true;
+  btn.style.opacity = "0.6";
+  btn.innerHTML = "<pre>Locating... ⏳</pre>";
+
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const latlng = {
+          lat: pos.coords.latitude,
+          lng: pos.coords.longitude
+        };
+
+        map.setView(latlng, 16);
+        setMarker(latlng);
+
+        // Restore button
+        btn.disabled = false;
+        btn.style.opacity = "1";
+        btn.innerHTML = "<pre>Auto-Locate    or   Use Map Below</pre>";
+      },
+      (error) => {
+        let message = "";
+
+        switch (error.code) {
+          case error.PERMISSION_DENIED:
+            message = "Please allow Location permission and try again.";
+            break;
+
+          case error.POSITION_UNAVAILABLE:
+            message = "Location unavailable. Please turn on GPS and try again.";
+            break;
+
+          case error.TIMEOUT:
+            message = "Location timed out. Please turn on GPS and try again.";
+            break;
+
+          default:
+            message = "Unable to detect location. Please turn on GPS or use the map manually.";
+            break;
+        }
+
+        alert(message);
+
+        // Restore button
+        btn.disabled = false;
+        btn.style.opacity = "1";
+        btn.innerHTML = "<pre>Auto-Locate    or   Use Map Below</pre>";
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 15000,
+        maximumAge: 0
       }
-    });
+    );
+  } else {
+    alert("Your device does not support auto-locate. Use the map manually.");
+
+    // Restore button
+    btn.disabled = false;
+    btn.style.opacity = "1";
+    btn.innerHTML = "<pre>Auto-Locate    or   Use Map Below</pre>";
+  }
+});
 
     L.Control.geocoder({ defaultMarkGeocode: false })
       .on("markgeocode", function (e) {
@@ -170,3 +221,4 @@
   </script>
 </body>
 </html>
+
