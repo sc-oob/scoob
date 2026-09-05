@@ -1,4 +1,93 @@
 // script.js
+
+/* =========================================================
+   QR-SPECIFIC WEBSITE SETTINGS
+   ---------------------------------------------------------
+   Create QR codes using:
+   https://scoobdelivery.com/?qr=kibo-palace
+
+   Add/edit entries below for each hotel/location QR code.
+   - code: value after ?qr=
+   - location: name carried to form.html as the delivery location
+   - headerImage: image shown in the main header
+   - headerText: text shown beside the image
+   - category: optional extra category added to the categories bar
+     and used by the normal category filtering system.
+   ========================================================= */
+var QR_CONFIGS = {
+    "kibo-palace": {
+        location: "Kibo Palace Hotel",
+        headerImage: "kipong/kiponglogo.jpg",
+        headerText: "kibo palace hotel",
+        category: {
+            label: "inHouse",
+            value: "kibo-palace"
+        }
+    },
+
+    
+     "kalo-paris": {
+         location: "kalo-paris",
+         headerImage: "tembo club/temboclublogo.webp",
+         headerText: "kalo-paris",
+         category: {
+             label: "inHouse",
+             value: "kalo-paris"
+        }
+    }
+};
+
+function getQrCodeFromUrl() {
+    try {
+        return new URLSearchParams(window.location.search).get("qr");
+    } catch (e) {
+        return null;
+    }
+}
+
+function getActiveQrConfig() {
+    var qrCode = getQrCodeFromUrl();
+    if (!qrCode) return null;
+    return QR_CONFIGS[qrCode] || null;
+}
+
+function applyQrConfiguration() {
+    var qrCode = getQrCodeFromUrl();
+    var config = getActiveQrConfig();
+
+    // No recognized QR code: leave the original website unchanged.
+    if (!config) return;
+
+    // Save both the QR identifier and the human-readable hotel/location name.
+    sessionStorage.setItem("qrCode", qrCode);
+    sessionStorage.setItem("qrLocation", config.location || qrCode);
+
+    // Change header image and text.
+    var logoImage = document.getElementById("siteLogoImage");
+    var logoText = document.getElementById("siteLogoText");
+
+    if (logoImage && config.headerImage) {
+        logoImage.src = config.headerImage;
+    }
+    if (logoText && config.headerText) {
+        logoText.textContent = config.headerText;
+    }
+
+    // Add the QR-specific category once.
+    if (config.category && config.category.label && config.category.value) {
+        var categories = document.querySelector(".categories");
+        if (categories && !categories.querySelector('.category-link[data-category="' + config.category.value + '"]')) {
+            var category = document.createElement("div");
+            category.className = "category-link qr-category";
+            category.setAttribute("data-category", config.category.value);
+            category.textContent = config.category.label;
+            categories.insertBefore(category, categories.firstChild);
+        }
+    }
+}
+
+applyQrConfiguration();
+
 document.addEventListener('DOMContentLoaded', function () {
 
     // Polyfill for older browsers (NodeList.forEach)
@@ -34,18 +123,37 @@ document.addEventListener('DOMContentLoaded', function () {
     shuffleGallery(); // Shuffle early
 
     // ---------- Category filtering ----------
-    categoryLinks.forEach(function (link) {
-        link.addEventListener('click', function () {
-            categoryLinks.forEach(function (l) { l.classList.remove('active'); });
-            this.classList.add('active');
-            var selectedCategory = this.getAttribute('data-category');
-            galleryItems.forEach(function (item) {
-                var itemCategory = item.getAttribute('data-category') || '';
-                var show = selectedCategory === 'All' || itemCategory.split(' ').indexOf(selectedCategory) !== -1;
-                item.style.display = show ? 'block' : 'none';
+    function filterByCategory(selectedCategory) {
+        categoryLinks.forEach(function (l) { l.classList.remove('active'); });
+        var activeLink = document.querySelector('.category-link[data-category="' + selectedCategory + '"]');
+        if (activeLink) activeLink.classList.add('active');
+
+        galleryItems.forEach(function (item) {
+            var itemCategory = item.getAttribute('data-category') || '';
+            var show = selectedCategory === 'All' || itemCategory.split(' ').indexOf(selectedCategory) !== -1;
+            item.style.display = show ? 'block' : 'none';
+        });
+    }
+
+    function attachCategoryListeners() {
+        categoryLinks = document.querySelectorAll('.category-link');
+        categoryLinks.forEach(function (link) {
+            if (link.dataset.qrListenerAttached === 'true') return;
+            link.dataset.qrListenerAttached = 'true';
+            link.addEventListener('click', function () {
+                filterByCategory(this.getAttribute('data-category'));
             });
         });
-    });
+    }
+
+    attachCategoryListeners();
+
+var activeQrConfig = getActiveQrConfig();
+if (activeQrConfig && activeQrConfig.category) {
+    filterByCategory(activeQrConfig.category.value);
+}
+
+
 
     // ---------- Search bar ----------
     if (searchBar) {
@@ -188,6 +296,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 return match ? (match.querySelector('.tellchef') || {}).value.trim() : '';
             });
             sessionStorage.setItem('userInputs', inputs.join(', '));
+
+            // Keep the QR/hotel location available on form.html.
+            var activeQr = getActiveQrConfig();
+            if (activeQr) {
+                sessionStorage.setItem('qrCode', getQrCodeFromUrl());
+                sessionStorage.setItem('qrLocation', activeQr.location || getQrCodeFromUrl());
+            }
+
             window.location.href = 'form.html';
         });
     }
@@ -230,20 +346,8 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
 
-        // Keep your existing category click logic
-        categoryLinksArr.forEach(link => {
-            link.addEventListener('click', function() {
-                categoryLinksArr.forEach(l => l.classList.remove('active'));
-                this.classList.add('active');
-                const selectedCategory = this.getAttribute('data-category');
-
-                galleryItems.forEach(item => {
-                    const itemCategory = item.getAttribute('data-category') || '';
-                    const show = selectedCategory === 'All' || itemCategory.split(' ').indexOf(selectedCategory) !== -1;
-                    item.style.display = show ? 'block' : 'none';
-                });
-            });
-        });
+        // Category click handling is attached above so dynamically added QR categories work too.
+        // Do not attach a second click handler here.
 
         // Swipe support for touchscreens
         let isDragging = false;
@@ -481,28 +585,4 @@ document.addEventListener('DOMContentLoaded', function () {
     })();
 
 
-        }); // end infos.forEach
-
-
-
-
-        
-document.querySelector("form").addEventListener("submit", function(e) {
-  e.preventDefault();
-  const form = e.target;
-
-  fetch(form.action, {
-    method: "POST",
-    body: new FormData(form)
-  }).then(response => {
-    if (response.ok) {
-      alert("✅ Message sent successfully!");
-      window.location.href = "https://scoobdelivery.com";
-    } else {
-      alert("❌ There was an error sending your message. Please try again|report @ 0782887188.");
-    }
-  }).catch(() => {
-    alert("⚠️ Network error. Please check your connection|message @ 0782887188.");
-  });
-});
-
+}); // end DOMContentLoaded
