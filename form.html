@@ -31,6 +31,8 @@
         <textarea id="restaurantList" name="restaurantList" style="display:none;"></textarea>
         <textarea id="cartItemsVisible" name="cartItemsVisible" style="display:none;"></textarea>
         <textarea id="totalVisible" name="totalVisible" style="display:none;"></textarea>
+        <input type="hidden" name="qrCode" id="qrCodeInput" />
+        <input type="hidden" name="qrLocation" id="qrLocationInput" />
 
         <div class="inputs">
           <input type="hidden" name="cartItems" id="cartItemsInput" />
@@ -50,12 +52,12 @@
 
         <div id="map" style="height:300px;margin-bottom:20px;"></div>
 
-        <input type="text" id="coordinates" name="coordinates" placeholder="location appears here. locating error? Use googlemaps👀" required style="width:345px;color:black;" />
-
+        <input type="text" id="coordinates" name="coordinates" placeholder="autoLocate appear here. blocked? try googlemaps👀" required style="width:345px;color:black;" />
+                                                                            
         <div class="inputsColor">
           <hr />
           <textarea name="download" placeholder="order: movies | series | games/apps" style="width:150px;height:30px;background:black;"></textarea>
-          <input class="custom-placeholder" type="text" name="transfer" placeholder="via: cd | flash | xender | usb" style="max-width:250px;" /><br />
+          <input class="custom-placeholder" type="text" name="transfer" placeholder="via: xender | usb" style="max-width:250px;" /><br />
         </div>
 
         <input type="checkbox" name="botcheck" class="hidden" style="display:none;" />
@@ -114,6 +116,8 @@
       const totalAmount = sessionStorage.getItem("totalAmount") || "";
       const from = sessionStorage.getItem("from") || "";
       const userInputs = sessionStorage.getItem("userInputs") || "";
+      const qrCode = sessionStorage.getItem("qrCode") || "";
+      const qrLocation = sessionStorage.getItem("qrLocation") || "";
 
       document.getElementById("cartItemsInput").value = cartItems;
       document.getElementById("totalInput").value = totalAmount;
@@ -123,6 +127,25 @@
       document.getElementById("cartItemsVisible").value = cartItems;
       document.getElementById("totalVisible").value = totalAmount;
       document.getElementById("restaurantList").value = from;
+      document.getElementById("qrCodeInput").value = qrCode;
+      document.getElementById("qrLocationInput").value = qrLocation;
+
+      // If the order came from a recognized hotel QR code, the hotel is the
+      // delivery location. No map or GPS selection is needed.
+      if (qrLocation) {
+        const autoLocate = document.getElementById("autoLocate");
+        const mapElement = document.getElementById("map");
+        const coordinates = document.getElementById("coordinates");
+
+        if (autoLocate) autoLocate.style.display = "none";
+        if (mapElement) mapElement.style.display = "none";
+
+        if (coordinates) {
+          coordinates.value = qrLocation;
+          coordinates.readOnly = true;
+          coordinates.placeholder = "Delivery location";
+        }
+      }
     });
   </script>
 
@@ -142,73 +165,66 @@
     }
 
     map.on("click", (e) => setMarker(e.latlng));
-document.getElementById("autoLocate").addEventListener("click", () => {
-  const btn = document.getElementById("autoLocate");
 
-  // Loading state
-  btn.disabled = true;
-  btn.style.opacity = "0.6";
-  btn.innerHTML = "<pre>Locating... ⏳</pre>";
+    document.getElementById("autoLocate").addEventListener("click", () => {
+      const btn = document.getElementById("autoLocate");
 
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        const latlng = {
-          lat: pos.coords.latitude,
-          lng: pos.coords.longitude
-        };
+      btn.disabled = true;
+      btn.style.opacity = "0.6";
+      btn.innerHTML = "<pre>Locating... ⏳</pre>";
 
-        map.setView(latlng, 16);
-        setMarker(latlng);
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            const latlng = {
+              lat: pos.coords.latitude,
+              lng: pos.coords.longitude
+            };
 
-        // Restore button
+            map.setView(latlng, 16);
+            setMarker(latlng);
+
+            btn.disabled = false;
+            btn.style.opacity = "1";
+            btn.innerHTML = "<pre>Auto-Locate    or   Use Map Below</pre>";
+          },
+          (error) => {
+            let message = "";
+
+            switch (error.code) {
+              case error.PERMISSION_DENIED:
+                message = "Please turn location first or Use map manually.";
+                break;
+              case error.POSITION_UNAVAILABLE:
+                message = "Location unavailable. Please turn on GPS and try again.";
+                break;
+              case error.TIMEOUT:
+                message = "Location timed out. Please turn on GPS and try again.";
+                break;
+              default:
+                message = "Unable to detect location. Please turn on GPS or use the map manually.";
+                break;
+            }
+
+            alert(message);
+
+            btn.disabled = false;
+            btn.style.opacity = "1";
+            btn.innerHTML = "<pre>Auto-Locate    or   Use Map Below</pre>";
+          },
+          {
+            enableHighAccuracy: true,
+            timeout: 15000,
+            maximumAge: 0
+          }
+        );
+      } else {
+        alert("Your device does not support auto-locate. Use the map manually.");
         btn.disabled = false;
         btn.style.opacity = "1";
         btn.innerHTML = "<pre>Auto-Locate    or   Use Map Below</pre>";
-      },
-      (error) => {
-        let message = "";
-
-        switch (error.code) {
-          case error.PERMISSION_DENIED:
-            message = "Please turn location first or Use map manually.";
-            break;
-
-          case error.POSITION_UNAVAILABLE:
-            message = "Location unavailable. Please turn on GPS and try again.";
-            break;
-
-          case error.TIMEOUT:
-            message = "Location timed out. Please turn on GPS and try again.";
-            break;
-
-          default:
-            message = "Unable to detect location. Please turn on GPS or use the map manually.";
-            break;
-        }
-
-        alert(message);
-
-        // Restore button
-        btn.disabled = false;
-        btn.style.opacity = "1";
-        btn.innerHTML = "<pre>Auto-Locate    or   Use Map Below</pre>";
-      },
-      {
-        enableHighAccuracy: true,
-        timeout: 15000,
-        maximumAge: 0
       }
-    );
-  } else {
-    alert("Your device does not support auto-locate. Use the map manually.");
-
-    // Restore button
-    btn.disabled = false;
-    btn.style.opacity = "1";
-    btn.innerHTML = "<pre>Auto-Locate    or   Use Map Below</pre>";
-  }
-});
+    });
 
     L.Control.geocoder({ defaultMarkGeocode: false })
       .on("markgeocode", function (e) {
@@ -221,5 +237,3 @@ document.getElementById("autoLocate").addEventListener("click", () => {
   </script>
 </body>
 </html>
-
-
