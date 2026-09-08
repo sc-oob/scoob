@@ -25,6 +25,17 @@ var QR_CONFIGS = {
         }
     },
 
+"acres-hotel": {
+        location: "Acres Hotel",
+        headerImage: "acres hotel/acreshotellogo.webp",
+        headerText: "Acres Hotel",
+        category: {
+            label: "inHouse",
+            value: "acres-hotel"
+        }
+    },
+
+   
     
      "kalo-paris": {
          location: "kalo-paris",
