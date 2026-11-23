@@ -41,10 +41,7 @@ var QR_CONFIGS = {
          location: "kalo-paris",
          headerImage: "tembo club/temboclublogo.webp",
          headerText: "kalo-paris",
-         category: {
-             label: "",
-             value: ""
-        }
+
     }
 };
 
